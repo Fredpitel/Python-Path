@@ -340,21 +340,26 @@ class ClassPage:
 				Label(newFrame, text=self.charClass.get(), font=('Helvetica', 12), width=20).grid(row=0, column=1, padx=30)
 
 				Label(newFrame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, padx=5)
+
+				hitDie = self.class_data["classes"][self.charClass.get()]["hitDie"]
 				if i == 0:
-					hp = IntVar(value=self.class_data["classes"][self.charClass.get()]["hitDie"])
+					hp = StringVar(value=str(hitDie))
 					label = Label(newFrame, textvariable=hp, width=2, font=('Helvetica', 12))
 					label.grid(row=0, column=3)
 					label.removeMe = True
 				
 				else:
-					hp = IntVar(value=1)
-					Entry(newFrame, width=2, textvariable=hp, font=('Helvetica', 12), validate="focusout", vcmd=self.validateEntry).grid(row=0, column=3)
+					hp = StringVar(value="1")
+					Entry(newFrame, width=2, textvariable=hp, font=('Helvetica', 12)).grid(row=0, column=3)
 
 
 				Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.removeLevel(frame)).grid(row=0, column=4,pady=2, padx=30)
 
 				self.charClasses.append(newFrame)
-				self.char.levels.append(Level(self.charClass.get(), hp))
+				level = Level(self.charClass.get(), hp.get())
+				self.char.levels.append(level)
+
+				hp.trace("w", lambda i,o,x,hp=hp, hitDie=hitDie, level=level: self.validateEntry(hp, hitDie, level))
 			
 			self.char.charLevel.set(currentLvl + self.levelNb.get())
 			if self.char.charLevel.get() == self.char.MAX_LEVEL:
@@ -390,5 +395,21 @@ class ClassPage:
 		self.addLevelsButton.config(state="normal")
 
 
-	def validateEntry(self):
-		return False
+	def validateEntry(self, var, hitDie, level):
+		value = var.get()
+
+		if value == "":
+			level.hpGained.set(0)
+			return
+		else:
+			try:
+				value = int(value)
+				if value  < 1:
+					value = 1
+				elif value > hitDie:
+					value = hitDie
+			except ValueError:
+				value = 1
+
+		var.set(str(value))
+		level.hpGained.set(value)

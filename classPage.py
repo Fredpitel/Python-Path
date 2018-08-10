@@ -92,7 +92,7 @@ class ClassPage:
 		# Left Frame
 		#
 		self.summaryFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
-		self.summaryFrame.grid(row=0, column=0, padx=10, sticky="NSEW")
+		self.summaryFrame.grid(row=0, column=0, rowspan=2, padx=10, sticky="NEW")
 		self.summaryFrame.grid_columnconfigure(1, weight=1)
 
 		# Name
@@ -100,14 +100,32 @@ class ClassPage:
 
 		self.charName = StringVar()
 		self.charName.trace("w", lambda i,x,o: self.char.charName.set(self.charName.get()))
-		Entry(self.summaryFrame, textvariable=self.charName).grid(row=0, column=1, sticky="EW")
+		Entry(self.summaryFrame, textvariable=self.charName).grid(row=0, column=1, pady=10, sticky="EW")
 
+		# Race
+		Label(self.summaryFrame, text="Race:").grid(row=1, column=0, pady=8)
+		self.racesMenu = OptionMenu(self.summaryFrame, self.char.race, *self.RACES)
+		self.racesMenu.config(width=25)
+		self.racesMenu.grid(row=1, column=1, columnspan=3)
+		self.racesMenu.config(font=('Helvetica', 10), highlightthickness=0)
+
+		self.char.race.trace("w", self.updateRace)
+
+		Label(self.summaryFrame, text="Racial ability bonus: ").grid(row=2, column=0, pady=8, padx=10)
+		self.bonusAbility = StringVar(value="Choose ability bonus")
+		self.abilityMenu = OptionMenu(self.summaryFrame, self.bonusAbility, *self.ABILITY_BONUS)
+		self.abilityMenu.config(width=25)
+		self.abilityMenu.grid(row=2, column=1, columnspan=3)
+		self.abilityMenu.config(font=('Helvetica', 10), highlightthickness=0)
+		self.abilityMenu.grid_remove()
+
+		self.bonusAbility.trace("w", self.updateBonusAbility)
 
 		#
 		# Center Frame
 		#
 		self.statFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
-		self.statFrame.grid(row=0, column=1, padx=10, sticky="NSEW")
+		self.statFrame.grid(row=0, column=1, rowspan=2, padx=10, sticky="NEW")
 		self.statFrame.grid_columnconfigure(0, weight=1)
 		self.statFrame.grid_columnconfigure(1, weight=1)
 		self.statFrame.grid_columnconfigure(2, weight=1)
@@ -174,27 +192,8 @@ class ClassPage:
 		# Right Frame
 		#
 		self.classFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
-		self.classFrame.grid(row=0, column=2, padx=10, sticky="NSEW")
+		self.classFrame.grid(row=0, column=2, padx=10, sticky="NEW")
 		self.classFrame.grid_columnconfigure(1, weight=1)
-
-		# Race
-		Label(self.classFrame, text="Race:").grid(row=0, column=0, pady=8)
-		self.racesMenu = OptionMenu(self.classFrame, self.char.race, *self.RACES)
-		self.racesMenu.config(width=25)
-		self.racesMenu.grid(row=0, column=1, columnspan=3)
-		self.racesMenu.config(font=('Helvetica', 10), highlightthickness=0)
-
-		self.char.race.trace("w", self.updateRace)
-
-		Label(self.classFrame, text="Racial ability bonus: ").grid(row=1, column=0, pady=8, padx=10)
-		self.bonusAbility = StringVar(value="Choose ability bonus")
-		self.abilityMenu = OptionMenu(self.classFrame, self.bonusAbility, *self.ABILITY_BONUS)
-		self.abilityMenu.config(width=25)
-		self.abilityMenu.grid(row=1, column=1, columnspan=3)
-		self.abilityMenu.config(font=('Helvetica', 10), highlightthickness=0)
-		self.abilityMenu.grid_remove()
-
-		self.bonusAbility.trace("w", self.updateBonusAbility)
 
 		# Class
 		Label(self.classFrame, text="Class: ").grid(row=2, column=0, pady=8)
@@ -202,7 +201,7 @@ class ClassPage:
 		self.classMenu = OptionMenu(self.classFrame, self.charClass, *self.CLASSES)
 		self.classMenu.config(width=25)
 		self.classMenu.grid(row=2, column=1, columnspan=3)
-		self.classMenu.config(font=('Helvetica', 10), highlightthickness=0)
+		self.classMenu.config(font=('Helvetica', 12), highlightthickness=0)
 
 		self.charClass.trace("w", lambda i,x,o: self.classMenu.config(fg="black"))
 
@@ -217,11 +216,20 @@ class ClassPage:
 		self.lvlButtons.grid(row=0, column=1)
 		Button(self.lvlButtons, text="▲", font=("helvetica", 6), width=1, command=lambda: self.updateLevelNb(1)).grid(row=0, column=0)
 		Button(self.lvlButtons, text="▼", font=("helvetica", 6), width=1, command=lambda: self.updateLevelNb(-1)).grid(row=1, column=0)
-		self.addLevelsButton = Button(self.addLevelFrame, text="Add level(s)", font=('Helvetica', 10), command=self.addLevels)
+		self.addLevelsButton = Button(self.addLevelFrame, text="Add level(s)", font=('Helvetica', 12), command=self.addLevels)
 		self.addLevelsButton.grid(row=0, column=2, padx=5, sticky="W")
 
 		self.charClassFrame = ttk.Frame(self.classFrame)
-		self.charClassFrame.grid(row=4, column=0, columnspan=3, sticky="EW")
+		self.charClassFrame.grid(row=4, column=0, columnspan=3)
+
+		# Total HP
+		self.hpFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
+		self.hpFrame.grid(row=1, column=2, padx=10, sticky="NEW")
+		self.hpFrame.grid_columnconfigure(1, weight=1)
+
+		Label(self.hpFrame, text="Hit Point(s):").grid(row=1, column=0)
+		Label(self.hpFrame, textvariable=self.char.hp).grid(row=1, column=1)
+
 
 
 	def updateAbilityBonusString(self, bonus, stat):
@@ -287,7 +295,7 @@ class ClassPage:
 
 		if race in self.HUMANLIKE_RACES:
 			self.abilityMenu.grid()
-			self.updateBonusAbility("","","")
+			self.updateBonusAbility(i,o,x)
 		else:
 			self.abilityMenu.grid_remove()
 
@@ -336,30 +344,34 @@ class ClassPage:
 				newFrame = ttk.Frame(self.charClassFrame, relief=SUNKEN)
 				newFrame.pack(expand=True)
 
-				Label(newFrame, text=str(i + 1), width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=30)
-				Label(newFrame, text=self.charClass.get(), font=('Helvetica', 12), width=20).grid(row=0, column=1, padx=30)
+				Label(newFrame, text=str(i + 1), width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=20)
+				Label(newFrame, text=self.charClass.get(), font=('Helvetica', 12), width=12).grid(row=0, column=1, padx=20)
 
-				Label(newFrame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, padx=5)
+				Label(newFrame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2)
 
 				hitDie = self.class_data["classes"][self.charClass.get()]["hitDie"]
 				if i == 0:
 					hp = StringVar(value=str(hitDie))
 					label = Label(newFrame, textvariable=hp, width=2, font=('Helvetica', 12))
-					label.grid(row=0, column=3)
+					label.grid(row=0, column=3, padx=20)
 					label.removeMe = True
 				
 				else:
 					hp = StringVar(value="1")
-					Entry(newFrame, width=2, textvariable=hp, font=('Helvetica', 12)).grid(row=0, column=3)
+					Entry(newFrame, width=2, textvariable=hp, validate="key", font=('Helvetica', 12)).grid(row=0, column=3, padx=20)
 
+				favClassBonusOption = ["+1 Hit Point", "+1 Skill Point"]
+				favClassBonus = StringVar(value="Choose Bonus")
+				favClassBonusMenu = OptionMenu(newFrame, favClassBonus, *favClassBonusOption)
+				favClassBonusMenu.config(width=15, font=('Helvetica', 12), highlightthickness=0)
+				favClassBonusMenu.grid(row=0, column=4)
 
-				Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.removeLevel(frame)).grid(row=0, column=4,pady=2, padx=30)
+				Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.removeLevel(frame)).grid(row=0, column=5,pady=2, padx=20)
 
 				self.charClasses.append(newFrame)
-				level = Level(self.charClass.get(), hp.get())
+				level = Level(self.char, self.charClass.get(), hp, hitDie, favClassBonus)
 				self.char.levels.append(level)
 
-				hp.trace("w", lambda i,o,x,hp=hp, hitDie=hitDie, level=level: self.validateEntry(hp, hitDie, level))
 			
 			self.char.charLevel.set(currentLvl + self.levelNb.get())
 			if self.char.charLevel.get() == self.char.MAX_LEVEL:
@@ -385,31 +397,11 @@ class ClassPage:
 						pass
 
 				classStr = current.winfo_children()[1].cget("text")
-				label = Label(current, text=self.class_data["classes"][classStr]["hitDie"], width=2)
-				label.grid(row=0, column=3)
+				label = Label(current, text=self.class_data["classes"][classStr]["hitDie"], width=2, font=('Helvetica', 12))
+				label.grid(row=0, column=3, padx=20)
 				label.removeMe = True
 
-		self.char.charLevel.set(self.char.charLevel.get() - 1)
 		del self.char.levels[int(level) - 1]
+		self.char.charLevel.set(self.char.charLevel.get() - 1)
 
 		self.addLevelsButton.config(state="normal")
-
-
-	def validateEntry(self, var, hitDie, level):
-		value = var.get()
-
-		if value == "":
-			level.hpGained.set(0)
-			return
-		else:
-			try:
-				value = int(value)
-				if value  < 1:
-					value = 1
-				elif value > hitDie:
-					value = hitDie
-			except ValueError:
-				value = 1
-
-		var.set(str(value))
-		level.hpGained.set(value)

@@ -51,9 +51,16 @@ class Character:
         self.cmb          = IntVar(value=0)
         self.cmd          = IntVar(value=0)
         self.savingThrows = IntVar(value=0)
+        self.hp           = IntVar(value=0)
+        self.charLevel    = IntVar(value=0)
 
-        self.charLevel = IntVar(value=0)
+        # HP tracing
+        self.conBonus.trace("w", self.updateHP)
+        self.charLevel.trace("w", self.updateHP)
+
         self.levels = []
+
+        self.skillPoints = IntVar(value=0)
 
     def updateAbilityScore(self, stat):
         eval("self." + stat).set((eval("self." + stat + "Base").get()) + self.getModValue(stat))
@@ -67,14 +74,16 @@ class Character:
 
         if target in self.ABILITY_SHORT:
             self.updateAbilityScore(target)
+        elif target == "hp":
+            self.updateHP("","","")
 
 
     def getModValue(self, target):
         total = 0
         for type in self.modifiers[target].keys():
             if type in self.STACKABLE_TYPES:
-                for source in type.keys():
-                    total += type[source]
+                for source in self.modifiers[target][type].keys():
+                    total += self.modifiers[target][type][source]
             else:
                 maxMod = {"source": "", "value": Decimal('-Infinity')}
                 for source in self.modifiers[target][type].keys():
@@ -102,3 +111,12 @@ class Character:
 
                         if target in self.ABILITY_SHORT:
                             self.updateAbilityScore(target)
+
+
+    def updateHP(self,i,o,x):
+        hp = (self.charLevel.get() * self.conBonus.get()) + self.getModValue("hp")
+
+        for level in self.levels:
+            hp += level.hpGained.get()
+
+        self.hp.set(hp)

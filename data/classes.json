@@ -1,0 +1,40 @@
+{
+    "classes": {
+        "Barbarian": {
+            "alignment"  : ["NG","CG", "TN", "CN", "NE", "CE"],
+            "hitDie"     : 12,
+            "classSkills": ["Acrobatics", "Climb", "Craft", "Handle Animal", "Intimidate", "Knowledge (nature)", "Perception", "Ride", "Survival", "Swim"],
+            "skillLevel" : 4,
+            "attackProg" : 3,
+            "fortProg"   : 2,
+            "refProg"    : 1,
+            "willProg"   : 1,
+            "proficiency": ["simple", "martial", "light armor", "medium armor", "shield"],
+            "mods": [
+                {
+                    "target": "speed",
+                    "type"  : "untyped",
+                    "value" : 10
+                }
+            ]
+        },
+        "Bard" : {
+            "alignment"  : [""],
+            "hitDie"     : 8,
+            "classSkills": ["Acrobatics", "Appraise", "Bluff", "Climb", "Craft", "Diplomacy", "Disguise", "Escape Artist", "Intimidate", "Knowledge", "Linguistics", "Perception", "Perform", "Profession", "Sense Motive", "Sleight of Hand", "Spellcraft", "Stealth", "Use Magic Device"],
+            "skillLevel" : 6,
+            "attackProg" : 2,
+            "fortProg"   : 1,
+            "refProg"    : 2,
+            "willProg"   : 2,
+            "proficiency": ["simple", "longsword", "rapier", "sap", "shortbow", "composite shortbow", "whip", "light armor", "shield"],
+            "mods": [
+                {
+                    "target": "skill[\"Knowledge\"]",
+                    "type"  : "untyped",
+                    "value" : "Math.max(1, self.char.charLevel/2)"
+                }
+            ]
+        }
+    }
+}

@@ -6,9 +6,6 @@ import json
 import tkinter as tk
 
 from tkinter  import *
-from math     import *
-from level    import Level
-
 
 class ClassPage:
 	POINT_BUY_CHART = {
@@ -67,12 +64,12 @@ class ClassPage:
 		classPage.grid_columnconfigure(2, weight=1)
 		nb.add(classPage, text='Class(es)', padding=10)
 
-		self.char.strBonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.strBonus.get(), "str"))
-		self.char.dexBonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.dexBonus.get(), "dex"))
-		self.char.conBonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.conBonus.get(), "con"))
-		self.char.intBonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.intBonus.get(), "int"))
-		self.char.wisBonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.wisBonus.get(), "wis"))
-		self.char.chaBonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.chaBonus.get(), "cha"))
+		self.char.str.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.str))
+		self.char.dex.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.dex))
+		self.char.con.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.con))
+		self.char.int.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.int))
+		self.char.wis.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.wis))
+		self.char.cha.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.cha))
 
 		self.race_data = json.load(open("data/races.json"))
 		for race in self.race_data["races"]:
@@ -138,42 +135,42 @@ class ClassPage:
 
 		# STRENGTH
 		Label(self.statFrame, textvariable=self.strBonusStr, relief=SUNKEN).grid(row=1, column=0, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.str, bg="white", width=2).grid(row=2, column=0, sticky="E", padx=5)
+		Label(self.statFrame, textvariable=self.char.str.value, bg="white", width=2).grid(row=2, column=0, sticky="E", padx=5)
 		self.strButtons = ttk.Frame(self.statFrame)
 		self.strButtons.grid(row=2, column=1, sticky="W")
 		self.createStatsButtons(self.strButtons, "str")
 
 		# DEXTERITY
 		Label(self.statFrame, textvariable=self.dexBonusStr, relief=SUNKEN).grid(row=1, column=2, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.dex, bg="white", width=2).grid(row=2, column=2, sticky="E", padx=5)
+		Label(self.statFrame, textvariable=self.char.dex.value, bg="white", width=2).grid(row=2, column=2, sticky="E", padx=5)
 		self.dexButtons = ttk.Frame(self.statFrame)
 		self.dexButtons.grid(row=2, column=3, sticky="W")
 		self.createStatsButtons(self.dexButtons, "dex")
 
 		# CONSTITUTION
 		Label(self.statFrame, textvariable=self.conBonusStr, relief=SUNKEN).grid(row=1, column=4, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.con, bg="white", width=2).grid(row=2, column=4, sticky="E", padx=5)
+		Label(self.statFrame, textvariable=self.char.con.value, bg="white", width=2).grid(row=2, column=4, sticky="E", padx=5)
 		self.conButtons = ttk.Frame(self.statFrame)
 		self.conButtons.grid(row=2, column=5, sticky="W")
 		self.createStatsButtons(self.conButtons, "con")
 		
 		# INTELLIGENCE
 		Label(self.statFrame, textvariable=self.intBonusStr, relief=SUNKEN).grid(row=3, column=0, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.int, bg="white", width=2).grid(row=4, column=0, sticky="E", padx=5)
+		Label(self.statFrame, textvariable=self.char.int.value, bg="white", width=2).grid(row=4, column=0, sticky="E", padx=5)
 		self.intButtons = ttk.Frame(self.statFrame)
 		self.intButtons.grid(row=4, column=1, sticky="W")
 		self.createStatsButtons(self.intButtons, "int")
 
 		# WISDOM
 		Label(self.statFrame, textvariable=self.wisBonusStr, relief=SUNKEN).grid(row=3, column=2, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.wis, bg="white", width=2).grid(row=4, column=2, sticky="E", padx=5)
+		Label(self.statFrame, textvariable=self.char.wis.value, bg="white", width=2).grid(row=4, column=2, sticky="E", padx=5)
 		self.wisButtons = ttk.Frame(self.statFrame)
 		self.wisButtons.grid(row=4, column=3, sticky="W")
 		self.createStatsButtons(self.wisButtons, "wis")
 
 		# CHARISMA
 		Label(self.statFrame, textvariable=self.chaBonusStr, relief=SUNKEN).grid(row=3, column=4, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.cha, bg="white", width=2).grid(row=4, column=4, sticky="E", padx=5)
+		Label(self.statFrame, textvariable=self.char.cha.value, bg="white", width=2).grid(row=4, column=4, sticky="E", padx=5)
 		self.chaButtons = ttk.Frame(self.statFrame)
 		self.chaButtons.grid(row=4, column=5, sticky="W")
 		self.createStatsButtons(self.chaButtons, "cha")
@@ -228,13 +225,13 @@ class ClassPage:
 		self.hpFrame.grid_columnconfigure(1, weight=1)
 
 		Label(self.hpFrame, text="Hit Point(s):").grid(row=1, column=0)
-		Label(self.hpFrame, textvariable=self.char.hp).grid(row=1, column=1)
+		Label(self.hpFrame, textvariable=self.char.hp.value).grid(row=1, column=1)
 
 
 
-	def updateAbilityBonusString(self, bonus, stat):
-		sign = "+" if bonus >= 0 else ""
-		eval("self." + stat + "BonusStr").set(stat.upper() + " (" + sign + "%d)" % bonus)
+	def updateAbilityBonusString(self, stat):
+		sign = "+" if stat.bonus.get() >= 0 else ""
+		eval("self." + stat.shortName + "BonusStr").set(stat.shortName.upper() + " (" + sign + "%d)" % stat.bonus.get())
 
 
 	def createStatsButtons(self, parent, stat):
@@ -259,12 +256,13 @@ class ClassPage:
 
 
 	def updateAbilityScore(self, stat, value):
-		current = eval("self.char." + stat + "Base").get()
+		charStat = eval("self.char." + stat)
+		current = charStat.baseValue.get()
 		new = current + value
 
 		if new >= 7 and new <= 18:
-			eval("self.char." + stat + "Base").set(new)
-			self.char.updateAbilityScore(stat)
+			charStat.baseValue.set(new)
+			charStat.update()
 
 			previousPoints = self.POINT_BUY_CHART[current]
 			self.buyPoints.set(self.buyPoints.get() - previousPoints)
@@ -287,11 +285,13 @@ class ClassPage:
 		race = self.char.race.get()
 		data = self.race_data["races"][race]
 
-		self.char.removeMods("race")
+		if race != "Choose race":
+			self.char.removeMods("race")
 
 		for mod in data["mods"]:
-			self.char.modifiers[mod["target"]][mod["type"]]["race"] = mod["value"]
-			self.char.updateMods(mod["target"])
+			target = eval("self.char." + mod["target"])
+			self.char.modifiers[target][mod["type"]]["race"] = mod["value"]
+			target.update()
 
 		if race in self.HUMANLIKE_RACES:
 			self.abilityMenu.grid()
@@ -318,8 +318,9 @@ class ClassPage:
 				stat = "cha"
 
 			self.char.removeMods("race")
-			self.char.modifiers[stat]["racial"]["race"] = 2
-			self.char.updateAbilityScore(stat)
+			target = eval("self.char." + stat)
+			self.char.modifiers[target]["racial"]["race"] = 2
+			target.update()
 		
 
 	def updateLevelNb(self, value):
@@ -369,9 +370,7 @@ class ClassPage:
 				Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.removeLevel(frame)).grid(row=0, column=5,pady=2, padx=20)
 
 				self.charClasses.append(newFrame)
-				level = Level(self.char, self.charClass.get(), hp, hitDie, favClassBonus)
-				self.char.levels.append(level)
-
+				self.char.addLevel(self.charClass.get(), hp, hitDie, favClassBonus)
 			
 			self.char.charLevel.set(currentLvl + self.levelNb.get())
 			if self.char.charLevel.get() == self.char.MAX_LEVEL:
@@ -401,7 +400,7 @@ class ClassPage:
 				label.grid(row=0, column=3, padx=20)
 				label.removeMe = True
 
-		del self.char.levels[int(level) - 1]
+		level = self.char.levels.pop(int(level) - 1)
+		self.char.removeMods(level)
 		self.char.charLevel.set(self.char.charLevel.get() - 1)
-
 		self.addLevelsButton.config(state="normal")

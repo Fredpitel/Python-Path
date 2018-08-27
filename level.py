@@ -8,11 +8,13 @@ class Level:
         
         self.hpVar       = hpVar
         self.hpVar.trace("w", self.validateEntry)
+        
         self.hpGained    = IntVar(value=hpVar.get())
-        self.hpGained.trace("w", self.char.updateHP)
+        self.hpGained.trace("w", lambda i,o,x: self.char.hp.update())
         
         self.favClassVar = favClassVar
         self.favClassVar.trace("w", self.updateFavClassBonus)
+
 
     def validateEntry(self,i,o,x):
         value = self.hpVar.get()
@@ -38,9 +40,9 @@ class Level:
         self.char.removeMods(self)
         
         if self.favClassVar.get() == "+1 Hit Point":
-            target = "hp"
+            target = self.char.hp
         elif self.favClassVar.get() == "+1 Skill Point":
-            target = "skillPoints"
+            target = self.char.skillPoints
 
         self.char.modifiers[target]["untyped"][self] = 1
-        self.char.updateMods(target)
+        target.update()

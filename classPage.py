@@ -43,6 +43,8 @@ class ClassPage:
 						"+2 Charisma"
 					]
 
+	ALIGNMENTS = ["","LG","NG","CG","LN","TN","CN","LE","NE","CE"]
+
 	def __init__(self, nb, char):
 		self.char = char
 		self.buyPoints = IntVar(value=0)
@@ -88,6 +90,12 @@ class ClassPage:
 		#
 		# Left Frame
 		#
+		
+		# Errors
+		self.char.errorFrame = ttk.Frame(classPage, relief=SUNKEN, padding=10)
+		self.char.errorFrame.grid(row=1, column=0, padx=10, sticky="NEW")
+		self.char.errorFrame.grid_columnconfigure(1, weight=1)
+
 		self.summaryFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
 		self.summaryFrame.grid(row=0, column=0, rowspan=2, padx=10, sticky="NEW")
 		self.summaryFrame.grid_columnconfigure(1, weight=1)
@@ -102,21 +110,44 @@ class ClassPage:
 		# Race
 		Label(self.summaryFrame, text="Race:").grid(row=1, column=0, pady=8)
 		self.racesMenu = OptionMenu(self.summaryFrame, self.char.race, *self.RACES)
-		self.racesMenu.config(width=25)
+		self.racesMenu.config(width=25, fg="red")
 		self.racesMenu.grid(row=1, column=1, columnspan=3)
 		self.racesMenu.config(font=('Helvetica', 10), highlightthickness=0)
 
 		self.char.race.trace("w", self.updateRace)
+		self.raceError = self.char.addError(self.char.race, "Choose a race", self.racesMenu)
 
 		Label(self.summaryFrame, text="Racial ability bonus: ").grid(row=2, column=0, pady=8, padx=10)
 		self.bonusAbility = StringVar(value="Choose ability bonus")
 		self.abilityMenu = OptionMenu(self.summaryFrame, self.bonusAbility, *self.ABILITY_BONUS)
-		self.abilityMenu.config(width=25)
+		self.abilityMenu.config(width=25, fg="red")
 		self.abilityMenu.grid(row=2, column=1, columnspan=3)
 		self.abilityMenu.config(font=('Helvetica', 10), highlightthickness=0)
 		self.abilityMenu.grid_remove()
 
 		self.bonusAbility.trace("w", self.updateBonusAbility)
+
+		# Alignment
+		Label(self.summaryFrame, text="Alignment: ").grid(row=3, column=0, pady=8, padx=10)
+		self.alignment = StringVar(value="Choose alignment")
+		self.alignmentMenu = OptionMenu(self.summaryFrame, self.alignment, *self.ALIGNMENTS)
+		self.alignmentMenu.config(width=25)
+		self.alignmentMenu.grid(row=3, column=1, columnspan=3)
+		self.alignmentMenu.config(font=('Helvetica', 10), highlightthickness=0)
+
+		self.alignment.trace("w", self.updateAlignment)
+		self.char.charLevel.trace("w", self.updateAlignment)
+		self.char.charLevel.trace("w", self.updateAbilityAdvancement)
+
+		Label(self.summaryFrame, text="Favorite Class: ").grid(row=4, column=0, pady=8, padx=10)
+		self.favClassMenu = OptionMenu(self.summaryFrame, self.char.favClass, *self.CLASSES)
+		self.favClassMenu.config(width=25)
+		self.favClassMenu.grid(row=4, column=1, columnspan=3)
+		self.favClassMenu.config(font=('Helvetica', 10), highlightthickness=0)
+		self.favClassMenu.grid_remove()
+
+		self.char.favClass.trace("w", self.updateFavClass)
+
 
 		#
 		# Center Frame
@@ -184,6 +215,7 @@ class ClassPage:
 		Label(self.statFrame, text="Buy Points spent:").grid(row=6, column=0, columnspan=3)
 		Label(self.statFrame, textvariable=self.buyPoints).grid(row=6, column=3, columnspan=3)
 
+		self.buyPointError = self.char.addError(self.purchaseModeMenu, "Buy points remain to be spent", self.purchaseModeMenu)
 
 		#
 		# Right Frame
@@ -191,21 +223,21 @@ class ClassPage:
 		self.classFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
 		self.classFrame.grid(row=0, column=2, padx=10, sticky="NEW")
 		self.classFrame.grid_columnconfigure(1, weight=1)
-
+		
 		# Class
-		Label(self.classFrame, text="Class: ").grid(row=2, column=0, pady=8)
+		Label(self.classFrame, text="Class: ").grid(row=0, column=0, pady=8)
 		self.charClass = StringVar(value="Choose class")
 		self.classMenu = OptionMenu(self.classFrame, self.charClass, *self.CLASSES)
 		self.classMenu.config(width=25)
-		self.classMenu.grid(row=2, column=1, columnspan=3)
+		self.classMenu.grid(row=0, column=1)
 		self.classMenu.config(font=('Helvetica', 12), highlightthickness=0)
 
 		self.charClass.trace("w", lambda i,x,o: self.classMenu.config(fg="black"))
 
-		Label(self.classFrame, text="Level: ").grid(row=3, column=0)
+		Label(self.classFrame, text="Level: ").grid(row=1, column=0)
 
 		self.addLevelFrame = ttk.Frame(self.classFrame)
-		self.addLevelFrame.grid(row=3, column=1, pady=8)
+		self.addLevelFrame.grid(row=1, column=1, pady=8)
 		self.levelNb = IntVar(value=1)
 		Label(self.addLevelFrame, textvariable=self.levelNb, bg="white", width=2).grid(row=0, column=0, padx=10)
 
@@ -217,7 +249,7 @@ class ClassPage:
 		self.addLevelsButton.grid(row=0, column=2, padx=5, sticky="W")
 
 		self.charClassFrame = ttk.Frame(self.classFrame)
-		self.charClassFrame.grid(row=4, column=0, columnspan=3)
+		self.charClassFrame.grid(row=2, column=0, columnspan=2)
 
 		# Total HP
 		self.hpFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
@@ -226,7 +258,6 @@ class ClassPage:
 
 		Label(self.hpFrame, text="Hit Point(s):").grid(row=1, column=0)
 		Label(self.hpFrame, textvariable=self.char.hp.value).grid(row=1, column=1)
-
 
 
 	def updateAbilityBonusString(self, stat):
@@ -274,19 +305,30 @@ class ClassPage:
 
 
 	def checkBuyPoints(self):
-		if self.maxBuyPoints.get() < self.buyPoints.get():
-			self.purchaseModeMenu.config(fg="red")
-		elif self.maxBuyPoints.get() == self.buyPoints.get():
+		self.char.removeError(self.buyPointError)
+
+		if self.maxBuyPoints.get() == self.buyPoints.get():
 			self.purchaseModeMenu.config(fg="green")
-		else:	
-			self.purchaseModeMenu.config(fg="black")
+			return
+		elif self.maxBuyPoints.get() < self.buyPoints.get():
+			msg = "Too many buy points spent"
+		else:
+			msg = "Buy points remain to be spent"
+
+		self.buyPointError = self.char.addError(self.purchaseModeMenu, msg, self.purchaseModeMenu)
+
+
+	def updateAbilityAdvancement(self,i,o,x):
+		pass
+
 
 	def updateRace(self,i,o,x):
 		race = self.char.race.get()
 		data = self.race_data["races"][race]
 
-		if race != "Choose race":
-			self.char.removeMods("race")
+		self.char.removeMods("race")
+		self.char.removeError(self.raceError)
+		self.racesMenu.config(fg="black")
 
 		for mod in data["mods"]:
 			target = eval("self.char." + mod["target"])
@@ -298,7 +340,10 @@ class ClassPage:
 			self.updateBonusAbility(i,o,x)
 		else:
 			self.abilityMenu.grid_remove()
-
+			try:
+				self.char.removeError(self.bonusAbilityError)
+			except:
+				pass
 
 	def updateBonusAbility(self,i,o,x):
 		bonus = self.bonusAbility.get()
@@ -316,11 +361,15 @@ class ClassPage:
 				stat = "wis"
 			else:
 				stat = "cha"
-
+			
 			self.char.removeMods("race")
 			target = eval("self.char." + stat)
 			self.char.modifiers[target]["racial"]["race"] = 2
 			target.update()
+			self.char.removeError(self.bonusAbilityError)
+		else:
+			self.bonusAbilityError = self.char.addError(self.bonusAbility, "Choose racial ability bonus", self.abilityMenu)
+	
 		
 
 	def updateLevelNb(self, value):
@@ -343,8 +392,9 @@ class ClassPage:
 
 			for i in range(currentLvl, currentLvl + self.levelNb.get()):
 				newFrame = ttk.Frame(self.charClassFrame, relief=SUNKEN)
-				newFrame.pack(expand=True)
-
+				newFrame.pack(fill="x")
+				newFrame.grid_columnconfigure(5, weight=1)
+				
 				Label(newFrame, text=str(i + 1), width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=20)
 				Label(newFrame, text=self.charClass.get(), font=('Helvetica', 12), width=12).grid(row=0, column=1, padx=20)
 
@@ -367,20 +417,26 @@ class ClassPage:
 				favClassBonusMenu.config(width=15, font=('Helvetica', 12), highlightthickness=0)
 				favClassBonusMenu.grid(row=0, column=4)
 
-				Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.removeLevel(frame)).grid(row=0, column=5,pady=2, padx=20)
+				Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.removeLevel(frame)).grid(row=0, column=5,pady=2, padx=20, sticky="E")
 
 				self.charClasses.append(newFrame)
-				self.char.addLevel(self.charClass.get(), hp, hitDie, favClassBonus)
+				self.char.addLevel(self.charClass.get(), hp, hitDie, favClassBonus, favClassBonusMenu)
 			
 			self.char.charLevel.set(currentLvl + self.levelNb.get())
 			if self.char.charLevel.get() == self.char.MAX_LEVEL:
 				self.addLevelsButton.config(state="disabled")
 
 			self.levelNb.set(1)
+			if self.char.charLevel.get() == 1:
+				self.favClassMenu.grid()
+				if self.char.favClass.get() == "Choose favorite class":
+					self.favClassError = self.char.addError(self.char.favClass.get(), "Choose a favorite class", self.favClassMenu)
+
 
 	def removeLevel(self,frame):
 		level = frame.winfo_children()[0].cget("text")
 		self.charClasses.remove(frame)
+		self.char.removeLevel(int(level) - 1)
 		frame.destroy()
 
 		for i in range(0, len(self.charClasses)):
@@ -400,7 +456,35 @@ class ClassPage:
 				label.grid(row=0, column=3, padx=20)
 				label.removeMe = True
 
-		level = self.char.levels.pop(int(level) - 1)
-		self.char.removeMods(level)
-		self.char.charLevel.set(self.char.charLevel.get() - 1)
 		self.addLevelsButton.config(state="normal")
+		if self.char.charLevel.get() == 0:
+			self.favClassMenu.grid_remove()
+
+
+	def updateAlignment(self,i,o,x):
+		for charClass in self.charClasses:
+			className = charClass.winfo_children()[1]
+			className.config(fg="black")
+
+			alignmentArray = self.class_data["classes"][className.cget("text")]["alignment"]
+
+			error = self.char.findErrorBySource(className.cget("text"))
+			if error != None:
+				self.char.removeError(error)
+
+			if len(alignmentArray) > 0 and self.alignment.get() not in alignmentArray:
+				className.config(fg="red")
+				message = self.class_data["classes"][className.cget("text")]["alignmentMsg"]
+				self.char.addError(className.cget("text"), message, self.alignmentMenu)
+
+
+	def updateFavClass(self,i,o,x):
+		self.char.removeError(self.favClassError)
+
+		for level in self.char.levels:
+			if level.charClass != self.char.favClass.get():
+				level.favClassBonusMenu.grid_remove()
+				level.active.set(False)
+			else:
+				level.favClassBonusMenu.grid()
+				level.active.set(True)

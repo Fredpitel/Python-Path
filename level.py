@@ -1,7 +1,7 @@
 from tkinter  import *
 
 class Level:
-    def __init__(self, char, charClass, hpVar, hitDie, favClassVar):
+    def __init__(self, char, charClass, hpVar, hitDie, favClassVar, favClassBonusMenu, active):
         self.char        = char
         self.charClass   = charClass
         self.hitDie      = hitDie
@@ -14,6 +14,11 @@ class Level:
         
         self.favClassVar = favClassVar
         self.favClassVar.trace("w", self.updateFavClassBonus)
+
+        self.favClassBonusMenu = favClassBonusMenu
+
+        self.active = BooleanVar(value=active)
+        self.active.trace("w", self.updateFavClassBonus)
 
 
     def validateEntry(self,i,o,x):
@@ -38,6 +43,15 @@ class Level:
 
     def updateFavClassBonus(self,i,o,x):
         self.char.removeMods(self)
+
+        if not self.active.get():
+            return
+
+        if self.favClassVar.get() == "Choose Bonus":
+            self.char.addError(self.favClassVar.get(), "Choose favorite class bonus", self.favClassBonusMenu)
+            return
+
+        self.char.checkFavClassBonuses()
         
         if self.favClassVar.get() == "+1 Hit Point":
             target = self.char.hp

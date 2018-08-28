@@ -6,6 +6,7 @@ from tkinter     import *
 from nestledDict import *
 from Modifiable  import *
 from level       import *
+from error       import *
 
 class Character:
     BASE_ABILITY_VALUE = 10
@@ -19,7 +20,9 @@ class Character:
         self.modifiers = NestledDict()
         self.charLevel = IntVar(value=0)
         self.levels    = []
+        self.charClass = {} 
         self.race      = StringVar(value="Choose race")
+        self.favClass  = StringVar(value="Choose favorite class")
 
         # Modifiables
         self.str = AbilityScore(self,self.BASE_ABILITY_VALUE,"STRENGTH","str") 
@@ -38,6 +41,8 @@ class Character:
         self.skillPoints  = SkillPoints(self,0)
         self.hp           = HP(self,0)
         
+        self.errors = []
+
 
     def removeMods(self, source):
         targetsToUpdate = []
@@ -59,6 +64,78 @@ class Character:
             target.update()
 
 
-    def addLevel(self, charClass, hp, hitDie, favClassBonus):
-        level = Level(self, charClass, hp, hitDie, favClassBonus)
+    def addLevel(self, charClass, hp, hitDie, favClassVar, favClassBonusMenu):
+        active = True
+        if charClass != self.favClass.get():
+            active = False
+        level = Level(self, charClass, hp, hitDie, favClassVar, favClassBonusMenu, active)
+        
+        if active:
+            self.addError(level.favClassVar.get(), "Choose favorite class bonus", level.favClassBonusMenu)
+        else:
+            level.favClassBonusMenu.grid_remove()
+        
         self.levels.append(level)
+        try:
+            self.charClass[charClass] += 1
+        except:
+            self.charClass[charClass] = 1
+
+
+    def removeLevel(self, index):
+        level = self.levels.pop(index)
+        if len(self.levels) > 0:
+            self.levels[0].hpGained.set(self.levels[0].hitDie)
+
+        self.charClass[level.charClass] -= 1
+        if self.charClass[level.charClass] == 0:
+            error = self.findErrorBySource(level.charClass)
+            if error != None:
+                self.removeError(error)
+
+            del self.charClass[level.charClass]
+        
+        self.checkFavClassBonuses()
+        self.removeMods(level)
+        self.charLevel.set(self.charLevel.get() - 1)
+
+
+    def addError(self, source, message, problem):
+        problem.config(fg="red")
+        
+        for error in self.errors:
+            if error.source == source:
+                return
+
+        error = Error(source, message, self.errorFrame, problem)
+        self.errors.append(error)
+
+        return error
+
+
+    def removeError(self, error):
+        if error in self.errors:
+            try:
+                error.problem.config(fg="black")
+            except:
+                pass
+            error.label.destroy()
+            self.errors.remove(error)
+
+
+    def findErrorBySource(self, source):
+        for error in self.errors:
+            if error.source == source:
+                return error
+
+
+    def checkFavClassBonuses(self):
+        for level in self.levels:
+            if level.favClassVar.get() == "Choose Bonus":
+                return
+            else:
+                level.favClassBonusMenu.config(fg="black")
+
+        error = self.findErrorBySource("Choose Bonus")
+        if error != None:
+            self.removeError(error)

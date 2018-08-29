@@ -15,7 +15,7 @@ class ClassPage:
 		classPage = ttk.Frame(nb, relief=RIDGE, padding=10)
 		classPage.grid_columnconfigure(0, weight=1)
 		classPage.grid_columnconfigure(1, weight=1)
-		classPage.grid_columnconfigure(2, weight=1)
+		classPage.grid_columnconfigure(2, weight=5)
 		classPage.grid_rowconfigure(1, weight=1)
 		nb.add(classPage, text='Class(es)', padding=10)
 
@@ -131,7 +131,7 @@ class ClassPage:
 
 		self.purchaseModeMenu = OptionMenu(self.statFrame, self.controller.purchaseMode, *self.controller.PURCHASE_MODES)
 		self.purchaseModeMenu.grid(row=2, column=1)
-		self.purchaseModeMenu.config(font=('Helvetica', 10), highlightthickness=0)
+		self.purchaseModeMenu.config(width=25, font=('Helvetica', 10), highlightthickness=0)
 		Label(self.statFrame, text="Buy Points spent:").grid(row=3, column=0)
 		Label(self.statFrame, textvariable=self.controller.buyPoints).grid(row=3, column=1)
 
@@ -196,7 +196,7 @@ class ClassPage:
 		newFrame.grid_columnconfigure(5, weight=1)
 		
 		Label(newFrame, text=str(index + 1), width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=5, sticky="W")
-		Label(newFrame, text=self.controller.charClass.get(), font=('Helvetica', 12), width=12).grid(row=0, column=1, sticky="W")
+		Label(newFrame, text=self.controller.charClass.get(), width=15, font=('Helvetica', 12)).grid(row=0, column=1, sticky="W")
 
 		Label(newFrame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, sticky="W")
 
@@ -211,10 +211,14 @@ class ClassPage:
 			hp = StringVar(value="1")
 			Entry(newFrame, width=2, textvariable=hp, validate="key", font=('Helvetica', 12)).grid(row=0, column=3, sticky="W")
 
-		favClassBonusOption = ["+1 Hit Point", "+1 Skill Point"]
+		favoredClassOptions = ["+1 Hit Point", "+1 Skill Point"]
+		if self.char.race.get() != "Choose race":
+			special = self.controller.race_data["races"][self.char.race.get()]["favoredClassOptions"][self.controller.charClass.get()]["menuString"]
+			favoredClassOptions.append(special)
+
 		favClassBonus = StringVar(value="Choose Bonus")
-		favClassBonusMenu = OptionMenu(newFrame, favClassBonus, *favClassBonusOption)
-		favClassBonusMenu.config(width=15, font=('Helvetica', 12), highlightthickness=0)
+		favClassBonusMenu = OptionMenu(newFrame, favClassBonus, *favoredClassOptions)
+		favClassBonusMenu.config(width=35, font=('Helvetica', 12), highlightthickness=0)
 		favClassBonusMenu.grid(row=0, column=4, sticky="W")
 
 		Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.controller.removeLevel(frame)).grid(row=0, column=5, padx=5, pady=2, sticky="E")

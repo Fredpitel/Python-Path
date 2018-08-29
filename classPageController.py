@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import tkinter as tk
 
 from tkinter  import *
 
@@ -47,6 +48,7 @@ class classPageController:
         self.view        = view
         self.char        = char
         self.classFrames = []
+        self.favoredClassOptions = ["+1 Hit Point", "+1 Skill Point"]
 
         self.charName     = StringVar()
         self.buyPoints    = IntVar(value=0)
@@ -175,6 +177,11 @@ class classPageController:
             except:
                 pass
 
+        for level in self.char.levels:
+            special = data["favoredClassOptions"][level.charClass]["menuString"]
+            level.favClassBonusMenu["menu"].add_command(label=special,command=tk._setit(level.favClassVar, special))
+
+
     def updateBonusAbility(self,i,o,x):
         bonus = self.bonusAbility.get()
 
@@ -251,7 +258,7 @@ class classPageController:
 
                 classStr = current.winfo_children()[1].cget("text")
                 label = Label(current, text=self.class_data["classes"][classStr]["hitDie"], width=2, font=('Helvetica', 12))
-                label.grid(row=0, column=3, padx=20)
+                label.grid(row=0, column=3, sticky="W")
                 label.removeMe = True
 
         self.view.addLevelsButton.config(state="normal")
@@ -281,10 +288,10 @@ class classPageController:
         self.char.removeError(self.favClassError)
         for level in self.char.levels:
             if level.charClass != self.char.favClass.get():
-                level.favClassBonusMenu.grid_remove()
+                level.favClassBonusMenu.configure(state="disabled")
                 level.active.set(False)
             else:
-                level.favClassBonusMenu.grid()
+                level.favClassBonusMenu.configure(state="normal")
                 level.active.set(True)
 
         self.char.checkFavClassBonuses()

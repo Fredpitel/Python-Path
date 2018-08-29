@@ -69,7 +69,7 @@ class Character:
         self.levels.append(level)
         
         if not level.active.get():
-            level.favClassBonusMenu.grid_remove()
+            level.favClassBonusMenu.configure(state="disabled")
 
         self.checkFavClassBonuses()
 

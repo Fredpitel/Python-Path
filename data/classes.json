@@ -123,7 +123,7 @@
             "mods": []
         },
         "Rogue": {
-            "alignment"   : [""],
+            "alignment"   : [],
             "alignmentMsg": "",
             "hitDie"      : 8,
             "classSkills" : ["Acrobatics", "Appraise", "Bluff", "Climb", "Craft", "Diplomacy", "Disable Device", "Disguise", "Escape Artist", "Initmidate", "Knowledge (dungeoneering)", "Knowledge (local)", "Linguistics", "Perception", "Perform", "Profession", "Sense Motive", "Sleight of Hand", "Stealth", "Swim", "Use Magic Device"],

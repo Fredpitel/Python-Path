@@ -51,6 +51,9 @@ class Level:
             target = self.char.hp
         elif self.favClassVar.get() == "+1 Skill Point":
             target = self.char.skillPoints
+        else:
+            self.char.checkFavClassBonuses()
+            return
 
         self.char.modifiers[target]["untyped"][self] = 1
         target.update()

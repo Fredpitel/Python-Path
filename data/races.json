@@ -77,7 +77,80 @@
                     "target" : "proficiency",
                     "value"  : ["battleaxe", "heavy pick", "warhammer", "dwarven"]
                 }
-            ]
+            ],
+            "favoredClassOptions": {
+                "Barbarian": {
+                    "menuString": "+1 Rage Round",
+                    "target"    : "rageRounds",
+                    "type"      : "untyped",
+                    "value"     : 1
+                },
+                "Bard": {
+                    "menuString": "-1% Arcane Spell Failure",
+                    "target"    : "arcaneSpellFailure",
+                    "type"      : "untyped",
+                    "value"     : -1
+                },
+                "Cleric": {
+                    "menuString": "+1/2 Domain Power Use",
+                    "target"    : "choose",
+                    "type"      : "untyped",
+                    "value"     : 0.5
+                },
+                "Druid": {
+                    "menuString": "+1/2 Domain Power Use",
+                    "target"    : "choose",
+                    "type"      : "untyped",
+                    "value"     : 0.5
+                },
+                "Fighter": {
+                    "menuString": "+1 CMD vs Bull Rush and Trip",
+                    "target"    : ["cmd[bullrush]", "cmd[trip]"],
+                    "type"      : "untyped",
+                    "value"     : 1
+                },
+                "Monk": {
+                    "menuString": "-1 Object Hardness(clay,stone and metal)",
+                    "versus"    : "Objects made of clay, stone, or metal whenever the object is struck by the monk’s unarmed strike (minimum of 0)",
+                    "target"    : "",
+                    "type"      : "untyped",
+                    "value"     : -1
+                },
+                "Paladin": {
+                    "menuString": "+1 Concentration with Paladin Spells",
+                    "target"    : "concentration",
+                    "type"      : "untyped",
+                    "value"     : 1
+                },
+                "Ranger": {
+                    "menuString": "+1/2 Wild Empathy(underground)",
+                    "versus"    : "Animals and magical beasts that live underground",
+                    "target"    : "wildEmpathy",
+                    "type"      : "untyped",
+                    "value"     : 0.5
+                },
+                "Rogue": {
+                    "menuString": "+1/2 Disable Device and Trap Sense(stone)",
+                    "versus"    : "Stone traps",
+                    "target"    : ["skill[\"Disable Device\"]", "trapSense"],
+                    "type"      : "untyped",
+                    "value"     : 0.5
+                },
+                "Sorcerer": {
+                    "menuString": "+1/2 Spell Damage(acid and earth)",
+                    "versus"    : "Acid and earth spells",
+                    "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                    "type"      : "untyped",
+                    "value"     : 0.5
+                },
+                "Wizard": {
+                    "menuString": "+1/3 Caster Level(abjuration duration)",
+                    "versus"    : "Duration of wizard abjuration spells",
+                    "target"    : "casterLevel",
+                    "type"      : "untyped",
+                    "value"     : 0.34
+                }
+            }
         },
         "Elf": {
             "size": "medium",
@@ -242,10 +315,9 @@
                     "condition": "cha 11",
                     "target"   : "bonusSpellLike",
                     "frequency": "1/day",
-                    "value"    : ["dancing lights", "ghost sound", "prestidigitation", "speak with animals"],
                     "modifier" : "cha",
                     "type"     : "racial",
-                    "value"    : 2
+                    "value"    : ["dancing lights", "ghost sound", "prestidigitation", "speak with animals"]
                 },
                 {
                     "feature": "Hatred",

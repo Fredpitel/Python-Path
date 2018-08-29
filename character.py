@@ -65,17 +65,14 @@ class Character:
 
 
     def addLevel(self, charClass, hp, hitDie, favClassVar, favClassBonusMenu):
-        active = True
-        if charClass != self.favClass.get():
-            active = False
-        level = Level(self, charClass, hp, hitDie, favClassVar, favClassBonusMenu, active)
-        
-        if active:
-            self.addError(level.favClassVar.get(), "Choose favorite class bonus", level.favClassBonusMenu)
-        else:
-            level.favClassBonusMenu.grid_remove()
-        
+        level = Level(self, charClass, hp, hitDie, favClassVar, favClassBonusMenu, charClass == self.favClass.get())
         self.levels.append(level)
+        
+        if not level.active.get():
+            level.favClassBonusMenu.grid_remove()
+
+        self.checkFavClassBonuses()
+
         try:
             self.charClass[charClass] += 1
         except:
@@ -130,11 +127,23 @@ class Character:
 
 
     def checkFavClassBonuses(self):
+        stillError = False
+
+        try:
+            self.removeError(self.favClassBonusError)
+        except:
+            pass
+
         for level in self.levels:
-            if level.favClassVar.get() == "Choose Bonus":
-                return
-            else:
+            if level.favClassVar.get() == "Choose Bonus" and level.active.get():
+                level.favClassBonusMenu.config(fg="red")
+                stillError = True
+            elif level.active.get():
                 level.favClassBonusMenu.config(fg="black")
+
+        if stillError:
+            self.favClassBonusError = self.addError(level.favClassVar.get(), "Choose favorite class bonus", level.favClassBonusMenu)
+            return
 
         error = self.findErrorBySource("Choose Bonus")
         if error != None:

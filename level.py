@@ -43,15 +43,9 @@ class Level:
 
     def updateFavClassBonus(self,i,o,x):
         self.char.removeMods(self)
-
-        if not self.active.get():
+        
+        if self.favClassVar.get() == "Choose Bonus" or not self.active.get():
             return
-
-        if self.favClassVar.get() == "Choose Bonus":
-            self.char.addError(self.favClassVar.get(), "Choose favorite class bonus", self.favClassBonusMenu)
-            return
-
-        self.char.checkFavClassBonuses()
         
         if self.favClassVar.get() == "+1 Hit Point":
             target = self.char.hp
@@ -60,3 +54,5 @@ class Level:
 
         self.char.modifiers[target]["untyped"][self] = 1
         target.update()
+        
+        self.char.checkFavClassBonuses()

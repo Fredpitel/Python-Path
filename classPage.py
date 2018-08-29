@@ -13,17 +13,17 @@ class ClassPage:
 		self.controller = classPageController(self, char)
 
 		classPage = ttk.Frame(nb, relief=RIDGE, padding=10)
-		classPage.grid_rowconfigure(0, weight=1)
 		classPage.grid_columnconfigure(0, weight=1)
 		classPage.grid_columnconfigure(1, weight=1)
-		classPage.grid_columnconfigure(2, weight=50)
+		classPage.grid_columnconfigure(2, weight=1)
+		classPage.grid_rowconfigure(1, weight=1)
 		nb.add(classPage, text='Class(es)', padding=10)
 
 		#
 		# Left Frame
 		#
 		self.summaryFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
-		self.summaryFrame.grid(row=0, column=0, rowspan=2, padx=10, sticky="NEW")
+		self.summaryFrame.grid(row=0, column=0, padx=10, sticky="NEW")
 		self.summaryFrame.grid_columnconfigure(1, weight=1)
 
 		# Name
@@ -60,8 +60,9 @@ class ClassPage:
 
 		# Errors
 		self.char.errorFrame = ttk.Frame(classPage, relief=SUNKEN, padding=10)
-		self.char.errorFrame.grid(row=1, column=0, padx=10, sticky="NEW")
-		self.char.errorFrame.grid_columnconfigure(1, weight=1)
+		self.char.errorFrame.grid(row=1, column=0, padx=10, sticky="SEW")
+		self.char.errorFrame.grid_propagate(0)
+
 
 		#
 		# Center Frame
@@ -70,70 +71,76 @@ class ClassPage:
 		self.statFrame.grid(row=0, column=1, rowspan=2, padx=10, sticky="NEW")
 		self.statFrame.grid_columnconfigure(0, weight=1)
 		self.statFrame.grid_columnconfigure(1, weight=1)
-		self.statFrame.grid_columnconfigure(2, weight=1)
-		self.statFrame.grid_columnconfigure(3, weight=1)
-		self.statFrame.grid_columnconfigure(4, weight=1)
-		self.statFrame.grid_columnconfigure(5, weight=1)
 
 		# Ability Scores
-		Label(self.statFrame, text="Ability Scores").grid(row=0, column=0, columnspan=6)
+		Label(self.statFrame, text="Ability Scores").grid(row=0, column=0, columnspan=2,sticky="EW")
+
+		self.abilityFrame = ttk.Frame(self.statFrame)
+		self.abilityFrame.grid(row=1, column=0, columnspan=2, sticky="EW")
+		self.abilityFrame.grid_columnconfigure(0, weight=1)
+		self.abilityFrame.grid_columnconfigure(1, weight=1)
+		self.abilityFrame.grid_columnconfigure(2, weight=1)
+		self.abilityFrame.grid_columnconfigure(3, weight=1)
+		self.abilityFrame.grid_columnconfigure(4, weight=1)
+		self.abilityFrame.grid_columnconfigure(5, weight=1)
 
 		# STRENGTH
-		Label(self.statFrame, textvariable=self.controller.strBonusStr, relief=SUNKEN).grid(row=1, column=0, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.str.value, bg="white", width=2).grid(row=2, column=0, sticky="E", padx=5)
-		self.strButtons = ttk.Frame(self.statFrame)
-		self.strButtons.grid(row=2, column=1, sticky="W")
+		Label(self.abilityFrame, textvariable=self.controller.strBonusStr, relief=SUNKEN).grid(row=0, column=0, columnspan=2, pady=10)
+		Label(self.abilityFrame, textvariable=self.char.str.value, bg="white", width=2).grid(row=1, column=0, sticky="E", padx=5)
+		self.strButtons = ttk.Frame(self.abilityFrame)
+		self.strButtons.grid(row=1, column=1, sticky="W")
 		self.createStatsButtons(self.strButtons, "str")
 
 		# DEXTERITY
-		Label(self.statFrame, textvariable=self.controller.dexBonusStr, relief=SUNKEN).grid(row=1, column=2, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.dex.value, bg="white", width=2).grid(row=2, column=2, sticky="E", padx=5)
-		self.dexButtons = ttk.Frame(self.statFrame)
-		self.dexButtons.grid(row=2, column=3, sticky="W")
+		Label(self.abilityFrame, textvariable=self.controller.dexBonusStr, relief=SUNKEN).grid(row=0, column=2, columnspan=2, pady=10)
+		Label(self.abilityFrame, textvariable=self.char.dex.value, bg="white", width=2).grid(row=1, column=2, sticky="E", padx=5)
+		self.dexButtons = ttk.Frame(self.abilityFrame)
+		self.dexButtons.grid(row=1, column=3, sticky="W")
 		self.createStatsButtons(self.dexButtons, "dex")
 
 		# CONSTITUTION
-		Label(self.statFrame, textvariable=self.controller.conBonusStr, relief=SUNKEN).grid(row=1, column=4, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.con.value, bg="white", width=2).grid(row=2, column=4, sticky="E", padx=5)
-		self.conButtons = ttk.Frame(self.statFrame)
-		self.conButtons.grid(row=2, column=5, sticky="W")
+		Label(self.abilityFrame, textvariable=self.controller.conBonusStr, relief=SUNKEN).grid(row=0, column=4, columnspan=2, pady=10)
+		Label(self.abilityFrame, textvariable=self.char.con.value, bg="white", width=2).grid(row=1, column=4, sticky="E", padx=5)
+		self.conButtons = ttk.Frame(self.abilityFrame)
+		self.conButtons.grid(row=1, column=5, sticky="W")
 		self.createStatsButtons(self.conButtons, "con")
 		
 		# INTELLIGENCE
-		Label(self.statFrame, textvariable=self.controller.intBonusStr, relief=SUNKEN).grid(row=3, column=0, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.int.value, bg="white", width=2).grid(row=4, column=0, sticky="E", padx=5)
-		self.intButtons = ttk.Frame(self.statFrame)
-		self.intButtons.grid(row=4, column=1, sticky="W")
+		Label(self.abilityFrame, textvariable=self.controller.intBonusStr, relief=SUNKEN).grid(row=2, column=0, columnspan=2, pady=10)
+		Label(self.abilityFrame, textvariable=self.char.int.value, bg="white", width=2).grid(row=3, column=0, sticky="E", padx=5)
+		self.intButtons = ttk.Frame(self.abilityFrame)
+		self.intButtons.grid(row=3, column=1, sticky="W")
 		self.createStatsButtons(self.intButtons, "int")
 
 		# WISDOM
-		Label(self.statFrame, textvariable=self.controller.wisBonusStr, relief=SUNKEN).grid(row=3, column=2, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.wis.value, bg="white", width=2).grid(row=4, column=2, sticky="E", padx=5)
-		self.wisButtons = ttk.Frame(self.statFrame)
-		self.wisButtons.grid(row=4, column=3, sticky="W")
+		Label(self.abilityFrame, textvariable=self.controller.wisBonusStr, relief=SUNKEN).grid(row=2, column=2, columnspan=2, pady=10)
+		Label(self.abilityFrame, textvariable=self.char.wis.value, bg="white", width=2).grid(row=3, column=2, sticky="E", padx=5)
+		self.wisButtons = ttk.Frame(self.abilityFrame)
+		self.wisButtons.grid(row=3, column=3, sticky="W")
 		self.createStatsButtons(self.wisButtons, "wis")
 
 		# CHARISMA
-		Label(self.statFrame, textvariable=self.controller.chaBonusStr, relief=SUNKEN).grid(row=3, column=4, columnspan=2, pady=10)
-		Label(self.statFrame, textvariable=self.char.cha.value, bg="white", width=2).grid(row=4, column=4, sticky="E", padx=5)
-		self.chaButtons = ttk.Frame(self.statFrame)
-		self.chaButtons.grid(row=4, column=5, sticky="W")
+		Label(self.abilityFrame, textvariable=self.controller.chaBonusStr, relief=SUNKEN).grid(row=2, column=4, columnspan=2, pady=10)
+		Label(self.abilityFrame, textvariable=self.char.cha.value, bg="white", width=2).grid(row=3, column=4, sticky="E", padx=5)
+		self.chaButtons = ttk.Frame(self.abilityFrame)
+		self.chaButtons.grid(row=3, column=5, sticky="W")
 		self.createStatsButtons(self.chaButtons, "cha")
 
 		# BUY POINTS
-		Label(self.statFrame, text="Purchase Mode:").grid(row=5, column=0, columnspan=3, pady=20)
+		Label(self.statFrame, text="Purchase Mode:").grid(row=2, column=0, pady=20)
 
 		self.purchaseModeMenu = OptionMenu(self.statFrame, self.controller.purchaseMode, *self.controller.PURCHASE_MODES)
-		self.purchaseModeMenu.grid(row=5, column=3, columnspan=3)
+		self.purchaseModeMenu.grid(row=2, column=1)
 		self.purchaseModeMenu.config(font=('Helvetica', 10), highlightthickness=0)
-		Label(self.statFrame, text="Buy Points spent:").grid(row=6, column=0, columnspan=3)
-		Label(self.statFrame, textvariable=self.controller.buyPoints).grid(row=6, column=3, columnspan=3)
+		Label(self.statFrame, text="Buy Points spent:").grid(row=3, column=0)
+		Label(self.statFrame, textvariable=self.controller.buyPoints).grid(row=3, column=1)
 
+		
 		#
 		# Right Frame
 		#
-		self.classFrame = ttk.Frame(classPage, relief=RAISED, padding=10,)
-		self.classFrame.grid(row=0, column=2, padx=10, sticky="NEW")
+		self.classFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
+		self.classFrame.grid(row=0, column=2, rowspan=2, padx=10, sticky="NEW")
 		self.classFrame.grid_columnconfigure(1, weight=1)
 		
 		# Class
@@ -157,11 +164,11 @@ class ClassPage:
 		self.addLevelsButton.grid(row=0, column=2, padx=5, sticky="W")
 
 		self.charClassFrame = ttk.Frame(self.classFrame)
-		self.charClassFrame.grid(row=2, column=0, columnspan=2)
+		self.charClassFrame.grid(row=2, column=0, columnspan=2, sticky="NEW")
 
 		# Total HP
 		self.hpFrame = ttk.Frame(classPage, relief=RAISED, padding=10)
-		self.hpFrame.grid(row=1, column=2, padx=10, sticky="NEW")
+		self.hpFrame.grid(row=1, column=2, padx=10, sticky="SEW")
 		self.hpFrame.grid_columnconfigure(1, weight=1)
 
 		Label(self.hpFrame, text="Hit Point(s):").grid(row=1, column=0)
@@ -181,31 +188,36 @@ class ClassPage:
 	def createLevelFrame(self, index):
 		newFrame = ttk.Frame(self.charClassFrame, relief=SUNKEN)
 		newFrame.pack(fill="x")
+		newFrame.grid_columnconfigure(0, weight=1)
+		newFrame.grid_columnconfigure(1, weight=1)
+		newFrame.grid_columnconfigure(2, weight=1)
+		newFrame.grid_columnconfigure(3, weight=1)
+		newFrame.grid_columnconfigure(4, weight=1)
 		newFrame.grid_columnconfigure(5, weight=1)
 		
-		Label(newFrame, text=str(index + 1), width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=20)
-		Label(newFrame, text=self.controller.charClass.get(), font=('Helvetica', 12), width=12).grid(row=0, column=1, padx=20)
+		Label(newFrame, text=str(index + 1), width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=5, sticky="W")
+		Label(newFrame, text=self.controller.charClass.get(), font=('Helvetica', 12), width=12).grid(row=0, column=1, sticky="W")
 
-		Label(newFrame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2)
+		Label(newFrame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, sticky="W")
 
 		hitDie = self.controller.class_data["classes"][self.controller.charClass.get()]["hitDie"]
 		if index == 0:
 			hp = StringVar(value=str(hitDie))
 			label = Label(newFrame, textvariable=hp, width=2, font=('Helvetica', 12))
-			label.grid(row=0, column=3, padx=20)
+			label.grid(row=0, column=3, sticky="W")
 			label.removeMe = True
 		
 		else:
 			hp = StringVar(value="1")
-			Entry(newFrame, width=2, textvariable=hp, validate="key", font=('Helvetica', 12)).grid(row=0, column=3, padx=20)
+			Entry(newFrame, width=2, textvariable=hp, validate="key", font=('Helvetica', 12)).grid(row=0, column=3, sticky="W")
 
 		favClassBonusOption = ["+1 Hit Point", "+1 Skill Point"]
 		favClassBonus = StringVar(value="Choose Bonus")
 		favClassBonusMenu = OptionMenu(newFrame, favClassBonus, *favClassBonusOption)
 		favClassBonusMenu.config(width=15, font=('Helvetica', 12), highlightthickness=0)
-		favClassBonusMenu.grid(row=0, column=4)
+		favClassBonusMenu.grid(row=0, column=4, sticky="W")
 
-		Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.controller.removeLevel(frame)).grid(row=0, column=5,pady=2, padx=20, sticky="E")
+		Button(newFrame, text="×", fg="red", font=('Helvetica', 12), relief=FLAT, command=lambda frame=newFrame:self.controller.removeLevel(frame)).grid(row=0, column=5, padx=5, pady=2, sticky="E")
 
 		self.char.addLevel(self.controller.charClass.get(), hp, hitDie, favClassBonus, favClassBonusMenu)
 

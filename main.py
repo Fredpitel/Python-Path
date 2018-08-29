@@ -11,7 +11,7 @@ def init():
     root.title("Character Sheet")
     root.option_add("*Font", "helvetica 14")
 
-    nb = ttk.Notebook(root)
+    nb        = ttk.Notebook(root)
     char      = Character()
     classPage = ClassPage(nb, char)
     statsPage = StatsPage(nb, char)

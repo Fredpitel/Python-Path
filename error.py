@@ -1,4 +1,4 @@
-from tkinter  import *
+from tkinter import *
 
 class Error:
     def __init__(self, source, message, parent, problem):

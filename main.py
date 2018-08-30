@@ -1,20 +1,22 @@
 import ttk
 import tkinter as tk
 
-from tkinter   import *
-from classPage import ClassPage
-from statsPage import StatsPage
-from character import Character
+from CreationPage import *
+from statsPage    import *
+from character    import *
 
 def init():
     root = tk.Tk()
     root.title("Character Sheet")
     root.option_add("*Font", "helvetica 14")
 
-    nb        = ttk.Notebook(root)
-    char      = Character()
-    classPage = ClassPage(nb, char)
-    statsPage = StatsPage(nb, char)
+    nb   = ttk.Notebook(root)
+    char = Character()
+
+    creationPageController = CreationPageController(char, nb)
+    nb.add(creationPageController.view.creationPage, text='Character Creation', padding=10)
+
+    statsPage           = StatsPage(nb, char)
 
     nb.pack(expand=1, fill="both")
 

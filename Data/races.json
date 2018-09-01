@@ -1,0 +1,555 @@
+{
+    "Dwarf": {
+        "size": "medium",
+        "type": "humanoid",
+        "subtype": ["dwarf"],
+        "vision": "Darkvision 60 ft.",
+        "speed": 20,
+        "languages": ["Common", "Dwarven"],
+        "mods": [
+            {
+                "target": "con",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "wis",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "cha",
+                "type"  : "racial",
+                "value" : -2
+            }
+        ],
+        "features": [
+            {
+                "feature": "Slow and Steady",
+                "target" : "encumbrance",
+                "value"  : 0
+            },
+            {
+                "feature": "Defensive Training",
+                "target" : "ac",
+                "versus" : ["giants"],
+                "type"   : "dodge",
+                "value"  : 4
+            },
+            {
+                "feature": "Hardy",
+                "target" : "savingThrows",
+                "versus" : ["poison", "spellLike"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Stability",
+                "target" : "cmd",
+                "versus" : ["bullRush", "trip"],
+                "type"   : "racial",
+                "value"  : 4
+            },
+            {
+                "feature": "Greed",
+                "target" : "skill[\"Appraise\"]",
+                "versus" : ["non-magical goods that contain precious metals or gemstones"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Stonecunning",
+                "target" : "skill[\"Perception\"]",
+                "versus" : ["notice unusual stonework, such as traps and hidden doors located in stone walls or floors within 10 feet."],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Hatred",
+                "target" : "attack",
+                "versus" : ["humanoid(orc)", "humanoid(globlinoid)"],
+                "type"   : "racial",
+                "value"  : 1
+            },
+            {
+                "feature": "Weapon Familiarity",
+                "target" : "proficiency",
+                "value"  : ["battleaxe", "heavy pick", "warhammer", "dwarven"]
+            }
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1 Rage Round",
+                "target"    : "rageRounds",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Bard": {
+                "menuString": "-1% Arcane Spell Failure",
+                "target"    : "arcaneSpellFailure",
+                "type"      : "untyped",
+                "value"     : -1
+            },
+            "Cleric": {
+                "menuString": "+1/2 Domain Power Use",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Druid": {
+                "menuString": "+1/2 Domain Power Use",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Fighter": {
+                "menuString": "+1 CMD vs Bull Rush and Trip",
+                "target"    : ["cmd[bullrush]", "cmd[trip]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "-1 Object Hardness(clay,stone and metal)",
+                "versus"    : "Objects made of clay, stone, or metal whenever the object is struck by the monk’s unarmed strike (minimum of 0)",
+                "target"    : "",
+                "type"      : "untyped",
+                "value"     : -1
+            },
+            "Paladin": {
+                "menuString": "+1 Concentration with Paladin Spells",
+                "target"    : "concentration",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Ranger": {
+                "menuString": "+1/2 Wild Empathy(underground)",
+                "versus"    : "Animals and magical beasts that live underground",
+                "target"    : "wildEmpathy",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Rogue": {
+                "menuString": "+1/2 Disable Device and Trap Sense(stone)",
+                "versus"    : "Stone traps",
+                "target"    : ["skill[\"Disable Device\"]", "trapSense"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Sorcerer": {
+                "menuString": "+1/2 Spell Damage(acid and earth)",
+                "versus"    : "Acid and earth spells",
+                "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Wizard": {
+                "menuString": "+1/3 Caster Level(abjuration duration)",
+                "versus"    : "Duration of wizard abjuration spells",
+                "target"    : "casterLevel",
+                "type"      : "untyped",
+                "value"     : 0.34
+            }
+        }
+    },
+    "Elf": {
+        "size": "medium",
+        "type": "humanoid",
+        "subtype": ["elf"],
+        "vision": "Low-light vision",
+        "speed": 30,
+        "languages": ["Common", "Elven"],
+        "mods": [
+            {
+                "target": "dex",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "con",
+                "type"  : "racial",
+                "value" : -2
+            },
+            {
+                "target": "int",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "skill[\"Perception\"]",
+                "type"  : "racial",
+                "value" : 2
+            }
+        ],
+        "features": [
+            {
+                "feature": "Elven Immunities",
+                "target" : "immunity",
+                "value"  : "sleep"
+            },
+            {
+                "feature": "Elven Immunities",
+                "target" : "savingThrows",
+                "versus" : ["enchantment"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Keen Senses",
+                "target" : "skill[\"Perception\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Elven Magic",
+                "target" : "casterLevel",
+                "versus" : ["oversome spell resistance"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Elven Magic",
+                "target" : "skill[\"Spellcraft\"]",
+                "versus" : ["identify the properties of magic items"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Weapon Familiarity",
+                "target" : "proficiency",
+                "value"  : ["longbow", "composite longbow", "longsword", "rapier", "shortbow", "composite shortbow", "elven"]
+            }
+        ]
+    },
+    "Gnome": {
+        "size": "small",
+        "type": "humanoid",
+        "subtype": ["gnome"],
+        "vision": "Low-light vision",
+        "speed": 20,
+        "languages": ["Common", "Gnome", "Sylvan"],
+        "mods": [
+            {
+                "target": "str",
+                "type"  : "racial",
+                "value" : -2
+            },
+            {
+                "target": "con",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "cha",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "ac",
+                "type"  : "size",
+                "value" : 1
+            },
+            {
+                "target": "attack",
+                "type"  : "size",
+                "value" : 1
+            },
+            {
+                "target": "cmb",
+                "type"  : "size",
+                "value" : -1
+            },
+            {
+                "target": "cmd",
+                "type"  : "size",
+                "value" : -1
+            },
+            {
+                "target": "skill[\"Stealth\"]",
+                "type"  : "size",
+                "value" : 4
+            },
+            {
+                "target": "skill[\"Perception\"]",
+                "type"  : "racial",
+                "value" : 2
+            }
+        ],
+        "features": [
+            {
+                "feature": "Defensive Training",
+                "target" : "ac",
+                "versus" : ["giants"],
+                "type"   : "dodge",
+                "value"  : 4
+            },
+            {
+                "feature": "Illusion Resistance",
+                "target" : "savingThrows",
+                "versus" : ["illusion spell and effects"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Keen Senses",
+                "target" : "skill[\"Perception\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Obsessive",
+                "choose" : 1,
+                "choices": ["skill[\"Craft\"]", "skill[\"Profession\"]"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Gnome Magic",
+                "target" : "dc",
+                "versus" : ["illusion"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature"  : "Gnome Magic",
+                "condition": "cha 11",
+                "target"   : "bonusSpellLike",
+                "frequency": "1/day",
+                "modifier" : "cha",
+                "type"     : "racial",
+                "value"    : ["dancing lights", "ghost sound", "prestidigitation", "speak with animals"]
+            },
+            {
+                "feature": "Hatred",
+                "target" : "attack",
+                "versus" : ["humanoid(reptilian)", "humanoid(globlinoid)"],
+                "type"   : "racial",
+                "value"  : 1
+            },
+            {
+                "feature": "Weapon Familiarity",
+                "target" : "proficiency",
+                "value"  : ["gnome"]
+            }
+
+        ]
+    },
+    "Half-Elf": {
+        "size": "medium",
+        "type": "humanoid",
+        "subtype": ["elf","human"],
+        "vision": "Low-light vision",
+        "speed": 30,
+        "languages": ["Common", "Elven"],
+        "mods": [
+            {
+                "target": "skill[\"Perception\"]",
+                "type"  : "racial",
+                "value" : 2
+            }
+        ],
+        "features": [
+            {
+                "feature": "Elven Immunities",
+                "target" : "immunity",
+                "value"  : "sleep"
+            },
+            {
+                "feature": "Elven Immunities",
+                "target" : "savingThrows",
+                "versus" : ["enchantment"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Adaptability",
+                "target" : "bonusFeat",
+                "choose" : 1,
+                "choices": ["Skill Focus"],
+                "value"  : 1
+            },
+            {
+                "feature": "Keen Senses",
+                "target" : "skill[\"Perception\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Elf Blood",
+                "target" : "race",
+                "value"  : ["Elf", "Human"]
+            },
+            {
+                "feature": "Multitalented",
+                "target" : "favoredClassNb",
+                "type"   : "racial",
+                "value"  : 1
+            }
+        ]
+    },
+    "Halfling": {
+        "size": "small",
+        "type": "humanoid",
+        "subtype": ["halfling"],
+        "vision": "",
+        "speed": 20,
+        "languages": ["Common", "Halfling"],
+        "mods": [
+            {
+                "target": "str",
+                "type"  : "racial",
+                "value" : -2
+            },
+            {
+                "target": "dex",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "cha",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "ac",
+                "type"  : "size",
+                "value" : 1
+            },
+            {
+                "target": "attack",
+                "type"  : "size",
+                "value" : 1
+            },
+            {
+                "target": "cmb",
+                "type"  : "size",
+                "value" : -1
+            },
+            {
+                "target": "cmd",
+                "type"  : "size",
+                "value" : -1
+            },
+            {
+                "target": "skill[\"Stealth\"]",
+                "type"  : "size",
+                "value" : 4
+            },
+            {
+                "target": "skill[\"Perception\"]",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "skill[\"Acrobatics\"]",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "skill[\"Climb\"]",
+                "type"  : "racial",
+                "value" : 2
+            },
+            {
+                "target": "savingThrows",
+                "type"  : "racial",
+                "value" : 1
+            }
+        ],
+        "features": [
+            {
+                "feature": "Fearless",
+                "target" : "savingThrows",
+                "versus" : ["fear"],
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Halfling Luck",
+                "target" : "savingThrows",
+                "type"   : "racial",
+                "value"  : 1
+            },
+            {
+                "feature": "Keen Senses",
+                "target" : "skill[\"Perception\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Sure-Footed",
+                "target" : "skill[\"Acrobatics\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Sure-Footed",
+                "target" : "skill[\"Climb\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Weapon Familiarity",
+                "target" : "proficiency",
+                "value"  : ["halfling"]
+            }
+
+        ]
+    },
+    "Half-Orc": {
+        "size": "medium",
+        "type": "humanoid",
+        "subtype": ["human", "orc"],
+        "vision": "Darkvision",
+        "speed": 30,
+        "languages": ["Common", "Orc"],
+        "mods": [
+            {
+                "target": "skill[\"Intimidate\"]",
+                "type"  : "racial",
+                "value" : 2
+            }
+        ],
+        "features": [
+            {
+                "feature": "Intimidating",
+                "target" : "skill[\"Intimidate\"]",
+                "type"   : "racial",
+                "value"  : 2
+            },
+            {
+                "feature": "Orc Blood",
+                "target" : "race",
+                "value"  : ["Human", "Orc"]
+            },
+            {
+                "feature": "Orc Ferocity",
+                "target" : "bonusAbility",
+                "value"  : "Ferocity"
+            },
+            {
+                "feature": "Weapon Familiarity",
+                "target" : "proficiency",
+                "value"  : ["greataxe", "falchion", "orc"]
+            }
+        ]
+    },
+    "Human": {
+        "size": "medium",
+        "type": "humanoid",
+        "subtype": ["human"],
+        "vision": "",
+        "speed": 30,
+        "languages": ["Common"],
+        "mods": [],
+        "features": [
+            {
+                "feature": "bonusFeat",
+                "value": 1
+            },
+            {
+                "feature": "bonusBaseSkillPoints",
+                "value": 1
+            }
+        ]
+    }
+}

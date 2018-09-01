@@ -1,28 +1,27 @@
-import ttk
 import csv
+import Tkinter as  tk
 
-from tkinter     import *
-from nestledDict import *
-from Modifiable  import *
-from level       import *
-from error       import *
+from Model.error      import Error
+from Model.skillTree  import SkillTree
+from Modifiable       import *
+from Util.nestledDict import NestledDict
 
-class Character:
+class Character():
     BASE_ABILITY_VALUE = 10
     BASE_AC_VALUE      = 10
     MAX_LEVEL          = 20
     ABILITY_SHORT      = ["str","dex","con","int","wis","cha"]
     STACKABLE_TYPES    = ["dodge", "untyped"]
 
-    def __init__(self):
-        self.charName     = StringVar()
+    def __init__(self, mainApp):
+        self.charName     = tk.StringVar()
         self.modifiers    = NestledDict()
-        self.charLevel    = IntVar(value=0)
+        self.charLevel    = tk.IntVar(value=0)
         self.levels       = []
         self.charClass    = {}
-        self.race         = StringVar(value="Choose race")
-        self.alignment    = StringVar(value="Choose alignment")#
-        self.hpFromLevels = IntVar(value=0)
+        self.race         = tk.StringVar(value="Choose race")
+        self.alignment    = tk.StringVar(value="Choose alignment")#
+        self.hpFromLevels = tk.IntVar(value=0)
 
         # Modifiables
         self.str = AbilityScore(self,self.BASE_ABILITY_VALUE,"STRENGTH","str") 

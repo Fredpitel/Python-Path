@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import Tkinter as  tk
 import json
-import tkinter as tk
+import os
 
-from tkinter      import *
-from creationPage import *
-from error        import *
-from levelFrame   import *
+from creationPage import CreationPage
+from Model.error  import Error
+from levelFrame   import LevelFrame
 
-class CreationPageController:
+class CreationPageController():
     POINT_BUY_CHART = {
         7: -4,
         8: -2,
@@ -46,8 +46,8 @@ class CreationPageController:
     RACES = []
     CLASSES = []
 
-    def __init__(self, char, nb):
-        self.char         = char
+    def __init__(self, mainApp):
+        self.char         = mainApp.char
         self.levelFrames  = []
         self.errors       = []
 
@@ -57,28 +57,29 @@ class CreationPageController:
         self.alignment    = self.char.alignment
 
         # ClassPage specific variables
-        self.buyPoints    = IntVar(value=0)
-        self.maxBuyPoints = IntVar(value=15)
-        self.purchaseMode = StringVar(value="Standard Fantasy (15 points)")
-        self.bonusAbility = StringVar(value="Choose ability bonus")
-        self.strBonusStr  = StringVar(value="STR (+0)")
-        self.dexBonusStr  = StringVar(value="DEX (+0)")
-        self.conBonusStr  = StringVar(value="CON (+0)")
-        self.intBonusStr  = StringVar(value="INT (+0)")
-        self.wisBonusStr  = StringVar(value="WIS (+0)")
-        self.chaBonusStr  = StringVar(value="CHA (+0)")
-        self.charClass    = StringVar(value="Choose class")
-        self.favClass     = StringVar(value="Choose favorite class")
-        self.levelNb      = IntVar(value=1)
+        self.buyPoints    = tk.IntVar(value=0)
+        self.maxBuyPoints = tk.IntVar(value=15)
+        self.purchaseMode = tk.StringVar(value="Standard Fantasy (15 points)")
+        self.bonusAbility = tk.StringVar(value="Choose ability bonus")
+        self.strBonusStr  = tk.StringVar(value="STR (+0)")
+        self.dexBonusStr  = tk.StringVar(value="DEX (+0)")
+        self.conBonusStr  = tk.StringVar(value="CON (+0)")
+        self.intBonusStr  = tk.StringVar(value="INT (+0)")
+        self.wisBonusStr  = tk.StringVar(value="WIS (+0)")
+        self.chaBonusStr  = tk.StringVar(value="CHA (+0)")
+        self.charClass    = tk.StringVar(value="Choose class")
+        self.favClass     = tk.StringVar(value="Choose favorite class")
+        self.levelNb      = tk.IntVar(value=1)
 
         # Data
-        self.race_data = json.load(open("Data/races.json"))
+        self.race_data = json.load(open(os.path.abspath("Data/races.json")))
         for race in self.race_data:
             self.RACES.append(race)
 
         self.RACES.sort()
 
-        self.class_data = json.load(open("Data/classes.json"))
+
+        self.class_data = json.load(open(os.path.abspath("Data/classes.json")))
         for className in self.class_data:
             self.CLASSES.append(className)
 
@@ -103,7 +104,7 @@ class CreationPageController:
         self.favClass.trace(      "w", self.updateFavClass)
 
         # View
-        self.view = CreationPage(self, nb)
+        self.view = CreationPage(self, mainApp.nb)
 
         # Initial errors
         self.raceError     = self.addError(self.race, "Choose a race", self.view.racesMenu)

@@ -1,4 +1,4 @@
-from skill import Skill
+from Modifiable import Skill
 
 class SkillTree:
     def __init__(self, char):
@@ -45,9 +45,10 @@ class SkillTree:
             "Stealth"                   : Skill(char, 0, True,  True,  "dex"),
             "Survival"                  : Skill(char, 0, True,  False, "wis"),
             "Swim"                      : Skill(char, 0, True,  True,  "str"),
-            "Use Magic Device"          : Skill(char, 0, False, False, "cha")
+            "Use Magic Device"          : Skill(char,0, False, False, "cha")
         }
 
 
     def __getitem__(self, skill):
-        return self.tree[skill]
+        return self.tree[skill].value
+

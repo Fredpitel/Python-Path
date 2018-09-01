@@ -1,12 +1,13 @@
-from tkinter import *
-from decimal import *
+import Tkinter as tk
 
-class Modifiable:
+from decimal import Decimal
+
+class Modifiable():
 	def __init__(self, char, baseValue):
 		self.char      = char
-		self.baseValue = IntVar(value=baseValue)
-		self.value     = IntVar(value=baseValue)
-		self.modValue  = IntVar(value=0)
+		self.baseValue = tk.IntVar(value=baseValue)
+		self.value     = tk.IntVar(value=baseValue)
+		self.modValue  = tk.IntVar(value=0)
 
 
 	def update(self):

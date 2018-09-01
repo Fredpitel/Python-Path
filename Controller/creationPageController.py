@@ -5,9 +5,9 @@ import Tkinter as  tk
 import json
 import os
 
-from creationPage import CreationPage
-from Model.error  import Error
-from levelFrame   import LevelFrame
+from View.creationPage import CreationPage
+from View.levelFrame   import LevelFrame
+from Model.error       import Error
 
 class CreationPageController():
     POINT_BUY_CHART = {
@@ -110,6 +110,10 @@ class CreationPageController():
         self.raceError     = self.addError(self.race, "Choose a race", self.view.racesMenu)
         self.buyPointError = self.addError(self.buyPoints, "Buy points remain to be spent", self.view.purchaseModeMenu)
         self.classError    = self.addError(self.charClass, "Choose a class", self.view.classMenu)
+
+
+    def getView(self):
+        return self.view.creationPage
 
 
     def getModifiableValue(self, modifiable):

@@ -1,9 +1,9 @@
 import ttk
 import Tkinter as tk
 
-from CreationPage.creationPageController import CreationPageController
-from Model.character                     import Character
-#from sheetPage                           import SheetPage
+from Controller import *
+from Model.character        import Character
+#from sheetPage             import SheetPage
 
 class Application(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -13,7 +13,7 @@ class Application(tk.Frame):
         self.char = Character(self)
 
         self.creationPageController = CreationPageController(self)
-        self.nb.add(self.creationPageController.view.creationPage, text='Character Creation', padding=10)
+        self.nb.add(self.creationPageController.getView(), text='Character Creation', padding=10)
 
         #self.sheetPage           = SheetPage(nb, char)
 

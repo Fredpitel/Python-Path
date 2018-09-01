@@ -1,9 +1,10 @@
 import csv
 import Tkinter as  tk
 
+
+from Modifiable       import *
 from Model.error      import Error
 from Model.skillTree  import SkillTree
-from Modifiable       import *
 from Util.nestledDict import NestledDict
 
 class Character():

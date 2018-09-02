@@ -8,11 +8,12 @@ class CreationPage():
 	def __init__(self, controller, parent):
 		self.controller = controller
 
-		self.creationPage = ttk.Frame(parent, relief=tk.RIDGE, padding=10)
+		self.creationPage = ttk.Frame(parent, relief=tk.SUNKEN, padding=10)
 		self.creationPage.grid_columnconfigure(0, weight=1)
 		self.creationPage.grid_columnconfigure(1, weight=1)
 		self.creationPage.grid_columnconfigure(2, weight=5)
 		self.creationPage.grid_rowconfigure(1, weight=1)
+		self.creationPage.grid(row=0, column=0, padx=10, sticky="NSEW")
 
 		#
 		# Left Frame
@@ -54,11 +55,6 @@ class CreationPage():
 		self.favClassMenu.grid(row=4, column=1, columnspan=3)
 		self.favClassMenu.config(font=('Helvetica', 10), highlightthickness=0)
 		self.favClassMenu.grid_remove()
-
-		# Errors
-		self.controller.errorFrame = ttk.Frame(self.creationPage, relief=tk.SUNKEN, padding=10)
-		self.controller.errorFrame.grid(row=1, column=0, padx=10, sticky="SEW")
-		self.controller.errorFrame.grid_propagate(0)
 
 
 		#
@@ -130,7 +126,8 @@ class CreationPage():
 		self.purchaseModeMenu.grid(row=2, column=1)
 		self.purchaseModeMenu.config(width=25, font=('Helvetica', 10), highlightthickness=0)
 		tk.Label(self.statFrame, text="Buy Points spent:").grid(row=3, column=0)
-		tk.Label(self.statFrame, textvariable=self.controller.buyPoints).grid(row=3, column=1)
+		self.buyPointsLabel = tk.Label(self.statFrame, textvariable=self.controller.buyPoints)
+		self.buyPointsLabel.grid(row=3, column=1)
 
 		
 		#

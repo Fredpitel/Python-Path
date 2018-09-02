@@ -50,5 +50,4 @@ class SkillTree:
 
 
     def __getitem__(self, skill):
-        return self.tree[skill].value
-
+        return self.tree[skill]

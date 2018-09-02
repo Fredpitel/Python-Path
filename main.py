@@ -1,30 +1,42 @@
 import ttk
 import Tkinter as tk
 
-from Controller import *
-from Model.character        import Character
-#from sheetPage             import SheetPage
+from Controller.characterController import CharacterController
 
 class Application(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
 
-        self.nb   = ttk.Notebook(root)
-        self.char = Character(self)
+        menubar = tk.Menu(root)
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="New Character", command=self.createNewCharacter)
+        filemenu.add_command(label="Open File")
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=root.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+        root.config(menu=menubar)
 
-        self.creationPageController = CreationPageController(self)
-        self.nb.add(self.creationPageController.getView(), text='Character Creation', padding=10)
+        self.nb = ttk.Notebook(root)
 
-        #self.sheetPage           = SheetPage(nb, char)
+        self.createNewCharacter()
+        self.nb.pack(expand=True, fill="both")
 
-        self.nb.pack(expand=1, fill="both")
+
+    def createNewCharacter(self):
+        controller = CharacterController(self.nb)
+        controller.char.charName.trace("w", lambda i,o,x, name=controller.char.charName: self.changeTabText(name))
+        self.nb.add(controller.view, text="New Character", padding=5)
+
+
+    def changeTabText(self, name):
+        self.nb.tab(self.nb.select(), text=name.get())
 
 
 if __name__ == "__main__":
     root = tk.Tk()
+    root.attributes("-fullscreen", True)
     root.title("Character Sheet")
     root.option_add("*Font", "helvetica 14")
-    root.geometry(str(root.winfo_screenwidth()) + "x" + str(root.winfo_screenheight()))
 
-    Application(root).pack(side="top", fill="both", expand=True)
+    Application(root).grid(row=0, column=0, sticky="NSEW")
     root.mainloop()

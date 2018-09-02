@@ -14,14 +14,14 @@ class Character():
     ABILITY_SHORT      = ["str","dex","con","int","wis","cha"]
     STACKABLE_TYPES    = ["dodge", "untyped"]
 
-    def __init__(self, mainApp):
+    def __init__(self, controller):
         self.charName     = tk.StringVar()
         self.modifiers    = NestledDict()
         self.charLevel    = tk.IntVar(value=0)
         self.levels       = []
         self.charClass    = {}
         self.race         = tk.StringVar(value="Choose race")
-        self.alignment    = tk.StringVar(value="Choose alignment")#
+        self.alignment    = tk.StringVar(value="Choose alignment")
         self.hpFromLevels = tk.IntVar(value=0)
 
         # Modifiables
@@ -42,7 +42,8 @@ class Character():
         self.hp           = HP(self,0)
 
 
-    def addMod(self, target, type, source, value):
+    def addMod(self, targetName, type, source, value):
+        target = self.getTarget(targetName)
         self.modifiers[target][type][source] = value
         target.update()
 
@@ -65,3 +66,11 @@ class Character():
 
         for target in targetsToUpdate:
             target.update()
+
+
+    def getTarget(self, targetName):
+        try:
+            return getattr(self, targetName)
+        except AttributeError:
+            skill = targetName.split('"')[1]
+            return self.skill[skill]

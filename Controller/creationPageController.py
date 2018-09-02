@@ -46,8 +46,9 @@ class CreationPageController():
     RACES = []
     CLASSES = []
 
-    def __init__(self, mainApp):
-        self.char         = mainApp.char
+    def __init__(self, controller):
+        self.controller   = controller
+        self.char         = controller.char
         self.levelFrames  = []
         self.errors       = []
 
@@ -56,7 +57,7 @@ class CreationPageController():
         self.race         = self.char.race
         self.alignment    = self.char.alignment
 
-        # ClassPage specific variables
+        # CreationPage specific variables
         self.buyPoints    = tk.IntVar(value=0)
         self.maxBuyPoints = tk.IntVar(value=15)
         self.purchaseMode = tk.StringVar(value="Standard Fantasy (15 points)")
@@ -77,7 +78,6 @@ class CreationPageController():
             self.RACES.append(race)
 
         self.RACES.sort()
-
 
         self.class_data = json.load(open(os.path.abspath("Data/classes.json")))
         for className in self.class_data:
@@ -104,12 +104,7 @@ class CreationPageController():
         self.favClass.trace(      "w", self.updateFavClass)
 
         # View
-        self.view = CreationPage(self, mainApp.nb)
-
-        # Initial errors
-        self.raceError     = self.addError(self.race, "Choose a race", self.view.racesMenu)
-        self.buyPointError = self.addError(self.buyPoints, "Buy points remain to be spent", self.view.purchaseModeMenu)
-        self.classError    = self.addError(self.charClass, "Choose a class", self.view.classMenu)
+        self.view = CreationPage(self, controller.nb)
 
 
     def getView(self):
@@ -117,7 +112,7 @@ class CreationPageController():
 
 
     def getModifiableValue(self, modifiable):
-        return eval("self.char." + modifiable).value
+        return getattr(self.char, modifiable).value
 
 
     def updateAbilityBonusString(self, stat):
@@ -135,8 +130,6 @@ class CreationPageController():
         else:
             self.maxBuyPoints.set(25)
 
-        self.checkBuyPoints()
-
 
     def updateAbilityScore(self, stat, value):
         charStat = eval("self.char." + stat)
@@ -153,20 +146,14 @@ class CreationPageController():
             points = self.POINT_BUY_CHART[new]
             self.buyPoints.set(self.buyPoints.get() + points)
 
-            self.checkBuyPoints()
 
-
-    def checkBuyPoints(self):
-        self.removeError(self.buyPointError)
-        
+    def checkBuyPointsError(self):
         if self.maxBuyPoints.get() < self.buyPoints.get():
-            msg = "Too many buy points spent"
+            return (False, "Too many buy points spent")
         elif self.maxBuyPoints.get() > self.buyPoints.get():
-            msg = "Buy points remain to be spent"
+            return (False, "Buy points remain to be spent")
         else:
-            return
-
-        self.buyPointError = self.addError(self.view.purchaseModeMenu, msg, self.view.purchaseModeMenu)
+            return (True, None)
 
 
     def updateAbilityAdvancement(self,i,o,x):
@@ -185,22 +172,18 @@ class CreationPageController():
         data = self.race_data[race]
 
         self.char.removeMods("race")
-        self.removeError(self.raceError)
 
         for mod in data["mods"]:
-            target = eval("self.char." + mod["target"])
-            self.char.modifiers[target][mod["type"]]["race"] = mod["value"]
-            target.update()
+            target = mod["target"]
+            type = mod["type"]
+            value = mod["value"]
+            self.char.addMod(target, type, "race", value)
 
         if race in self.HUMANLIKE_RACES:
             self.view.abilityMenu.grid()
             self.updateBonusAbility(i,o,x)
         else:
-            self.view.abilityMenu.grid_remove()
-            try:
-                self.removeError(self.bonusAbilityError)
-            except:
-                pass
+            self.view.abilityMenu.grid_remove()        
 
         for frame in self.levelFrames:
             frame.favClassBonusMenu['menu'].delete(0, 'end')
@@ -215,6 +198,7 @@ class CreationPageController():
 
     def updateBonusAbility(self,i,o,x):
         bonus = self.bonusAbility.get()
+        self.char.removeMods(self.view.abilityMenu)
 
         if bonus != "Choose ability bonus":
             if bonus == "+2 Strength":
@@ -230,13 +214,9 @@ class CreationPageController():
             else:
                 stat = "cha"
             
-            self.char.removeMods("race")
-            target = eval("self.char." + stat)
-            self.char.modifiers[target]["racial"]["race"] = 2
-            target.update()
-            self.removeError(self.bonusAbilityError)
+            self.char.addMod(stat, "racial", self.view.abilityMenu, 2)
         else:
-            self.bonusAbilityError = self.addError(self.bonusAbility, "Choose racial ability bonus", self.view.abilityMenu)
+            self.controller.addError("Choose racial ability bonus", None, [self.bonusAbility], self.view.abilityMenu)
     
 
     def updateLevelNb(self, value):
@@ -250,7 +230,6 @@ class CreationPageController():
 
     def updateClass(self,i,o,x):
         self.view.addLevelsButton.config(state="normal")
-        self.removeError(self.classError)
 
 
     def addLevels(self):
@@ -262,7 +241,7 @@ class CreationPageController():
         isFavClass = True if self.favClass.get() == charClass else False
 
         if currentLvl == 0 and self.favClass.get() == "Choose favorite class":
-            self.favClassError = self.addError(self.favClass, "Choose a favorite class", self.view.favClassMenu)
+            self.favClassError = self.controller.addError(self.favClass, "Choose a favorite class", self.view.favClassMenu)
             self.view.favClassMenu.grid()
 
         for i in range(currentLvl, currentLvl + lvlsToAdd.get()):
@@ -291,7 +270,6 @@ class CreationPageController():
         levelFrame.frame.destroy()
 
         if self.char.charLevel.get() == 0 and self.favClass.get() == "Choose favorite class":
-            self.removeError(self.favClassError)
             self.view.favClassMenu.grid_remove()
 
 
@@ -303,18 +281,15 @@ class CreationPageController():
             alignmentArray = self.class_data["classes"][className.cget("text")]["alignment"]
 
             error = self.char.findErrorBySource(className.cget("text"))
-            if error != None:
-                self.char.removeError(error)
+
 
             if len(alignmentArray) > 0 and self.alignment.get() not in alignmentArray:
                 className.config(fg="red")
                 message = self.class_data["classes"][className.cget("text")]["alignmentMsg"]
-                self.char.addError(className.cget("text"), message, self.view.alignmentMenu)
+                self.char.addError(message, self.char.alignment, self.view.alignmentMenu)
 
 
     def updateFavClass(self,i,o,x):
-        self.removeError(self.favClassError)
-
         for frame in self.levelFrames:
             if frame.charClass.get() != self.favClass.get():
                 frame.isFavClass.set(False)
@@ -322,35 +297,6 @@ class CreationPageController():
                 frame.isFavClass.set(True)
 
             frame.updateFavClassBonus(i,o,x)
-
-
-    def addError(self, source, message, problem):
-        problem.config(fg="red")
-        
-        for error in self.errors:
-            if error.source == source:
-                return
-
-        error = Error(source, message, self.errorFrame, problem)
-        self.errors.append(error)
-
-        return error
-
-
-    def removeError(self, error):
-        if error in self.errors:
-            try:
-                error.problem.config(fg="black")
-            except:
-                pass
-            error.label.destroy()
-            self.errors.remove(error)
-
-
-    def findErrorBySource(self, source):
-        for error in self.errors:
-            if error.source == source:
-                return error
 
 
     def calculateHpFromLevels(self):

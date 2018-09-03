@@ -101,7 +101,7 @@ class CreationPageController():
         self.charClass.trace(     "w", lambda i,o,x: self.view.addLevelsButton.config(state="normal"))
         self.char.race.trace(     "w", self.updateRace)
         self.alignment.trace(     "w", self.updateAlignment)
-        self.favClass.trace(      "w", self.updateFavClass)
+        self.favClass.trace(      "w", lambda i,o,x: self.checkFavClassBonusError())
 
         # View
         self.view = CreationPage(self, controller.nb)
@@ -241,9 +241,11 @@ class CreationPageController():
                 frame.favClassBonusMenu["menu"].add_command(label=special,command=tk._setit(frame.favClassBonus, special))
 
             self.levelFrames.append(frame)
-
-        if isFavClass:
-            self.controller.addError("Choose favorite class bonus", [frame.favClassBonus], frame.favClassBonusMenu)
+            if frame.isFavClass.get():
+                self.controller.addError("Choose favorite class bonus",
+                                         [frame.favClassBonus, self.favClass],
+                                         frame.favClassBonusMenu,
+                                         self.checkFavClassBonusError)
 
         self.char.charLevel.set(currentLvl + lvlsToAdd.get())
         lvlsToAdd.set(1)
@@ -277,25 +279,16 @@ class CreationPageController():
                 self.char.addError(message, self.char.alignment, self.view.alignmentMenu)
 
 
-    def updateFavClass(self,i,o,x):
+    def checkFavClassBonusError(self):
         for frame in self.levelFrames:
             if frame.charClass.get() != self.favClass.get():
                 frame.isFavClass.set(False)
             else:
                 frame.isFavClass.set(True)
 
-            frame.updateFavClassBonus(i,o,x)
+            frame.toggleOptionMenu()
 
+            if frame.isFavClass.get() and frame.favClassBonus.get() == "Choose Bonus":
+                return (False, None)
 
-    def calculateHpFromLevels(self):
-        hp = 0
-        for frame in self.levelFrames:
-            hp += frame.hpGained.get()
-
-        self.char.hpFromLevels.set(hp)
-
-
-    def updateMod(self, target, type, source, value):
-        self.char.removeMods(source)
-        if source.isFavClass.get():
-            self.char.addMod(target, type, source, value)
+        return (True, None)

@@ -14,7 +14,14 @@ class ErrorFrameController():
         problem.config(fg="red")
         
         error = Error(message, problem, callback)
-        error.label = self.view.addLabel(error.message)
+        
+        for err in self.errors:
+            if err.message.get() == error.message.get():
+                error.label = err.label
+                break
+
+        if error.label is None:
+            error.label = self.view.addLabel(error.message)
         for solution in solutions:
             traceId = solution.trace("w", lambda i,o,x: self.checkError(error))
             error.solutions.append(Solution(solution, traceId))

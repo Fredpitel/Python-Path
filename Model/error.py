@@ -6,14 +6,14 @@ class Error:
         self.callback  = callback
         self.problem   = problem
         self.label     = None
-    	self.solutions = []
+        self.solutions = []
 
 
     def setMessage(self, message):
-    	self.message.set(message)
+        self.message.set(message)
 
 
 class Solution:
-	def __init__(self, solution, traceId):
-		self.solution = solution
-		self.traceId  = traceId
+    def __init__(self, solution, traceId):
+        self.solution = solution
+        self.traceId  = traceId

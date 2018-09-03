@@ -50,14 +50,18 @@ class LevelFrame():
 
         self.levelNumber.trace(  "w", lambda i,o,x: self.checkFirstLevel())
         self.hpGained.trace(     "w", lambda i,o,x: self.controller.calculateHpFromLevels())
-        self.isFavClass.trace(   "w", self.toggleOptionMenu)
         self.hp.trace(           "w", self.validateEntry)
         self.favClassBonus.trace("w", self.updateFavClassBonus)
 
 
-    def toggleOptionMenu(self,i,o,x):
+    def toggleOptionMenu(self):
         if self.isFavClass.get():
             self.favClassBonusMenu.config(state="normal")
+            if self.favClassBonus.get() == "Choose Bonus":
+                self.controller.controller.addError("Choose favorite class bonus",
+                                                    [self.favClassBonus, self.controller.favClass],
+                                                    self.favClassBonusMenu,
+                                                    self.controller.checkFavClassBonusError)
         else:
             self.favClassBonusMenu.config(state="disabled")
 
@@ -99,6 +103,3 @@ class LevelFrame():
         else:
             # TODO
             return
-
-        self.favClassBonusMenu.config(fg="black")
-        self.controller.updateMod(target, "untyped", self, 1)

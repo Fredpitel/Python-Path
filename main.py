@@ -19,7 +19,7 @@ class Application(tk.Frame):
         self.nb = ttk.Notebook(root)
 
         self.createNewCharacter()
-        self.nb.pack(expand=True, fill="both")
+        self.nb.grid(row=0, column=0, sticky="NSEW")
 
 
     def createNewCharacter(self):
@@ -39,4 +39,7 @@ if __name__ == "__main__":
     root.option_add("*Font", "helvetica 14")
 
     Application(root).grid(row=0, column=0, sticky="NSEW")
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_columnconfigure(0, weight=1)
+    
     root.mainloop()

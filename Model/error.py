@@ -1,7 +1,7 @@
 import Tkinter as tk
 
 class Error:
-    def __init__(self, message, callback, problem):
+    def __init__(self, message, problem, callback):
         self.message   = tk.StringVar(value=message)
         self.callback  = callback
         self.problem   = problem

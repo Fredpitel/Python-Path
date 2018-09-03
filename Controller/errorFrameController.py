@@ -10,10 +10,10 @@ class ErrorFrameController():
         self.errors = []
 
 
-    def addError(self, message, callback, solutions, problem):
+    def addError(self, message, solutions, problem, callback):
         problem.config(fg="red")
         
-        error = Error(message, callback, problem)
+        error = Error(message, problem, callback)
         error.label = self.view.addLabel(error.message)
         for solution in solutions:
             traceId = solution.trace("w", lambda i,o,x: self.checkError(error))

@@ -12,7 +12,7 @@ class CharacterController:
         self.view = CharacterFrame(self, parent).characterFrame
         
         self.nb = ttk.Notebook(self.view)
-        self.nb.grid(row=1, column=0, sticky="NSWE")
+        self.nb.grid(row=0, column=0, sticky="NSWE")
 
         self.char = Character(self)
 
@@ -24,15 +24,13 @@ class CharacterController:
 
         # Initial errors
         self.addError("Choose a race",
-                      None,
                       [self.creationPageController.race],
                       self.creationPageController.view.racesMenu)
         self.addError("Buy points remain to be spent",
-                      self.creationPageController.checkBuyPointsError,
                       [self.creationPageController.buyPoints, self.creationPageController.maxBuyPoints],
-                      self.creationPageController.view.buyPointsLabel)
+                      self.creationPageController.view.buyPointsLabel,
+                      self.creationPageController.checkBuyPointsError)
         self.addError("Choose a class",
-                      None,
                       [self.creationPageController.charClass],
                       self.creationPageController.view.classMenu)
 
@@ -41,5 +39,18 @@ class CharacterController:
         self.parent.forget(self.parent.select())
 
 
-    def addError(self, msg, callback, solutions, problem):
-        self.errorFrameController.addError(msg, callback, solutions, problem)
+    def addMod(self, mod, source, toggler=None):
+        target = self.getTarget(mod["target"])
+        target.addModifier(mod, source, toggler)
+
+
+    def getTarget(self, targetName):
+        try:
+            return getattr(self.char, targetName)
+        except AttributeError:
+            skill = targetName.split('"')[1]
+            return self.char.skill[skill]
+
+
+    def addError(self, msg, solutions, problem, callback=None):
+        self.errorFrameController.addError(msg, solutions, problem, callback)

@@ -60,7 +60,6 @@ class LevelFrame():
             self.favClassBonusMenu.config(state="normal")
         else:
             self.favClassBonusMenu.config(state="disabled")
-            self.controller.char.addMod
 
 
     def validateEntry(self,i,o,x):

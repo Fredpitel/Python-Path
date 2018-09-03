@@ -95,11 +95,11 @@ class CreationPageController():
         self.purchaseMode.trace(  "w", lambda i,x,o: self.changePurchaseMode(self.purchaseMode.get()))
         self.charName.trace(      "w", lambda i,x,o: self.char.charName.set(self.charName.get()))
         self.char.charLevel.trace("w", lambda i,o,x: self.calculateHpFromLevels())
+        self.bonusAbility.trace(  "w", lambda i,o,x: self.updateBonusAbility())
         self.char.charLevel.trace("w", self.updateAbilityAdvancement)
         self.char.charLevel.trace("w", self.updateRemainingLevels)
-        self.charClass.trace(     "w", self.updateClass)
+        self.charClass.trace(     "w", lambda i,o,x: self.view.addLevelsButton.config(state="normal"))
         self.char.race.trace(     "w", self.updateRace)
-        self.bonusAbility.trace(  "w", self.updateBonusAbility)
         self.alignment.trace(     "w", self.updateAlignment)
         self.favClass.trace(      "w", self.updateFavClass)
 
@@ -117,7 +117,7 @@ class CreationPageController():
 
     def updateAbilityBonusString(self, stat):
         sign = "+" if stat.bonus.get() >= 0 else ""
-        eval("self." + stat.shortName + "BonusStr").set(stat.shortName.upper() + " (" + sign + "%d)" % stat.bonus.get())
+        getattr(self, stat.shortName + "BonusStr").set(stat.shortName.upper() + " (" + sign + "%d)" % stat.bonus.get())
 
 
     def changePurchaseMode(self, purchaseMode):
@@ -132,13 +132,12 @@ class CreationPageController():
 
 
     def updateAbilityScore(self, stat, value):
-        charStat = eval("self.char." + stat)
+        charStat = getattr(self.char, stat)
         current = charStat.baseValue.get()
         new = current + value
 
         if new >= 7 and new <= 18:
             charStat.baseValue.set(new)
-            charStat.update()
 
             previousPoints = self.POINT_BUY_CHART[current]
             self.buyPoints.set(self.buyPoints.get() - previousPoints)
@@ -168,20 +167,16 @@ class CreationPageController():
 
 
     def updateRace(self,i,o,x):
-        race = self.char.race.get()
-        data = self.race_data[race]
-
-        self.char.removeMods("race")
+        race = self.char.race
+        data = self.race_data[race.get()]
 
         for mod in data["mods"]:
-            target = mod["target"]
-            type = mod["type"]
-            value = mod["value"]
-            self.char.addMod(target, type, "race", value)
+            self.controller.addMod(mod, race, self.view.racesMenu)
 
-        if race in self.HUMANLIKE_RACES:
+        if race.get() in self.HUMANLIKE_RACES:
             self.view.abilityMenu.grid()
-            self.updateBonusAbility(i,o,x)
+            if self.bonusAbility.get() == "Choose ability bonus":
+                self.controller.addError("Choose racial ability bonus", [self.bonusAbility], self.view.abilityMenu)
         else:
             self.view.abilityMenu.grid_remove()        
 
@@ -196,27 +191,24 @@ class CreationPageController():
                 frame.favClassBonusMenu["menu"].add_command(label=option,command=tk._setit(frame.favClassBonus, option))
 
 
-    def updateBonusAbility(self,i,o,x):
+    def updateBonusAbility(self):
         bonus = self.bonusAbility.get()
-        self.char.removeMods(self.view.abilityMenu)
 
-        if bonus != "Choose ability bonus":
-            if bonus == "+2 Strength":
-                stat = "str"
-            elif bonus == "+2 Dexterity":
-                stat = "dex"
-            elif bonus == "+2 Constitution":
-                stat = "con"
-            elif bonus == "+2 Intelligence":
-                stat = "int"
-            elif bonus == "+2 Wisdom":
-                stat = "wis"
-            else:
-                stat = "cha"
-            
-            self.char.addMod(stat, "racial", self.view.abilityMenu, 2)
+        if bonus == "+2 Strength":
+            stat = "str"
+        elif bonus == "+2 Dexterity":
+            stat = "dex"
+        elif bonus == "+2 Constitution":
+            stat = "con"
+        elif bonus == "+2 Intelligence":
+            stat = "int"
+        elif bonus == "+2 Wisdom":
+            stat = "wis"
         else:
-            self.controller.addError("Choose racial ability bonus", None, [self.bonusAbility], self.view.abilityMenu)
+            stat = "cha"
+        
+        self.controller.addMod({"target": stat, "type": "racial", "value": 2}, self.bonusAbility, self.view.abilityMenu)
+            
     
 
     def updateLevelNb(self, value):
@@ -228,10 +220,6 @@ class CreationPageController():
             self.levelNb.set(new)
 
 
-    def updateClass(self,i,o,x):
-        self.view.addLevelsButton.config(state="normal")
-
-
     def addLevels(self):
         currentLvl = self.char.charLevel.get()
         lvlsToAdd  = self.levelNb
@@ -240,21 +228,22 @@ class CreationPageController():
         race       = self.race.get()
         isFavClass = True if self.favClass.get() == charClass else False
 
-        if currentLvl == 0 and self.favClass.get() == "Choose favorite class":
-            self.favClassError = self.controller.addError(self.favClass, "Choose a favorite class", self.view.favClassMenu)
+        if currentLvl == 0:
             self.view.favClassMenu.grid()
+            if self.favClass.get() == "Choose favorite class":
+                self.controller.addError("Choose a favorite class", [self.favClass], self.view.favClassMenu)
 
         for i in range(currentLvl, currentLvl + lvlsToAdd.get()):
             frame = LevelFrame(self.view.charClassFrame, self, i, charClass, hitDie, isFavClass)
-            
-            if charClass == self.favClass.get():
-                frame.isFavClass.set(True)
 
             if race != "Choose race":
                 special = self.race_data[race]["favoredClassOptions"][charClass]["menuString"]
                 frame.favClassBonusMenu["menu"].add_command(label=special,command=tk._setit(frame.favClassBonus, special))
 
             self.levelFrames.append(frame)
+
+        if isFavClass:
+            self.controller.addError("Choose favorite class bonus", [frame.favClassBonus], frame.favClassBonusMenu)
 
         self.char.charLevel.set(currentLvl + lvlsToAdd.get())
         lvlsToAdd.set(1)
@@ -265,11 +254,10 @@ class CreationPageController():
             self.levelFrames[i].levelNumber.set(self.levelFrames[i].levelNumber.get() - 1)
 
         self.levelFrames.remove(levelFrame)
-        self.char.removeMods(levelFrame)
         self.char.charLevel.set(self.char.charLevel.get() - 1)
         levelFrame.frame.destroy()
 
-        if self.char.charLevel.get() == 0 and self.favClass.get() == "Choose favorite class":
+        if self.char.charLevel.get() == 0:
             self.view.favClassMenu.grid_remove()
 
 

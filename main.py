@@ -34,7 +34,7 @@ class Application(tk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.attributes("-fullscreen", True)
+    root.attributes("-zoomed", True)
     root.title("Character Sheet")
     root.option_add("*Font", "helvetica 14")
 

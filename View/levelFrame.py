@@ -38,7 +38,7 @@ class LevelFrame():
         tk.Label(self.frame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, sticky="W")
 
         self.favClassBonusMenu = tk.OptionMenu(self.frame, self.favClassBonus, *self.FAVORED_OPTIONS)
-        self.favClassBonusMenu.config(width=35, font=('Helvetica', 12), highlightthickness=0, fg="red")
+        self.favClassBonusMenu.config(width=35, font=('Helvetica', 12), highlightthickness=0)
         self.favClassBonusMenu.grid(row=0, column=4, sticky="W")
 
         if not self.isFavClass.get():
@@ -49,11 +49,11 @@ class LevelFrame():
         self.button.config(fg="red", font=('Helvetica', 12), relief=tk.FLAT)
 
         self.levelNumber.trace(  "w", lambda i,o,x: self.checkFirstLevel())
-        self.hp.trace(           "w", self.validateEntry)
-        self.favClassBonus.trace("w", self.updateFavClassBonus)
+        self.hp.trace(           "w", lambda i,o,x: self.validateEntry())
+        self.favClassBonus.trace("w", lambda i,o,x: self.setFavClassBonus())
 
 
-    def validateEntry(self,i,o,x):
+    def validateEntry(self):
         value = self.hp.get()
 
         if value == "":
@@ -70,6 +70,7 @@ class LevelFrame():
 
         self.hp.set(value)
         self.hpGained.set(int(value))
+        self.controller.char.hp.baseValue.set(self.controller.char.hp.baseValue.get() + self.hpGained.get())
 
 
     def checkFirstLevel(self):
@@ -82,7 +83,7 @@ class LevelFrame():
             self.hpEntry.grid(row=0, column=3, sticky="W")
 
 
-    def updateFavClassBonus(self,i,o,x):
+    def setFavClassBonus(self):
         if self.favClassBonus.get() == "+1 Hit Point":
             target = self.controller.char.hp
         elif self.favClassBonus.get() == "+1 Skill Point":
@@ -90,3 +91,6 @@ class LevelFrame():
         else:
             # TODO
             return
+
+        target.update()
+        self.controller.checkFavClassBonusError()

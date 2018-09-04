@@ -54,3 +54,11 @@ class CharacterController:
 
     def addError(self, msg, solutions, problem, callback=None):
         self.errorFrameController.addError(msg, solutions, problem, callback)
+
+
+    def removeError(self, error):
+        self.errorFrameController.removeError(error)
+
+
+    def findErrorBySolution(self, solution):
+        return self.errorFrameController.findErrorBySolution(solution)

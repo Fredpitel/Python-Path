@@ -226,23 +226,19 @@ class CreationPageController():
 
 
     def setFavClass(self):
-        error == False
         for frame in self.levelFrames:
             if frame.charClass.get() == self.favClass.get():
                 frame.isFavClass.set(True)
                 frame.favClassBonusMenu.config(state="normal")
-                if frame.favClassBonus.get() == "Choose Bonus":
-                    error = True
+                if frame.isFavClass.get() and frame.favClassBonus.get() == "Choose Bonus":
+                    self.controller.addError("",
+                                             [frame.isFavClass, frame.favClassBonus],
+                                             frame.favClassBonusMenu)
             else:
                 frame.isFavClass.set(False)
                 frame.favClassBonusMenu.config(state="disabled")
 
-
-        if error:
-            self.controller.addError("Choose favorite class bonus",
-                                     [self.favClass],
-                                     None,
-                                     self.checkFavClassBonusError)
+        self.checkFavClassBonusError()
 
 
     def addLevels(self):
@@ -266,11 +262,14 @@ class CreationPageController():
                 frame.favClassBonusMenu["menu"].add_command(label=special,command=tk._setit(frame.favClassBonus, special))
 
             self.levelFrames.append(frame)
+            self.char.hp.baseValue.set(self.char.hp.baseValue.get() + frame.hpGained.get())
             if frame.isFavClass.get():
                 self.controller.addError("Choose favorite class bonus",
-                                         [frame.favClassBonus, frame.isFavClass],
-                                         frame.favClassBonusMenu,
-                                         lambda frame=frame:self.checkFavClassBonusError(frame))
+                                         [self.favClass],
+                                         None)
+                self.controller.addError("",
+                                         [frame.isFavClass, frame.favClassBonus],
+                                         frame.favClassBonusMenu)
 
         self.char.charLevel.set(currentLvl + lvlsToAdd.get())
         lvlsToAdd.set(1)
@@ -287,6 +286,8 @@ class CreationPageController():
         if self.char.charLevel.get() == 0:
             self.view.favClassMenu.grid_remove()
 
+        self.checkFavClassBonusError()
+
 
     def checkBuyPointsError(self):
         if self.maxBuyPoints.get() < self.buyPoints.get():
@@ -298,8 +299,10 @@ class CreationPageController():
 
 
     def checkFavClassBonusError(self):
+        self.controller.removeError(self.controller.findErrorBySolution(self.favClass))
         for frame in self.levelFrames:
-            if frame.isFavClass.get() and frame.favClassBonus.get() == "Choose Bonus":
-                return (False, None)
-
-        return (True, None)
+            if frame.favClassBonus.get() == "Choose Bonus" and frame.isFavClass.get():
+                self.controller.addError("Choose favorite class bonus",
+                                         [self.favClass],
+                                         None)
+                return

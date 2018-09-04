@@ -14,13 +14,8 @@ class ErrorFrameController():
         problem.config(fg="red")
         
         error = Error(message, problem, callback)
-        
-        for err in self.errors:
-            if err.message.get() == error.message.get():
-                error.label = err.label
-                break
 
-        if error.label is None:
+        if error.message.get() != "":
             error.label = self.view.addLabel(error.message)
         for solution in solutions:
             traceId = solution.trace("w", lambda i,o,x: self.checkError(error))
@@ -55,5 +50,8 @@ class ErrorFrameController():
     def removeError(self, error):
         if error in self.errors:
             error.problem.config(fg="black")
-            error.label.destroy()
             self.errors.remove(error)
+            for err in self.errors:
+                if err.label == error.label:
+                    return
+            error.label.destroy()

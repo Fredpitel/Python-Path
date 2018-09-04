@@ -49,21 +49,8 @@ class LevelFrame():
         self.button.config(fg="red", font=('Helvetica', 12), relief=tk.FLAT)
 
         self.levelNumber.trace(  "w", lambda i,o,x: self.checkFirstLevel())
-        self.hpGained.trace(     "w", lambda i,o,x: self.controller.calculateHpFromLevels())
         self.hp.trace(           "w", self.validateEntry)
         self.favClassBonus.trace("w", self.updateFavClassBonus)
-
-
-    def toggleOptionMenu(self):
-        if self.isFavClass.get():
-            self.favClassBonusMenu.config(state="normal")
-            if self.favClassBonus.get() == "Choose Bonus":
-                self.controller.controller.addError("Choose favorite class bonus",
-                                                    [self.favClassBonus, self.controller.favClass],
-                                                    self.favClassBonusMenu,
-                                                    self.controller.checkFavClassBonusError)
-        else:
-            self.favClassBonusMenu.config(state="disabled")
 
 
     def validateEntry(self,i,o,x):

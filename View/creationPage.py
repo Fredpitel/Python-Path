@@ -152,8 +152,8 @@ class CreationPage():
 
 		self.lvlButtons = ttk.Frame(self.addLevelFrame)
 		self.lvlButtons.grid(row=0, column=1)
-		tk.Button(self.lvlButtons, text="▲", font=("helvetica", 6), width=1, command=lambda: self.controller.updateLevelNb(1)).grid(row=0, column=0)
-		tk.Button(self.lvlButtons, text="▼", font=("helvetica", 6), width=1, command=lambda: self.controller.updateLevelNb(-1)).grid(row=1, column=0)
+		tk.Button(self.lvlButtons, text="▲", font=("helvetica", 6), width=1, command=lambda: self.controller.setLevelNb(1)).grid(row=0, column=0)
+		tk.Button(self.lvlButtons, text="▼", font=("helvetica", 6), width=1, command=lambda: self.controller.setLevelNb(-1)).grid(row=1, column=0)
 		self.addLevelsButton = tk.Button(self.addLevelFrame, text="Add level(s)", font=('Helvetica', 12), command=self.controller.addLevels)
 		self.addLevelsButton.grid(row=0, column=2, padx=5, sticky="W")
 		self.addLevelsButton.config(state="disabled")
@@ -171,9 +171,9 @@ class CreationPage():
 
 
 	def createStatsButtons(self, parent, stat):
-		commandUp = lambda: self.controller.updateAbilityScore(stat, 1)
+		commandUp = lambda: self.controller.setAbilityScore(stat, 1)
 		tk.Button(parent, text="▲", font=("helvetica", 6), width=1, command=commandUp).grid(row=0, column=0)
 
-		commandDown = lambda: self.controller.updateAbilityScore(stat, -1)
+		commandDown = lambda: self.controller.setAbilityScore(stat, -1)
 		tk.Button(parent, text="▼", font=("helvetica", 6), width=1, command=commandDown).grid(row=1, column=0)
 		

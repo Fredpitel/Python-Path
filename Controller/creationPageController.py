@@ -86,22 +86,20 @@ class CreationPageController():
         self.CLASSES.sort()
 
         # Tracing
-        self.char.str.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.str))
-        self.char.dex.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.dex))
-        self.char.con.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.con))
-        self.char.int.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.int))
-        self.char.wis.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.wis))
-        self.char.cha.bonus.trace("w", lambda i,x,o: self.updateAbilityBonusString(self.char.cha))
-        self.purchaseMode.trace(  "w", lambda i,x,o: self.changePurchaseMode(self.purchaseMode.get()))
+        self.char.str.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.str))
+        self.char.dex.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.dex))
+        self.char.con.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.con))
+        self.char.int.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.int))
+        self.char.wis.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.wis))
+        self.char.cha.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.cha))
+        self.purchaseMode.trace(  "w", lambda i,x,o: self.setPurchaseMode(self.purchaseMode.get()))
         self.charName.trace(      "w", lambda i,x,o: self.char.charName.set(self.charName.get()))
-        self.char.charLevel.trace("w", lambda i,o,x: self.calculateHpFromLevels())
-        self.bonusAbility.trace(  "w", lambda i,o,x: self.updateBonusAbility())
-        self.char.charLevel.trace("w", self.updateAbilityAdvancement)
-        self.char.charLevel.trace("w", self.updateRemainingLevels)
+        self.bonusAbility.trace(  "w", lambda i,o,x: self.setBonusAbility())
+        self.char.charLevel.trace("w", lambda i,o,x: self.setRemainingLevels)
         self.charClass.trace(     "w", lambda i,o,x: self.view.addLevelsButton.config(state="normal"))
-        self.char.race.trace(     "w", self.updateRace)
-        self.alignment.trace(     "w", self.updateAlignment)
-        self.favClass.trace(      "w", lambda i,o,x: self.checkFavClassBonusError())
+        self.char.race.trace(     "w", self.setRace)
+        self.alignment.trace(     "w", self.setAlignment)
+        self.favClass.trace(      "w", lambda i,o,x: self.setFavClass())
 
         # View
         self.view = CreationPage(self, controller.nb)
@@ -115,12 +113,12 @@ class CreationPageController():
         return getattr(self.char, modifiable).value
 
 
-    def updateAbilityBonusString(self, stat):
+    def setAbilityBonusString(self, stat):
         sign = "+" if stat.bonus.get() >= 0 else ""
         getattr(self, stat.shortName + "BonusStr").set(stat.shortName.upper() + " (" + sign + "%d)" % stat.bonus.get())
 
 
-    def changePurchaseMode(self, purchaseMode):
+    def setPurchaseMode(self, purchaseMode):
         if purchaseMode == "Low Fantasy (10 points)":
             self.maxBuyPoints.set(10)
         elif purchaseMode == "Standard Fantasy (15 points)":
@@ -131,7 +129,7 @@ class CreationPageController():
             self.maxBuyPoints.set(25)
 
 
-    def updateAbilityScore(self, stat, value):
+    def setAbilityScore(self, stat, value):
         charStat = getattr(self.char, stat)
         current = charStat.baseValue.get()
         new = current + value
@@ -146,27 +144,18 @@ class CreationPageController():
             self.buyPoints.set(self.buyPoints.get() + points)
 
 
-    def checkBuyPointsError(self):
-        if self.maxBuyPoints.get() < self.buyPoints.get():
-            return (False, "Too many buy points spent")
-        elif self.maxBuyPoints.get() > self.buyPoints.get():
-            return (False, "Buy points remain to be spent")
-        else:
-            return (True, None)
-
-
-    def updateAbilityAdvancement(self,i,o,x):
+    def setAbilityAdvancement(self,i,o,x):
         pass
 
 
-    def updateRemainingLevels(self,i,o,x):
+    def setRemainingLevels(self):
         if self.char.charLevel.get() == self.char.MAX_LEVEL:
             self.view.addLevelsButton.config(state="disabled")
         else:
             self.view.addLevelsButton.config(state="normal")
 
 
-    def updateRace(self,i,o,x):
+    def setRace(self,i,o,x):
         race = self.char.race
         data = self.race_data[race.get()]
 
@@ -191,7 +180,7 @@ class CreationPageController():
                 frame.favClassBonusMenu["menu"].add_command(label=option,command=tk._setit(frame.favClassBonus, option))
 
 
-    def updateBonusAbility(self):
+    def setBonusAbility(self):
         bonus = self.bonusAbility.get()
 
         if bonus == "+2 Strength":
@@ -211,13 +200,49 @@ class CreationPageController():
             
     
 
-    def updateLevelNb(self, value):
+    def setLevelNb(self, value):
         current   = self.levelNb.get()
         new       = current + value
         remaining = self.char.MAX_LEVEL - self.char.charLevel.get()
 
         if new >= 1 and new <= remaining:
             self.levelNb.set(new)
+
+
+    def setAlignment(self,i,o,x):
+        for frame in self.levelFrames:
+            className = charClass.winfo_children()[1]
+            className.config(fg="black")
+
+            alignmentArray = self.class_data["classes"][className.cget("text")]["alignment"]
+
+            error = self.char.findErrorBySource(className.cget("text"))
+
+
+            if len(alignmentArray) > 0 and self.alignment.get() not in alignmentArray:
+                className.config(fg="red")
+                message = self.class_data["classes"][className.cget("text")]["alignmentMsg"]
+                self.char.addError(message, self.char.alignment, self.view.alignmentMenu)
+
+
+    def setFavClass(self):
+        error == False
+        for frame in self.levelFrames:
+            if frame.charClass.get() == self.favClass.get():
+                frame.isFavClass.set(True)
+                frame.favClassBonusMenu.config(state="normal")
+                if frame.favClassBonus.get() == "Choose Bonus":
+                    error = True
+            else:
+                frame.isFavClass.set(False)
+                frame.favClassBonusMenu.config(state="disabled")
+
+
+        if error:
+            self.controller.addError("Choose favorite class bonus",
+                                     [self.favClass],
+                                     None,
+                                     self.checkFavClassBonusError)
 
 
     def addLevels(self):
@@ -243,9 +268,9 @@ class CreationPageController():
             self.levelFrames.append(frame)
             if frame.isFavClass.get():
                 self.controller.addError("Choose favorite class bonus",
-                                         [frame.favClassBonus, self.favClass],
+                                         [frame.favClassBonus, frame.isFavClass],
                                          frame.favClassBonusMenu,
-                                         self.checkFavClassBonusError)
+                                         lambda frame=frame:self.checkFavClassBonusError(frame))
 
         self.char.charLevel.set(currentLvl + lvlsToAdd.get())
         lvlsToAdd.set(1)
@@ -263,31 +288,17 @@ class CreationPageController():
             self.view.favClassMenu.grid_remove()
 
 
-    def updateAlignment(self,i,o,x):
-        for frame in self.levelFrames:
-            className = charClass.winfo_children()[1]
-            className.config(fg="black")
-
-            alignmentArray = self.class_data["classes"][className.cget("text")]["alignment"]
-
-            error = self.char.findErrorBySource(className.cget("text"))
-
-
-            if len(alignmentArray) > 0 and self.alignment.get() not in alignmentArray:
-                className.config(fg="red")
-                message = self.class_data["classes"][className.cget("text")]["alignmentMsg"]
-                self.char.addError(message, self.char.alignment, self.view.alignmentMenu)
+    def checkBuyPointsError(self):
+        if self.maxBuyPoints.get() < self.buyPoints.get():
+            return (False, "Too many buy points spent")
+        elif self.maxBuyPoints.get() > self.buyPoints.get():
+            return (False, "Buy points remain to be spent")
+        else:
+            return (True, None)
 
 
     def checkFavClassBonusError(self):
         for frame in self.levelFrames:
-            if frame.charClass.get() != self.favClass.get():
-                frame.isFavClass.set(False)
-            else:
-                frame.isFavClass.set(True)
-
-            frame.toggleOptionMenu()
-
             if frame.isFavClass.get() and frame.favClassBonus.get() == "Choose Bonus":
                 return (False, None)
 

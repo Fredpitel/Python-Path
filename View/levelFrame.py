@@ -17,6 +17,7 @@ class LevelFrame():
         self.favClassBonus = tk.StringVar(value="Choose Bonus")
         self.isFavClass    = tk.BooleanVar(value=isFavClass)
         self.hpGained      = tk.IntVar(value=1)
+        self.bonusChosen   = None
 
         self.frame = ttk.Frame(parent, relief=tk.SUNKEN)
         self.frame.pack(fill="x")
@@ -33,13 +34,14 @@ class LevelFrame():
         self.checkFirstLevel()
 
         tk.Label(self.frame, textvariable=self.levelNumber, width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=5, sticky="W")
-        tk.Label(self.frame, textvariable=self.charClass, width=15, font=('Helvetica', 12)).grid(row=0, column=1, sticky="W")
+        self.classLabel = tk.Label(self.frame, textvariable=self.charClass, width=15, font=('Helvetica', 12))
+        self.classLabel.grid(row=0, column=1, sticky="W")
 
         tk.Label(self.frame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, sticky="W")
 
         self.favClassBonusMenu = tk.OptionMenu(self.frame, self.favClassBonus, *self.FAVORED_OPTIONS)
         self.favClassBonusMenu.config(width=35, font=('Helvetica', 12), highlightthickness=0)
-        self.favClassBonusMenu.grid(row=0, column=4, sticky="W")
+        self.favClassBonusMenu.grid(row=0, column=4, sticky="EW")
 
         if not self.isFavClass.get():
             self.favClassBonusMenu.config(state="disabled")
@@ -51,6 +53,7 @@ class LevelFrame():
         self.levelNumber.trace(  "w", lambda i,o,x: self.checkFirstLevel())
         self.hp.trace(           "w", lambda i,o,x: self.validateEntry())
         self.favClassBonus.trace("w", lambda i,o,x: self.setFavClassBonus())
+        self.isFavClass.trace(   "w", lambda i,o,x: self.toggleFavClass())
 
 
     def validateEntry(self):
@@ -70,7 +73,17 @@ class LevelFrame():
 
         self.hp.set(value)
         self.hpGained.set(int(value))
-        self.controller.char.hp.baseValue.set(self.controller.char.hp.baseValue.get() + self.hpGained.get())
+
+
+    def toggleFavClass(self):
+        if self.isFavClass.get():
+            self.favClassBonusMenu.config(state="normal")
+            if self.bonusChosen is not None:
+                self.addFavClassBonus()
+        else:
+            self.favClassBonusMenu.config(state="disabled")
+            if self.bonusChosen is not None:
+                self.controller.controller.removeMod(self.favClassBonus, self.bonusChosen)
 
 
     def checkFirstLevel(self):
@@ -84,13 +97,25 @@ class LevelFrame():
 
 
     def setFavClassBonus(self):
+        if self.bonusChosen is None:
+            self.controller.favClassBonusRequirement.removeProblem(self.favClassBonusMenu)
+
+        self.favClassBonusMenu.config(fg="black")
         if self.favClassBonus.get() == "+1 Hit Point":
-            target = self.controller.char.hp
+            self.bonusChosen = "hp"
         elif self.favClassBonus.get() == "+1 Skill Point":
-            target = self.controller.char.skillPoints
+            self.bonusChosen = "skillPoints"
         else:
             # TODO
             return
 
-        target.update()
-        self.controller.checkFavClassBonusError()
+        self.addFavClassBonus()
+
+
+    def addFavClassBonus(self):    
+        self.controller.controller.addMod({"target": self.bonusChosen, 
+                                           "type": "untyped",
+                                           "value": 1
+                                           },
+                                           self.favClassBonus,
+                                           self.favClassBonusMenu)

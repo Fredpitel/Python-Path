@@ -23,7 +23,7 @@ class Modifiable():
         else:
             self.modifiers[mod["type"]] = [(source, mod["value"])]
 
-        source.trace("w", lambda i,o,x,source=source: self.removeModifier(source))
+        source.trace("w", lambda i,o,x,s=source: self.removeModifier(s))
         
         if toggler is not None:
             toggler.bind("<Unmap>", lambda e, source=source: self.removeModifier(source))
@@ -60,6 +60,6 @@ class Modifiable():
                     if source[1] > maxMod[1] and source[0] != maxMod[0]:
                         maxMod = source
 
-            total += maxMod[1]
+                total += maxMod[1]
 
         return total

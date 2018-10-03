@@ -1,0 +1,62 @@
+{
+    "Abadar" : {
+        "alignmentss" : ["LN", "LG", "LE", "TN"]
+    },
+    "Asmodeus" : {
+        "alignments" : ["LE", "LN", "NE"]
+    },
+    "Calistria" : {
+        "alignments" : ["CN", "CG", "CE", "TN"]
+    },
+    "Cayden Cailean" : {
+        "alignments" : ["CG", "CN", "NG"]
+    },
+    "Desna" : {
+        "alignments" : ["CG", "CN", "NG"]
+    },
+    "Erastil" : {
+        "alignments" : ["LG", "NG", "LN"]
+    },
+    "Gorum" : {
+        "alignments" : ["CN", "CG", "CE", "TN"]
+    },
+    "Gozreh" : {
+        "alignments" : ["TN", "LN", "NE", "CN", "NG"]
+    },
+    "Iomedae" : {
+        "alignments" : ["LG", "NG", "LN"]
+    },
+    "Irori" : {
+        "alignments" : ["LN", "LG", "LE", "TN"]
+    },
+    "Lamashtu" : {
+        "alignments" : ["CE", "CN", "NE"]
+    },
+    "Nethys" : {
+        "alignments" : ["TN", "LN", "NE", "CN", "NG"]
+    },
+    "Norgorber" : {
+        "alignments" : ["NE", "LE", "CE", "TN"]
+    },
+    "Pharasma" : {
+        "alignments" : ["TN", "LN", "NE", "CN", "NG"]
+    },
+    "Rovagug" : {
+        "alignments" : ["CE", "CN", "NE"]
+    },
+    "Sarenrae" : {
+        "alignments" : ["NG", "LG", "CG", "TN"]
+    },
+    "Shelyn" : {
+        "alignments" : ["NG", "LG", "CG", "TN"]
+    },
+    "Torag" : {
+        "alignments" : ["LG", "NG", "LN"]
+    },
+    "Urgathoa" : {
+        "alignments" : ["NE", "LE", "CE", "TN"]
+    },
+    "Zon-Kuthon" : {
+        "alignments" : ["LE", "LN", "NE"]
+    }
+}

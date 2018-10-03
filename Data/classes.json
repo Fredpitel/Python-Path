@@ -1,7 +1,5 @@
 {
     "Barbarian": {
-        "alignment"   : ["NG","CG", "TN", "CN", "NE", "CE"],
-        "alignmentMsg": "Barbarians must be non-lawful",
         "hitDie"      : 12,
         "classSkills" : ["Acrobatics", "Climb", "Craft", "Handle Animal", "Intimidate", "Knowledge (nature)", "Perception", "Ride", "Survival", "Swim"],
         "skillLevel"  : 4,
@@ -16,11 +14,16 @@
                 "type"  : "untyped",
                 "value" : 10
             }
+        ],
+        "requirements" : [
+            {
+                "type"    : "alignment",
+                "value"   : ["NG","CG", "TN", "CN", "NE", "CE"],
+                "message" : "Barbarians must be non-lawful"
+            }
         ]
     },
     "Bard" : {
-        "alignment"   : [],
-        "alignmentMsg": "",
         "hitDie"      : 8,
         "classSkills" : ["Acrobatics", "Appraise", "Bluff", "Climb", "Craft", "Diplomacy", "Disguise", "Escape Artist", "Intimidate", "Knowledge", "Linguistics", "Perception", "Perform", "Profession", "Sense Motive", "Sleight of Hand", "Spellcraft", "Stealth", "Use Magic Device"],
         "skillLevel"  : 6,
@@ -35,11 +38,10 @@
                 "type"  : "untyped",
                 "value" : "Math.max(1, self.char.charLevel/2)"
             }
-        ]
+        ],
+        "requirements" : []
     },
     "Cleric" : {
-        "alignment"   : ["Cleric"],
-        "alignmentMsg": "A cleric's alignment must be within one step of their deity",
         "hitDie"      : 8,
         "classSkills" : ["Appraise", "Craft", "Diplomacy", "Heal", "Knowledge (arcana)", "Knowledge (history)", "Knowledge (nobility)", "Knowledge (plane)", "Knowledge (religion)", "Linguistics", "Profession", "Sense Motive", "Spellcraft"],
         "skillLevel"  : 2,
@@ -48,11 +50,16 @@
         "refProg"     : 1,
         "willProg"    : 2,
         "proficiency" : ["Simple", "Light Armor", "Medium Armor", "Shield", "Cleric"],
-        "mods": []
+        "mods": [],
+        "requirements" : [
+            {
+                "type"    : "alignment",
+                "value"   : ["Cleric"],
+                "message" : "A cleric's alignment must be within one step of their deity"
+            }
+        ]
     },
     "Druid" : {
-        "alignment"   : ["NG","LN","TN","CN","NE"],
-        "alignmentMsg": "Druids must be neutral",
         "hitDie"      : 8,
         "classSkills" : ["Climb", "Craft", "Fly","Handle Animal", "Heal", "Knowledge (geography)", "Knowledge (nature)", "Perception", "Profession", "Ride", "Spellcraft", "Survival", "Swim"],
         "skillLevel"  : 4,
@@ -61,11 +68,16 @@
         "refProg"     : 1,
         "willProg"    : 2,
         "proficiency" : ["Club", "Dagger", "Dart", "Quarterstaff", "Scimitar", "Scythe", "Sickle", "Shortspear", "Sling", "Spear", "Light Armor", "Medium Armor", "Shield"],
-        "mods": []
+        "mods": [],
+        "requirements" : [
+            {
+                "type"    : "alignment",
+                "value"   : ["NG","LN","TN","CN","NE"],
+                "message" : "Druids must be neutral"
+            }
+        ]
     },
     "Fighter" : {
-        "alignment"   : [],
-        "alignmentMsg": "",
         "hitDie"      : 10,
         "classSkills" : ["Climb", "Craft", "Handle Animal", "Intimidate", "Knowledge (dungeoneering)", "Knowledge (engineering)", "Profession", "Ride", "Survival", "Swim"],
         "skillLevel"  : 2,
@@ -80,11 +92,10 @@
                 "type"  : "untyped",
                 "value" : "1"
             }
-        ]
+        ],
+        "requirements" : []
     },
     "Monk" : {
-        "alignment"   : ["LG", "LN", "LE"],
-        "alignmentMsg": "Monks must be lawful",
         "hitDie"      : 8,
         "classSkills" : ["Acrobatics", "Climb", "Craft", "Escape Artist", "Intimidate", "Knowledge (history)", "Knowledge (religion)", "Perception", "Perform", "Profession", "Ride", "Sense Motive", "Stealth", "Swim"],
         "skillLevel"  : 4,
@@ -93,11 +104,16 @@
         "refProg"     : 2,
         "willProg"    : 2,
         "proficiency" : ["Brass Knuckles", "Cestus", "Club", "Light Crossbow", "Heavy Crossbow", "Dagger", "Handaxe", "Javelin", "Kama", "Nunchaku", "Quarterstaff", "Sai", "Shortspear", "Short Sword", "Shuriken", "Siangham", "Sling", "Spear", "Temple Sword"],
-        "mods": []
+        "mods": [],
+        "requirements" : [
+            {
+                "type"    : "alignment",
+                "value"   : ["LG", "LN", "LE"],
+                "message" : "Monks must be lawful"
+            }
+        ]
     },
     "Paladin" : {
-        "alignment"   : ["LG"],
-        "alignmentMsg": "Paladins must be lawful good",
         "hitDie"      : 10,
         "classSkills" : ["Craft", "Diplomacy", "Handle Animal", "Heal", "Knowledge (nobility)", "Knowledge (religion)", "Profession", "Ride", "Sense Motive", "Spellcraft"],
         "skillLevel"  : 2,
@@ -106,11 +122,16 @@
         "refProg"     : 1,
         "willProg"    : 2,
         "proficiency" : ["Simple", "Martial", "Light Armor", "Medium Armor", "Heavy Armor", "Shield"],
-        "mods": []
+        "mods": [],
+        "requirements" : [
+            {
+                "type"    : "alignment",
+                "value"   : ["LG"],
+                "message" : "Paladins must be lawful good"
+            }
+        ]
     },
     "Ranger" : {
-        "alignment"   : [],
-        "alignmentMsg": "",
         "hitDie"      : 10,
         "classSkills" : ["Climb", "Craft", "Handle Animal", "Heal", "Initmidate", "Knowledge (dungeoneering)", "Knowledge (geography)", "Knowledge (nature)", "Perception", "Profession", "Ride", "Spellcraft", "Stealth", "Survival", "Swim"],
         "skillLevel"  : 6,
@@ -119,11 +140,10 @@
         "refProg"     : 2,
         "willProg"    : 1,
         "proficiency" : ["Simple", "Martial", "Light Armor", "Medium Armor", "Shield"],
-        "mods": []
+        "mods": [],
+        "requirements" : []
     },
     "Rogue": {
-        "alignment"   : [],
-        "alignmentMsg": "",
         "hitDie"      : 8,
         "classSkills" : ["Acrobatics", "Appraise", "Bluff", "Climb", "Craft", "Diplomacy", "Disable Device", "Disguise", "Escape Artist", "Initmidate", "Knowledge (dungeoneering)", "Knowledge (local)", "Linguistics", "Perception", "Perform", "Profession", "Sense Motive", "Sleight of Hand", "Stealth", "Swim", "Use Magic Device"],
         "skillLevel"  : 8,
@@ -132,11 +152,10 @@
         "refProg"     : 2,
         "willProg"    : 1,
         "proficiency" : ["Simple", "Hand Crossbow", "Rapier", "Sap", "Shortbow", "Composite Shortbow", "Short Sword", "Light Armor"],
-        "mods": []
+        "mods": [],
+        "requirements" : []
     },
     "Sorcerer" : {
-        "alignment"   : [],
-        "alignmentMsg": "",
         "hitDie"      : 6,
         "classSkills" : ["Appraise", "Bluff", "Craft", "Fly", "Initmidate", "Knowledge (arcana)", "Profession", "Spellcraft", "Use Magic Device"],
         "skillLevel"  : 2,
@@ -145,11 +164,10 @@
         "refProg"     : 1,
         "willProg"    : 2,
         "proficiency" : ["Simple"],
-        "mods": []
+        "mods": [],
+        "requirements" : []
     },
     "Wizard" : {
-        "alignment"   : [],
-        "alignmentMsg": "",
         "hitDie"      : 6,
         "classSkills" : ["Appraise", "Craft", "Fly", "Knowledge", "Linguistics", "Profession", "Spellcraft"],
         "skillLevel"  : 2,
@@ -158,6 +176,7 @@
         "refProg"     : 1,
         "willProg"    : 2,
         "proficiency" : ["Club", "Dagger", "Heavy Crossbow", "Light Crossbow", "Quarterstaff"],
-        "mods": []
+        "mods": [],
+        "requirements" : []
     }
 }

@@ -42,20 +42,23 @@ class CreationPageController():
                     ]
 
     HUMANLIKE_RACES = ["Human", "Half-Elf", "Half-Orc"]
-    ALIGNMENTS      = ["","LG","NG","CG","LN","TN","CN","LE","NE","CE"]
-    RACES = []
-    CLASSES = []
+    ALIGNMENTS      = ["LG","NG","CG","LN","TN","CN","LE","NE","CE"]
+    DEITIES         = ["None"]
+    RACES           = []
+    CLASSES         = []
 
     def __init__(self, controller):
-        self.controller   = controller
-        self.char         = controller.char
-        self.levelFrames  = []
-        self.errors       = []
+        self.controller        = controller
+        self.char              = controller.char
+        self.levelFrames       = []
+        self.errors            = []
+        self.classRequirements = {}
 
         # Global character variables
         self.charName     = self.char.charName
         self.race         = self.char.race
         self.alignment    = self.char.alignment
+        self.deity        = self.char.deity
 
         # CreationPage specific variables
         self.buyPoints    = tk.IntVar(value=0)
@@ -85,20 +88,25 @@ class CreationPageController():
 
         self.CLASSES.sort()
 
+        self.deity_data = json.load(open(os.path.abspath("Data/deities.json")))
+        for deity in self.deity_data:
+            self.DEITIES.append(deity)
+
+
         # Tracing
-        self.char.str.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.str))
-        self.char.dex.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.dex))
-        self.char.con.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.con))
-        self.char.int.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.int))
-        self.char.wis.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.wis))
-        self.char.cha.bonus.trace("w", lambda i,x,o: self.setAbilityBonusString(self.char.cha))
-        self.purchaseMode.trace(  "w", lambda i,x,o: self.setPurchaseMode(self.purchaseMode.get()))
-        self.charName.trace(      "w", lambda i,x,o: self.char.charName.set(self.charName.get()))
+        self.char.str.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.str))
+        self.char.dex.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.dex))
+        self.char.con.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.con))
+        self.char.int.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.int))
+        self.char.wis.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.wis))
+        self.char.cha.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.cha))
+        self.char.charLevel.trace("w", lambda i,o,x: self.calculateHpGainedFromLevels())
+        self.purchaseMode.trace(  "w", lambda i,o,x: self.setPurchaseMode(self.purchaseMode.get()))
+        self.charName.trace(      "w", lambda i,o,x: self.char.charName.set(self.charName.get()))
         self.bonusAbility.trace(  "w", lambda i,o,x: self.setBonusAbility())
         self.char.charLevel.trace("w", lambda i,o,x: self.setRemainingLevels)
         self.charClass.trace(     "w", lambda i,o,x: self.view.addLevelsButton.config(state="normal"))
-        self.char.race.trace(     "w", self.setRace)
-        self.alignment.trace(     "w", self.setAlignment)
+        self.char.race.trace(     "w", lambda i,o,x: self.setRace())
         self.favClass.trace(      "w", lambda i,o,x: self.setFavClass())
 
         # View
@@ -144,7 +152,7 @@ class CreationPageController():
             self.buyPoints.set(self.buyPoints.get() + points)
 
 
-    def setAbilityAdvancement(self,i,o,x):
+    def setAbilityAdvancement(self):
         pass
 
 
@@ -155,7 +163,7 @@ class CreationPageController():
             self.view.addLevelsButton.config(state="normal")
 
 
-    def setRace(self,i,o,x):
+    def setRace(self):
         race = self.char.race
         data = self.race_data[race.get()]
 
@@ -165,7 +173,12 @@ class CreationPageController():
         if race.get() in self.HUMANLIKE_RACES:
             self.view.abilityMenu.grid()
             if self.bonusAbility.get() == "Choose ability bonus":
-                self.controller.addError("Choose racial ability bonus", [self.bonusAbility], self.view.abilityMenu)
+                self.controller.addRequirement(
+                        [self.bonusAbility],
+                        lambda: (self.bonusAbility.get() != "Choose ability bonus", None),
+                        "Choose racial ability bonus",
+                        [self.view.abilityMenu]
+                    )
         else:
             self.view.abilityMenu.grid_remove()        
 
@@ -199,7 +212,6 @@ class CreationPageController():
         self.controller.addMod({"target": stat, "type": "racial", "value": 2}, self.bonusAbility, self.view.abilityMenu)
             
     
-
     def setLevelNb(self, value):
         current   = self.levelNb.get()
         new       = current + value
@@ -209,70 +221,93 @@ class CreationPageController():
             self.levelNb.set(new)
 
 
-    def setAlignment(self,i,o,x):
-        for frame in self.levelFrames:
-            className = charClass.winfo_children()[1]
-            className.config(fg="black")
-
-            alignmentArray = self.class_data["classes"][className.cget("text")]["alignment"]
-
-            error = self.char.findErrorBySource(className.cget("text"))
-
-
-            if len(alignmentArray) > 0 and self.alignment.get() not in alignmentArray:
-                className.config(fg="red")
-                message = self.class_data["classes"][className.cget("text")]["alignmentMsg"]
-                self.char.addError(message, self.char.alignment, self.view.alignmentMenu)
-
-
     def setFavClass(self):
         for frame in self.levelFrames:
             if frame.charClass.get() == self.favClass.get():
                 frame.isFavClass.set(True)
-                frame.favClassBonusMenu.config(state="normal")
-                if frame.isFavClass.get() and frame.favClassBonus.get() == "Choose Bonus":
-                    self.controller.addError("",
-                                             [frame.isFavClass, frame.favClassBonus],
-                                             frame.favClassBonusMenu)
             else:
                 frame.isFavClass.set(False)
-                frame.favClassBonusMenu.config(state="disabled")
-
-        self.checkFavClassBonusError()
 
 
     def addLevels(self):
         currentLvl = self.char.charLevel.get()
         lvlsToAdd  = self.levelNb
         charClass  = self.charClass.get()
+
+        if charClass not in self.classRequirements:
+            self.addCharClassRequirements(charClass)
+
+        for i in range(currentLvl, currentLvl + lvlsToAdd.get()):
+            self.addLevelFrame(charClass, i)
+
+
+        self.char.charLevel.set(currentLvl + lvlsToAdd.get())
+        lvlsToAdd.set(1)
+
+
+    def addCharClassRequirements(self, charClass):
+        self.classRequirements[charClass] = []
+
+        for req in self.class_data[charClass]["requirements"]:
+            target = [self.controller.getTarget(req["type"])]
+            values = req["value"]
+
+            if charClass == "Cleric":
+                target.append(self.char.deity)
+                condition = lambda: (self.checkClericAlignments(), None)
+            else:
+                condition = lambda t=target, v=values: (t[0].get() in v, None)
+
+            self.classRequirements[charClass].append(
+                self.controller.addRequirement(
+                    target,
+                    condition,
+                    req["message"],
+                    []
+                )
+            )
+
+
+    def addLevelFrame(self, charClass, index):
         hitDie     = self.class_data[charClass]["hitDie"]
         race       = self.race.get()
         isFavClass = True if self.favClass.get() == charClass else False
 
-        if currentLvl == 0:
+        frame = LevelFrame(self.view.charClassFrame, self, index, charClass, hitDie, isFavClass)
+
+        if race != "Choose race":
+            special = self.race_data[race]["favoredClassOptions"][charClass]["menuString"]
+            frame.favClassBonusMenu["menu"].add_command(label=special,command=tk._setit(frame.favClassBonus, special))
+
+        self.levelFrames.append(frame)
+
+        frame.hpGained.trace("w", lambda i,o,x: self.calculateHpGainedFromLevels())
+
+        self.updateFavClassBonusRequirement(frame, index)
+
+        for req in self.classRequirements[charClass]:
+            req.addProblem(frame.classLabel)
+
+
+    def updateFavClassBonusRequirement(self, frame, index):
+        if index == 0:
             self.view.favClassMenu.grid()
-            if self.favClass.get() == "Choose favorite class":
-                self.controller.addError("Choose a favorite class", [self.favClass], self.view.favClassMenu)
-
-        for i in range(currentLvl, currentLvl + lvlsToAdd.get()):
-            frame = LevelFrame(self.view.charClassFrame, self, i, charClass, hitDie, isFavClass)
-
-            if race != "Choose race":
-                special = self.race_data[race]["favoredClassOptions"][charClass]["menuString"]
-                frame.favClassBonusMenu["menu"].add_command(label=special,command=tk._setit(frame.favClassBonus, special))
-
-            self.levelFrames.append(frame)
-            self.char.hp.baseValue.set(self.char.hp.baseValue.get() + frame.hpGained.get())
-            if frame.isFavClass.get():
-                self.controller.addError("Choose favorite class bonus",
-                                         [self.favClass],
-                                         None)
-                self.controller.addError("",
-                                         [frame.isFavClass, frame.favClassBonus],
-                                         frame.favClassBonusMenu)
-
-        self.char.charLevel.set(currentLvl + lvlsToAdd.get())
-        lvlsToAdd.set(1)
+            self.controller.addRequirement(
+                [self.favClass],
+                lambda: (self.favClass.get() != "Choose favorite class", None),
+                "Choose a favorite class",
+                [self.view.favClassMenu]
+            )
+            self.favClassBonusRequirement = self.controller.addRequirement(
+                                                [frame.favClassBonus, frame.isFavClass],
+                                                lambda: self.checkFavClassBonusError(),
+                                                "Favorite class bonus remain to be chosen",
+                                                [frame.favClassBonusMenu]
+                                            )
+        else:
+            self.favClassBonusRequirement.addTarget(frame.favClassBonus)
+            self.favClassBonusRequirement.addTarget(frame.isFavClass)
+            self.favClassBonusRequirement.addProblem(frame.favClassBonusMenu)
 
 
     def removeLevel(self, levelFrame):
@@ -281,12 +316,10 @@ class CreationPageController():
 
         self.levelFrames.remove(levelFrame)
         self.char.charLevel.set(self.char.charLevel.get() - 1)
-        levelFrame.frame.destroy()
+        levelFrame.frame.pack_forget()
 
         if self.char.charLevel.get() == 0:
             self.view.favClassMenu.grid_remove()
-
-        self.checkFavClassBonusError()
 
 
     def checkBuyPointsError(self):
@@ -299,10 +332,32 @@ class CreationPageController():
 
 
     def checkFavClassBonusError(self):
-        self.controller.removeError(self.controller.findErrorBySolution(self.favClass))
+        res = (True, None)
+
         for frame in self.levelFrames:
             if frame.favClassBonus.get() == "Choose Bonus" and frame.isFavClass.get():
-                self.controller.addError("Choose favorite class bonus",
-                                         [self.favClass],
-                                         None)
-                return
+                res = (False, None)
+        
+        return res
+
+
+    def calculateHpGainedFromLevels(self):
+        total = 0
+        for frame in self.levelFrames:
+            total += frame.hpGained.get()
+
+        self.char.hpFromLevels.set(total)
+
+
+    def checkClericAlignments(self):
+        res = False
+
+        chosenDeity = self.char.deity.get()
+
+        if chosenDeity != "None":
+            deityAlignments = self.deity_data[chosenDeity]["alignments"]
+
+            if self.char.alignment.get() in deityAlignments:
+                res = True
+
+        return res

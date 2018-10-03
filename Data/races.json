@@ -218,7 +218,77 @@
                 "target" : "proficiency",
                 "value"  : ["longbow", "composite longbow", "longsword", "rapier", "shortbow", "composite shortbow", "elven"]
             }
-        ]
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Bard": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Cleric": {
+                "menuString": "+1/2 Domain Power Use",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Druid": {
+                "menuString": "+1/3 Wild Shape Natural Armor Bonus",
+                "target"    : ["ac[\"wildshape\"]"],
+                "type"      : "natural",
+                "value"     : 0.34
+            },
+            "Fighter": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Paladin": {
+                "menuString": "+1/2 Hit Point with Lay on Hands",
+                "target"    : "features[\"layonhands\"]",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Ranger": {
+                "menuString": "+1/2 Crit Confirmation(elven weapons)",
+                "target"    : "critConfirmation",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Rogue": {
+                "menuString": "+1 Major/Minor Magic cast/day(0th, 1st level)",
+                "target"    : ["cast[0]", "cast[1]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Sorcerer": {
+                "menuString": "+1/2 1st level Bloodline Power cast/day",
+                "versus"    : "Acid and earth spells",
+                "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Wizard": {
+                "menuString": "+1/2 1st level Arcane School Power cast/day",
+                "versus"    : "Duration of wizard abjuration spells",
+                "target"    : "casterLevel",
+                "type"      : "untyped",
+                "value"     : 0.34
+            }
+        }
     },
     "Gnome": {
         "size": "small",
@@ -331,7 +401,77 @@
                 "value"  : ["gnome"]
             }
 
-        ]
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1/2 Trap Sense",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Bard": {
+                "menuString": "+1 Bardic Performance Round",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Cleric": {
+                "menuString": "+1/2 Channel Energy Healing(animal, fey, plant)",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Druid": {
+                "menuString": "+1 Energy Resistance(acid, cold, electricity or fire)",
+                "target"    : ["ac[\"wildshape\"]"],
+                "type"      : "natural",
+                "value"     : 0.34
+            },
+            "Fighter": {
+                "menuString": "+1 CMD vs Dirty Trick and Steal",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "+1 Acrobatics when using Ki Point",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Paladin": {
+                "menuString": "+1/2 Hit Point with Lay on Hands",
+                "target"    : "features[\"layonhands\"]",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Ranger": {
+                "menuString": "+1 DR/magic to Animal Companion",
+                "target"    : "critConfirmation",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Rogue": {
+                "menuString": "+1 Major/Minor Magic cast/day(0th, 1st level)",
+                "target"    : ["cast[0]", "cast[1]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Sorcerer": {
+                "menuString": "+1/2 1st level Bloodline Power cast/day",
+                "versus"    : "Acid and earth spells",
+                "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Wizard": {
+                "menuString": "+1/2 1st level Arcane School Power cast/day",
+                "versus"    : "Duration of wizard abjuration spells",
+                "target"    : "casterLevel",
+                "type"      : "untyped",
+                "value"     : 0.34
+            }
+        }
     },
     "Half-Elf": {
         "size": "medium",
@@ -384,7 +524,77 @@
                 "type"   : "racial",
                 "value"  : 1
             }
-        ]
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Bard": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Cleric": {
+                "menuString": "+1/2 Domain Power Use",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Druid": {
+                "menuString": "+1/3 Wild Shape Natural Armor Bonus",
+                "target"    : ["ac[\"wildshape\"]"],
+                "type"      : "natural",
+                "value"     : 0.34
+            },
+            "Fighter": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Paladin": {
+                "menuString": "+1/2 Hit Point with Lay on Hands",
+                "target"    : "features[\"layonhands\"]",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Ranger": {
+                "menuString": "+1/2 Crit Confirmation(elven weapons)",
+                "target"    : "critConfirmation",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Rogue": {
+                "menuString": "+1 Major/Minor Magic cast/day(0th, 1st level)",
+                "target"    : ["cast[0]", "cast[1]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Sorcerer": {
+                "menuString": "+1/2 1st level Bloodline Power cast/day",
+                "versus"    : "Acid and earth spells",
+                "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Wizard": {
+                "menuString": "+1/2 1st level Arcane School Power cast/day",
+                "versus"    : "Duration of wizard abjuration spells",
+                "target"    : "casterLevel",
+                "type"      : "untyped",
+                "value"     : 0.34
+            }
+        }
     },
     "Halfling": {
         "size": "small",
@@ -493,7 +703,77 @@
                 "value"  : ["halfling"]
             }
 
-        ]
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Bard": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Cleric": {
+                "menuString": "+1/2 Domain Power Use",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Druid": {
+                "menuString": "+1/3 Wild Shape Natural Armor Bonus",
+                "target"    : ["ac[\"wildshape\"]"],
+                "type"      : "natural",
+                "value"     : 0.34
+            },
+            "Fighter": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Paladin": {
+                "menuString": "+1/2 Hit Point with Lay on Hands",
+                "target"    : "features[\"layonhands\"]",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Ranger": {
+                "menuString": "+1/2 Crit Confirmation(elven weapons)",
+                "target"    : "critConfirmation",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Rogue": {
+                "menuString": "+1 Major/Minor Magic cast/day(0th, 1st level)",
+                "target"    : ["cast[0]", "cast[1]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Sorcerer": {
+                "menuString": "+1/2 1st level Bloodline Power cast/day",
+                "versus"    : "Acid and earth spells",
+                "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Wizard": {
+                "menuString": "+1/2 1st level Arcane School Power cast/day",
+                "versus"    : "Duration of wizard abjuration spells",
+                "target"    : "casterLevel",
+                "type"      : "untyped",
+                "value"     : 0.34
+            }
+        }
     },
     "Half-Orc": {
         "size": "medium",
@@ -531,7 +811,77 @@
                 "target" : "proficiency",
                 "value"  : ["greataxe", "falchion", "orc"]
             }
-        ]
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Bard": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Cleric": {
+                "menuString": "+1/2 Domain Power Use",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Druid": {
+                "menuString": "+1/3 Wild Shape Natural Armor Bonus",
+                "target"    : ["ac[\"wildshape\"]"],
+                "type"      : "natural",
+                "value"     : 0.34
+            },
+            "Fighter": {
+                "menuString": "+1 CMD vs Disarm and Sunder",
+                "target"    : ["cmd[disarm]", "cmd[sunder]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "+1 Base Speed",
+                "target"    : "speed",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Paladin": {
+                "menuString": "+1/2 Hit Point with Lay on Hands",
+                "target"    : "features[\"layonhands\"]",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Ranger": {
+                "menuString": "+1/2 Crit Confirmation(elven weapons)",
+                "target"    : "critConfirmation",
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Rogue": {
+                "menuString": "+1 Major/Minor Magic cast/day(0th, 1st level)",
+                "target"    : ["cast[0]", "cast[1]"],
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Sorcerer": {
+                "menuString": "+1/2 1st level Bloodline Power cast/day",
+                "versus"    : "Acid and earth spells",
+                "target"    : ["damage[\"acid\"]", "damage[\"earth\"]"],
+                "type"      : "untyped",
+                "value"     : 0.5
+            },
+            "Wizard": {
+                "menuString": "+1/2 1st level Arcane School Power cast/day",
+                "versus"    : "Duration of wizard abjuration spells",
+                "target"    : "casterLevel",
+                "type"      : "untyped",
+                "value"     : 0.34
+            }
+        }
     },
     "Human": {
         "size": "medium",
@@ -550,6 +900,75 @@
                 "feature": "bonusBaseSkillPoints",
                 "value": 1
             }
-        ]
+        ],
+        "favoredClassOptions": {
+            "Barbarian": {
+                "menuString": "+1/2 Trap Sense or +1/3 Supersitious bonus",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : [0.5, 0.34]
+            },
+            "Bard": {
+                "menuString": "+1 Bard Spell Known",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Cleric": {
+                "menuString": "+1 Caster Level check vs outsiders",
+                "target"    : "casterLevel",
+                "versus"    : "outsiders",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Druid": {
+                "menuString": "+1/2 Diplomacy and Intimidate",
+                "target"    : ["skill[\"Diplomacy\"], skill[\"Intimidate\"]"],
+                "type"      : "natural",
+                "value"     : 0.5
+            },
+            "Fighter": {
+                "menuString": "+1 CMD(2 choices)",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Monk": {
+                "menuString": "+1/4 Ki Pool",
+                "target"    : "kiPool",
+                "type"      : "untyped",
+                "value"     : 0.25
+            },
+            "Paladin": {
+                "menuString": "+1 Energy Resistance",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Ranger": {
+                "menuString": "+1 Hit Point or +1 Skill Point Animal Companion",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Rogue": {
+                "menuString": "+1/6 Rogue Talent",
+                "target"    : "bonusFeat",
+                "type"      : "untyped",
+                "value"     : 0.17
+            },
+            "Sorcerer": {
+                "menuString": "+1 Sorcerer Spell Known",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 1
+            },
+            "Wizard": {
+                "menuString": "+1 Wizard Spell Known",
+                "target"    : "choose",
+                "type"      : "untyped",
+                "value"     : 1
+            }
+        }
     }
 }

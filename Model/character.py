@@ -17,6 +17,7 @@ class Character():
         self.charClass    = {}
         self.race         = tk.StringVar(value="Choose race")
         self.alignment    = tk.StringVar(value="Choose alignment")
+        self.deity        = tk.StringVar(value="None")
         self.hpFromLevels = tk.IntVar(value=0)
 
         # Modifiables

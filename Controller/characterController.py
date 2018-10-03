@@ -3,6 +3,7 @@ import Tkinter as tk
 
 from Controller          import *
 from Model.character     import Character
+from Model.requirement   import Requirement
 from View.characterFrame import CharacterFrame
 #from sheetPage           import SheetPage
 
@@ -22,17 +23,23 @@ class CharacterController:
         
         self.nb.add(self.creationPageController.getView(), text='Character Creation')
 
-        # Initial errors
-        self.addError("Choose a race",
-                      [self.creationPageController.race],
-                      self.creationPageController.view.racesMenu)
-        self.addError("Buy points remain to be spent",
-                      [self.creationPageController.buyPoints, self.creationPageController.maxBuyPoints],
-                      self.creationPageController.view.buyPointsLabel,
-                      self.creationPageController.checkBuyPointsError)
-        self.addError("Choose a class",
-                      [self.creationPageController.charClass],
-                      self.creationPageController.view.classMenu)
+        # Initial requirements
+        self.addRequirement([self.char.race],
+                            lambda: (self.char.race.get() != "Choose race", None),
+                            "Choose a race",
+                            [self.creationPageController.view.racesMenu])
+        self.addRequirement([self.creationPageController.buyPoints, self.creationPageController.maxBuyPoints],
+                            lambda: self.creationPageController.checkBuyPointsError(),
+                            "Buy points remain to be spent",
+                            [self.creationPageController.view.buyPointsLabel])
+        self.addRequirement([self.creationPageController.charClass],
+                            lambda: (self.creationPageController.charClass.get() != "Choose class", None),
+                            "Choose a class",
+                            [self.creationPageController.view.classMenu])
+        self.addRequirement([self.char.alignment],
+                            lambda: (self.char.alignment.get() != "Choose alignment", None),
+                            "Choose an alignment",
+                            [self.creationPageController.view.alignmentMenu])
 
 
     def closeTab(self):
@@ -44,6 +51,19 @@ class CharacterController:
         target.addModifier(mod, source, toggler)
 
 
+    def removeMod(self, source, targetName):
+        target = self.getTarget(targetName)
+        target.removeModifier(source)
+
+
+    def addError(self, msg, problems):
+        return self.errorFrameController.addError(msg, problems)
+
+
+    def removeError(self, error):
+        self.errorFrameController.removeError(error)
+
+
     def getTarget(self, targetName):
         try:
             return getattr(self.char, targetName)
@@ -52,13 +72,5 @@ class CharacterController:
             return self.char.skill[skill]
 
 
-    def addError(self, msg, solutions, problem, callback=None):
-        self.errorFrameController.addError(msg, solutions, problem, callback)
-
-
-    def removeError(self, error):
-        self.errorFrameController.removeError(error)
-
-
-    def findErrorBySolution(self, solution):
-        return self.errorFrameController.findErrorBySolution(solution)
+    def addRequirement(self, targets, condition, message, problems):
+        return Requirement(self, targets, condition, message, problems)

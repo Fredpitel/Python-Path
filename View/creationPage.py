@@ -48,11 +48,19 @@ class CreationPage():
 		self.alignmentMenu.grid(row=3, column=1, columnspan=3)
 		self.alignmentMenu.config(font=('Helvetica', 10), highlightthickness=0)
 
+		#Deity
+		tk.Label(self.summaryFrame, text="Deity: ").grid(row=4, column=0, pady=8, padx=10)
+		self.deityMenu = tk.OptionMenu(self.summaryFrame, self.controller.deity, *self.controller.DEITIES)
+		self.deityMenu.config(width=25)
+		self.deityMenu.grid(row=4, column=1, columnspan=3)
+		self.deityMenu.config(font=('Helvetica', 10), highlightthickness=0)
+
+
 		# Favorite Class
-		tk.Label(self.summaryFrame, text="Favorite Class: ").grid(row=4, column=0, pady=8, padx=10)
+		tk.Label(self.summaryFrame, text="Favorite Class: ").grid(row=5, column=0, pady=8, padx=10)
 		self.favClassMenu = tk.OptionMenu(self.summaryFrame, self.controller.favClass, *self.controller.CLASSES)
 		self.favClassMenu.config(width=25)
-		self.favClassMenu.grid(row=4, column=1, columnspan=3)
+		self.favClassMenu.grid(row=5, column=1, columnspan=3)
 		self.favClassMenu.config(font=('Helvetica', 10), highlightthickness=0)
 		self.favClassMenu.grid_remove()
 
@@ -162,7 +170,7 @@ class CreationPage():
 		self.charClassFrame.grid(row=2, column=0, columnspan=2, sticky="NEW")
 
 		# Total HP
-		self.hpFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.hpFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
 		self.hpFrame.grid(row=1, column=2, padx=10, sticky="SEW")
 		self.hpFrame.grid_columnconfigure(1, weight=1)
 

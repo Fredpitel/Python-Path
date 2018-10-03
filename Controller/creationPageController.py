@@ -5,9 +5,10 @@ import Tkinter as  tk
 import json
 import os
 
-from View.creationPage import CreationPage
-from View.levelFrame   import LevelFrame
-from Model.error       import Error
+from View.creationPage     import CreationPage
+from View.levelFrame       import LevelFrame
+from View.advancementFrame import AdvancementFrame
+from Model.error           import Error
 
 class CreationPageController():
     POINT_BUY_CHART = {
@@ -41,6 +42,15 @@ class CreationPageController():
                         "+2 Charisma"
                     ]
 
+    ADVANCEMENT     = [
+                        "+1 Strength",
+                        "+1 Dexterity",
+                        "+1 Constitution",
+                        "+1 Intelligence",
+                        "+1 Wisdom",
+                        "+1 Charisma"
+                    ]
+
     HUMANLIKE_RACES = ["Human", "Half-Elf", "Half-Orc"]
     ALIGNMENTS      = ["LG","NG","CG","LN","TN","CN","LE","NE","CE"]
     DEITIES         = ["None"]
@@ -51,6 +61,7 @@ class CreationPageController():
         self.controller        = controller
         self.char              = controller.char
         self.levelFrames       = []
+        self.advancementFrames = []
         self.errors            = []
         self.classRequirements = {}
 
@@ -74,6 +85,7 @@ class CreationPageController():
         self.charClass    = tk.StringVar(value="Choose class")
         self.favClass     = tk.StringVar(value="Choose favorite class")
         self.levelNb      = tk.IntVar(value=1)
+        self.advancement  = tk.StringVar(value="Choose Bonus")
 
         # Data
         self.race_data = json.load(open(os.path.abspath("Data/races.json")))
@@ -179,6 +191,8 @@ class CreationPageController():
                         "Choose racial ability bonus",
                         [self.view.abilityMenu]
                     )
+            else:
+                self.setBonusAbility()
         else:
             self.view.abilityMenu.grid_remove()        
 
@@ -242,6 +256,9 @@ class CreationPageController():
 
 
         self.char.charLevel.set(currentLvl + lvlsToAdd.get())
+        for i in range(len(self.advancementFrames), self.char.charLevel.get() / 4):
+            self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, i + 1))
+
         lvlsToAdd.set(1)
 
 

@@ -4,6 +4,8 @@
 import ttk
 import Tkinter as tk
 
+from advancementFrame import AdvancementFrame
+
 class CreationPage():
 	def __init__(self, controller, parent):
 		self.controller = controller
@@ -30,14 +32,14 @@ class CreationPage():
 		tk.Label(self.summaryFrame, text="Race:").grid(row=1, column=0, pady=8)
 		self.racesMenu = tk.OptionMenu(self.summaryFrame, self.controller.race, *self.controller.RACES)
 		self.racesMenu.config(width=25, fg="red")
-		self.racesMenu.grid(row=1, column=1, columnspan=3)
+		self.racesMenu.grid(row=1, column=1)
 		self.racesMenu.config(font=('Helvetica', 10), highlightthickness=0)
 
 		# Racial Ability Bonus
 		tk.Label(self.summaryFrame, text="Racial ability bonus: ").grid(row=2, column=0, pady=8, padx=10)
 		self.abilityMenu = tk.OptionMenu(self.summaryFrame, self.controller.bonusAbility, *self.controller.ABILITY_BONUS)
 		self.abilityMenu.config(width=25, fg="red")
-		self.abilityMenu.grid(row=2, column=1, columnspan=3)
+		self.abilityMenu.grid(row=2, column=1)
 		self.abilityMenu.config(font=('Helvetica', 10), highlightthickness=0)
 		self.abilityMenu.grid_remove()
 
@@ -45,10 +47,10 @@ class CreationPage():
 		tk.Label(self.summaryFrame, text="Alignment: ").grid(row=3, column=0, pady=8, padx=10)
 		self.alignmentMenu = tk.OptionMenu(self.summaryFrame, self.controller.alignment, *self.controller.ALIGNMENTS)
 		self.alignmentMenu.config(width=25)
-		self.alignmentMenu.grid(row=3, column=1, columnspan=3)
+		self.alignmentMenu.grid(row=3, column=1)
 		self.alignmentMenu.config(font=('Helvetica', 10), highlightthickness=0)
 
-		#Deity
+		# Deity
 		tk.Label(self.summaryFrame, text="Deity: ").grid(row=4, column=0, pady=8, padx=10)
 		self.deityMenu = tk.OptionMenu(self.summaryFrame, self.controller.deity, *self.controller.DEITIES)
 		self.deityMenu.config(width=25)
@@ -60,16 +62,32 @@ class CreationPage():
 		tk.Label(self.summaryFrame, text="Favorite Class: ").grid(row=5, column=0, pady=8, padx=10)
 		self.favClassMenu = tk.OptionMenu(self.summaryFrame, self.controller.favClass, *self.controller.CLASSES)
 		self.favClassMenu.config(width=25)
-		self.favClassMenu.grid(row=5, column=1, columnspan=3)
+		self.favClassMenu.grid(row=5, column=1)
 		self.favClassMenu.config(font=('Helvetica', 10), highlightthickness=0)
 		self.favClassMenu.grid_remove()
 
 
 		#
+		# Ability Advancement
+		#
+		self.advancementFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.advancementFrame.grid(row=1, column=0, padx=10, pady=10, sticky="NEW")
+		self.advancementFrame.grid_columnconfigure(1, weight=1)
+
+		tk.Label(self.advancementFrame, text="Level").grid(row=0, column=0, padx=10)
+		tk.Label(self.advancementFrame, text="Ability").grid(row=0, column=1, padx=10)
+		
+		frame = AdvancementFrame(self.advancementFrame, self.controller, 1)
+		frame.menu.config(state="disabled")
+		frame.isActive = False
+
+		self.controller.advancementFrames.append(frame)
+
+		#
 		# Center Frame
 		#
 		self.statFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
-		self.statFrame.grid(row=0, column=1, rowspan=2, padx=10, sticky="NEW")
+		self.statFrame.grid(row=0, column=1, rowspan=3, padx=10, sticky="NEW")
 		self.statFrame.grid_columnconfigure(0, weight=1)
 		self.statFrame.grid_columnconfigure(1, weight=1)
 
@@ -142,7 +160,7 @@ class CreationPage():
 		# Right Frame
 		#
 		self.classFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
-		self.classFrame.grid(row=0, column=2, rowspan=2, padx=10, sticky="NEW")
+		self.classFrame.grid(row=0, column=2, rowspan=3, padx=10, sticky="NEW")
 		self.classFrame.grid_columnconfigure(1, weight=1)
 		
 		# Class
@@ -171,7 +189,7 @@ class CreationPage():
 
 		# Total HP
 		self.hpFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
-		self.hpFrame.grid(row=1, column=2, padx=10, sticky="SEW")
+		self.hpFrame.grid(row=2, column=2, padx=10, sticky="SEW")
 		self.hpFrame.grid_columnconfigure(1, weight=1)
 
 		tk.Label(self.hpFrame, text="Hit Point(s):").grid(row=1, column=0)
@@ -184,4 +202,3 @@ class CreationPage():
 
 		commandDown = lambda: self.controller.setAbilityScore(stat, -1)
 		tk.Button(parent, text="▼", font=("helvetica", 6), width=1, command=commandDown).grid(row=1, column=0)
-		

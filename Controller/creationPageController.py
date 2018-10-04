@@ -356,8 +356,10 @@ class CreationPageController():
 
     def checkBuyPointsError(self):
         if self.maxBuyPoints.get() < self.buyPoints.get():
+            self.view.buyPointsLabel.config(fg="red")
             return (False, "Too many buy points spent")
         elif self.maxBuyPoints.get() > self.buyPoints.get():
+            self.view.buyPointsLabel.config(fg="red")
             return (False, "Buy points remain to be spent")
         else:
             return (True, None)

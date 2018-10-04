@@ -28,10 +28,10 @@ class Requirement:
 
 
     def removeProblem(self, problem):
-        if len(self.problems) > 0:
-            self.checkFulfilled()
-        else:
+        if len(self.problems) == 1:
             self.remove()
+        else:
+            self.checkFulfilled()
 
 
     def addProblem(self, problem):

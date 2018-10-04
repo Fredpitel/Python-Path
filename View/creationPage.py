@@ -30,7 +30,7 @@ class CreationPage():
 
 		# Race
 		tk.Label(self.summaryFrame, text="Race:").grid(row=1, column=0, pady=8)
-		self.racesMenu = tk.OptionMenu(self.summaryFrame, self.controller.race, *self.controller.RACES)
+		self.racesMenu = tk.OptionMenu(self.summaryFrame, self.controller.race, *self.controller.races)
 		self.racesMenu.config(width=25, fg="red")
 		self.racesMenu.grid(row=1, column=1)
 		self.racesMenu.config(font=('Helvetica', 10), highlightthickness=0)
@@ -52,7 +52,7 @@ class CreationPage():
 
 		# Deity
 		tk.Label(self.summaryFrame, text="Deity: ").grid(row=4, column=0, pady=8, padx=10)
-		self.deityMenu = tk.OptionMenu(self.summaryFrame, self.controller.deity, *self.controller.DEITIES)
+		self.deityMenu = tk.OptionMenu(self.summaryFrame, self.controller.deity, *self.controller.deities)
 		self.deityMenu.config(width=25)
 		self.deityMenu.grid(row=4, column=1, columnspan=3)
 		self.deityMenu.config(font=('Helvetica', 10), highlightthickness=0)
@@ -60,7 +60,7 @@ class CreationPage():
 
 		# Favorite Class
 		tk.Label(self.summaryFrame, text="Favorite Class: ").grid(row=5, column=0, pady=8, padx=10)
-		self.favClassMenu = tk.OptionMenu(self.summaryFrame, self.controller.favClass, *self.controller.CLASSES)
+		self.favClassMenu = tk.OptionMenu(self.summaryFrame, self.controller.favClass, *self.controller.classes)
 		self.favClassMenu.config(width=25)
 		self.favClassMenu.grid(row=5, column=1)
 		self.favClassMenu.config(font=('Helvetica', 10), highlightthickness=0)
@@ -76,12 +76,7 @@ class CreationPage():
 
 		tk.Label(self.advancementFrame, text="Level").grid(row=0, column=0, padx=10)
 		tk.Label(self.advancementFrame, text="Ability").grid(row=0, column=1, padx=10)
-		
-		frame = AdvancementFrame(self.advancementFrame, self.controller, 1)
-		frame.menu.config(state="disabled")
-		frame.isActive = False
 
-		self.controller.advancementFrames.append(frame)
 
 		#
 		# Center Frame
@@ -165,7 +160,7 @@ class CreationPage():
 		
 		# Class
 		tk.Label(self.classFrame, text="Class: ").grid(row=0, column=0, pady=8)
-		self.classMenu = tk.OptionMenu(self.classFrame, self.controller.charClass, *self.controller.CLASSES)
+		self.classMenu = tk.OptionMenu(self.classFrame, self.controller.charClass, *self.controller.classes)
 		self.classMenu.config(width=25)
 		self.classMenu.grid(row=0, column=1, padx=10)
 		self.classMenu.config(font=('Helvetica', 12), highlightthickness=0)

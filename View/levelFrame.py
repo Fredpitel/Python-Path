@@ -80,6 +80,8 @@ class LevelFrame():
             self.favClassBonusMenu.config(state="normal")
             if self.bonusChosen is not None:
                 self.addFavClassBonus()
+            else:
+                self.favClassBonusMenu.config(fg="red")
         else:
             self.favClassBonusMenu.config(state="disabled")
             if self.bonusChosen is not None:
@@ -97,10 +99,8 @@ class LevelFrame():
 
 
     def setFavClassBonus(self):
-        if self.bonusChosen is None:
-            self.controller.favClassBonusRequirement.removeProblem(self.favClassBonusMenu)
-
         self.favClassBonusMenu.config(fg="black")
+
         if self.favClassBonus.get() == "+1 Hit Point":
             self.bonusChosen = "hp"
         elif self.favClassBonus.get() == "+1 Skill Point":

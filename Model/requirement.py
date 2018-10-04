@@ -9,9 +9,10 @@ class Requirement:
         self.error      = None
 
         for target in self.targets:
-            target.trace("w", lambda i,o,x: self.checkFulfilled())
+            target.traceID = target.trace("w", lambda i,o,x: self.checkFulfilled())
 
         for problem in self.problems:
+            problem.config(fg="red")
             problem.bind("<Unmap>", lambda e, p=problem: self.removeProblem(p))
         
         self.checkFulfilled()
@@ -27,7 +28,6 @@ class Requirement:
 
 
     def removeProblem(self, problem):
-        self.problems.remove(problem)
         if len(self.problems) > 0:
             self.checkFulfilled()
         else:
@@ -42,8 +42,8 @@ class Requirement:
 
 
     def addTarget(self, target):
-        target.trace("w", lambda i,o,x: self.checkFulfilled())
         self.targets.append(target)
+        target.traceID = target.trace("w", lambda i,o,x: self.checkFulfilled())
 
 
     def checkFulfilled(self):
@@ -54,7 +54,7 @@ class Requirement:
                 self.message = res[1]
             
             if self.error is None:
-                self.error = self.controller.addError(self.message, self.problems)
+                self.error = self.controller.addError(self.message)
             else:
                 self.error.setMessage(self.message)
         else:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import Tkinter as  tk
+import Tkinter as tk
 import json
 import os
 
@@ -53,17 +53,19 @@ class CreationPageController():
 
     HUMANLIKE_RACES = ["Human", "Half-Elf", "Half-Orc"]
     ALIGNMENTS      = ["LG","NG","CG","LN","TN","CN","LE","NE","CE"]
-    DEITIES         = ["None"]
-    RACES           = []
-    CLASSES         = []
+
 
     def __init__(self, controller):
-        self.controller        = controller
-        self.char              = controller.char
-        self.levelFrames       = []
-        self.advancementFrames = []
-        self.errors            = []
-        self.classRequirements = {}
+        self.controller             = controller
+        self.char                   = controller.char
+        self.levelFrames            = []
+        self.advancementFrames      = []
+        self.errors                 = []
+        self.races                  = []
+        self.classes                = []
+        self.deities                = ["None"]
+        self.classRequirements      = {}
+        self.advancementRequirement = None
 
         # Global character variables
         self.charName     = self.char.charName
@@ -90,19 +92,19 @@ class CreationPageController():
         # Data
         self.race_data = json.load(open(os.path.abspath("Data/races.json")))
         for race in self.race_data:
-            self.RACES.append(race)
+            self.races.append(race)
 
-        self.RACES.sort()
+        self.races.sort()
 
         self.class_data = json.load(open(os.path.abspath("Data/classes.json")))
         for className in self.class_data:
-            self.CLASSES.append(className)
+            self.classes.append(className)
 
-        self.CLASSES.sort()
+        self.classes.sort()
 
         self.deity_data = json.load(open(os.path.abspath("Data/deities.json")))
         for deity in self.deity_data:
-            self.DEITIES.append(deity)
+            self.deities.append(deity)
 
 
         # Tracing
@@ -162,10 +164,6 @@ class CreationPageController():
 
             points = self.POINT_BUY_CHART[new]
             self.buyPoints.set(self.buyPoints.get() + points)
-
-
-    def setAbilityAdvancement(self):
-        pass
 
 
     def setRemainingLevels(self):
@@ -254,12 +252,29 @@ class CreationPageController():
         for i in range(currentLvl, currentLvl + lvlsToAdd.get()):
             self.addLevelFrame(charClass, i)
 
-
         self.char.charLevel.set(currentLvl + lvlsToAdd.get())
+
         for i in range(len(self.advancementFrames), self.char.charLevel.get() / 4):
-            self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, i + 1))
+            frame = AdvancementFrame(self.view.advancementFrame, self, i+1, True)
+            self.advancementFrames.append(frame)
+            self.addAdvancementRequirement(frame)
+
+        if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1:
+            self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, len(self.advancementFrames)+1, False))
 
         lvlsToAdd.set(1)
+
+
+    def addAdvancementRequirement(self, frame):
+        if self.advancementRequirement is None:
+            self.advancementRequirement = self.controller.addRequirement([frame.bonus, frame.isActive],
+                                                                         lambda: self.checkAdvancementRequirement(),
+                                                                         "Ability bonus remain to be chosen",
+                                                                         [frame.menu])
+        else:
+            self.advancementRequirement.addTarget(frame.bonus)
+            self.advancementRequirement.addTarget(frame.isActive)
+            self.advancementRequirement.addProblem(frame.menu)
 
 
     def addCharClassRequirements(self, charClass):
@@ -273,7 +288,7 @@ class CreationPageController():
                 target.append(self.char.deity)
                 condition = lambda: (self.checkClericAlignments(), None)
             else:
-                condition = lambda t=target, v=values: (t[0].get() in v, None)
+                condition = lambda t=target[0], v=values: (t.get() in v, None)
 
             self.classRequirements[charClass].append(
                 self.controller.addRequirement(
@@ -355,6 +370,16 @@ class CreationPageController():
             if frame.favClassBonus.get() == "Choose Bonus" and frame.isFavClass.get():
                 res = (False, None)
         
+        return res
+
+
+    def checkAdvancementRequirement(self):
+        res = (True, None)
+
+        for frame in self.advancementFrames:
+            if frame.isActive.get() and frame.bonus.get() == "Choose Bonus":
+                res = (False, None)
+
         return res
 
 

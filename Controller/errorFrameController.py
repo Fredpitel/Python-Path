@@ -8,11 +8,8 @@ class ErrorFrameController():
         self.view = ErrorFrame(self, controller.creationPageController.getView())
 
 
-    def addError(self, message, problems):
-        error = Error(message, problems)
-
-        for problem in error.problems:
-            problem.config(fg="red")
+    def addError(self, message):
+        error = Error(message)
         
         if error.message.get() != "":
             error.label = self.view.addLabel(error.message)

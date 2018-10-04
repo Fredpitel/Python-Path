@@ -56,8 +56,8 @@ class CharacterController:
         target.removeModifier(source)
 
 
-    def addError(self, msg, problems):
-        return self.errorFrameController.addError(msg, problems)
+    def addError(self, msg):
+        return self.errorFrameController.addError(msg)
 
 
     def removeError(self, error):

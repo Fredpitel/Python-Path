@@ -11,7 +11,7 @@ class AdvancementFrame():
         self.isActive  = tk.BooleanVar(value=isActive)
 
         self.frame = ttk.Frame(parent, padding=10)
-        self.frame.grid(row=row, column=0, columnspan=2, padx=10, sticky="NEW")
+        self.frame.grid(row=row + 1, column=0, columnspan=2, padx=10, sticky="NEW")
         self.frame.grid_columnconfigure(1, weight=1)
 
         tk.Label(self.frame, text=str(self.level)).grid(row=0, column=0, pady=8, padx=10)
@@ -61,6 +61,5 @@ class AdvancementFrame():
             self.bonusStat = "wis"
         else:
             self.bonusStat = "cha"
-        
-        self.menu.config(fg="black")
+
         self.controller.controller.addMod({"target": self.bonusStat, "type": "untyped", "value": 1}, self.bonus, self.menu)

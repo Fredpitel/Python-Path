@@ -6,6 +6,7 @@
         "vision": "Darkvision 60 ft.",
         "speed": 20,
         "languages": ["Common", "Dwarven"],
+        "bonusLanguages" : ["Giant", "Gnome", "Goblin", "Orc", "Terran", "Undercommon"],
         "mods": [
             {
                 "target": "con",
@@ -158,6 +159,7 @@
         "vision": "Low-light vision",
         "speed": 30,
         "languages": ["Common", "Elven"],
+        "bonusLanguages" : ["Celestial", "Draconic", "Gnoll", "Gnome", "Goblin", "Orc", "Sylvan"],
         "mods": [
             {
                 "target": "dex",
@@ -297,6 +299,7 @@
         "vision": "Low-light vision",
         "speed": 20,
         "languages": ["Common", "Gnome", "Sylvan"],
+        "bonusLanguages" : ["Draconic", "Dwarven", "Elven", "Giant", "Goblin", "Orc"],
         "mods": [
             {
                 "target": "str",
@@ -480,6 +483,7 @@
         "vision": "Low-light vision",
         "speed": 30,
         "languages": ["Common", "Elven"],
+        "bonusLanguages" : ["Aboleth","Abyssal","Aklo","Aquan","Auran","Boggard","Celestial","Cyclops","Dark Folk","Draconic","Dwarven","D’ziriak","Giant","Gnoll","Gnome","Goblin","Grippli","Halfling","Ignan","Infernal","Necril","Orc","Protean","Sphinx","Sylvan","Tengu","Terran","Treant","Undercommon","Vegepygmy"],
         "mods": [
             {
                 "target": "skill[\"Perception\"]",
@@ -603,6 +607,7 @@
         "vision": "",
         "speed": 20,
         "languages": ["Common", "Halfling"],
+        "bonusLanguages" : ["Dwarven", "Elven", "Gnome", "Goblin"],
         "mods": [
             {
                 "target": "str",
@@ -782,6 +787,7 @@
         "vision": "Darkvision",
         "speed": 30,
         "languages": ["Common", "Orc"],
+        "bonusLanguages" : ["Abyssal", "Draconic", "Giant", "Gnoll", "Goblin"],
         "mods": [
             {
                 "target": "skill[\"Intimidate\"]",
@@ -890,6 +896,7 @@
         "vision": "",
         "speed": 30,
         "languages": ["Common"],
+        "bonusLanguages" : ["Aboleth","Abyssal","Aklo","Aquan","Auran","Boggard","Celestial","Cyclops","Dark Folk","Draconic","Dwarven","D’ziriak","Giant","Gnoll","Gnome","Goblin","Grippli","Halfling","Ignan","Infernal","Necril","Orc","Protean","Sphinx","Sylvan","Tengu","Terran","Treant","Undercommon","Vegepygmy"],
         "mods": [],
         "features": [
             {

@@ -8,6 +8,7 @@ import os
 from View.creationPage     import CreationPage
 from View.levelFrame       import LevelFrame
 from View.advancementFrame import AdvancementFrame
+from View.languageWindow   import LanguageWindow
 from Model.error           import Error
 
 class CreationPageController():
@@ -56,38 +57,44 @@ class CreationPageController():
 
 
     def __init__(self, controller):
-        self.controller             = controller
-        self.char                   = controller.char
-        self.levelFrames            = []
-        self.advancementFrames      = []
-        self.errors                 = []
-        self.races                  = []
-        self.classes                = []
-        self.deities                = ["None"]
-        self.classRequirements      = {}
-        self.advancementRequirement = None
+        self.controller              = controller
+        self.char                    = controller.char
+ 
+        self.levelFrames             = []
+        self.advancementFrames       = []
+        self.languageFrames          = []
+        self.errors                  = []
+        self.races                   = []
+        self.classes                 = []
+        self.deities                 = ["None"]
+        self.classRequirements       = {}
+        self.advancementRequirement  = None
+        self.abilityBonusRequirement = None
+        self.languageRequirement     = None
 
         # Global character variables
-        self.charName     = self.char.charName
-        self.race         = self.char.race
-        self.alignment    = self.char.alignment
-        self.deity        = self.char.deity
+        self.charName  = self.char.charName
+        self.race      = self.char.race
+        self.alignment = self.char.alignment
+        self.deity     = self.char.deity
 
         # CreationPage specific variables
-        self.buyPoints    = tk.IntVar(value=0)
-        self.maxBuyPoints = tk.IntVar(value=15)
-        self.purchaseMode = tk.StringVar(value="Standard Fantasy (15 points)")
-        self.bonusAbility = tk.StringVar(value="Choose ability bonus")
-        self.strBonusStr  = tk.StringVar(value="STR (+0)")
-        self.dexBonusStr  = tk.StringVar(value="DEX (+0)")
-        self.conBonusStr  = tk.StringVar(value="CON (+0)")
-        self.intBonusStr  = tk.StringVar(value="INT (+0)")
-        self.wisBonusStr  = tk.StringVar(value="WIS (+0)")
-        self.chaBonusStr  = tk.StringVar(value="CHA (+0)")
-        self.charClass    = tk.StringVar(value="Choose class")
-        self.favClass     = tk.StringVar(value="Choose favorite class")
-        self.levelNb      = tk.IntVar(value=1)
-        self.advancement  = tk.StringVar(value="Choose Bonus")
+        self.buyPoints      = tk.IntVar(value=0)
+        self.maxBuyPoints   = tk.IntVar(value=15)
+        self.purchaseMode   = tk.StringVar(value="Standard Fantasy (15 points)")
+        self.bonusAbility   = tk.StringVar(value="Choose ability bonus")
+        self.strBonusStr    = tk.StringVar(value="STR (+0)")
+        self.dexBonusStr    = tk.StringVar(value="DEX (+0)")
+        self.conBonusStr    = tk.StringVar(value="CON (+0)")
+        self.intBonusStr    = tk.StringVar(value="INT (+0)")
+        self.wisBonusStr    = tk.StringVar(value="WIS (+0)")
+        self.chaBonusStr    = tk.StringVar(value="CHA (+0)")
+        self.charClass      = tk.StringVar(value="Choose class")
+        self.favClass       = tk.StringVar(value="Choose favorite class")
+        self.levelNb        = tk.IntVar(value=1)
+        self.advancement    = tk.StringVar(value="Choose Bonus")
+        self.bonusLanguages = tk.IntVar(value=0)
+        self.addedLanguages = tk.IntVar(value=0)
 
         # Data
         self.race_data = json.load(open(os.path.abspath("Data/races.json")))
@@ -112,6 +119,7 @@ class CreationPageController():
         self.char.dex.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.dex))
         self.char.con.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.con))
         self.char.int.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.int))
+        self.char.int.bonus.trace("w", lambda i,o,x: self.checkBonusLanguages(self.char.int.bonus.get()))
         self.char.wis.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.wis))
         self.char.cha.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.cha))
         self.char.charLevel.trace("w", lambda i,o,x: self.calculateHpGainedFromLevels())
@@ -183,12 +191,13 @@ class CreationPageController():
         if race.get() in self.HUMANLIKE_RACES:
             self.view.abilityMenu.grid()
             if self.bonusAbility.get() == "Choose ability bonus":
-                self.controller.addRequirement(
-                        [self.bonusAbility],
-                        lambda: (self.bonusAbility.get() != "Choose ability bonus", None),
-                        "Choose racial ability bonus",
-                        [self.view.abilityMenu]
-                    )
+                if self.abilityBonusRequirement is None:
+                    self.abilityBonusRequirement = self.controller.addRequirement(
+                                                                        [self.bonusAbility],
+                                                                        lambda: (self.bonusAbility.get() != "Choose ability bonus", None),
+                                                                        "Choose racial ability bonus",
+                                                                        [self.view.abilityMenu]
+                                                                    )
             else:
                 self.setBonusAbility()
         else:
@@ -203,6 +212,69 @@ class CreationPageController():
 
             for option in options:
                 frame.favClassBonusMenu["menu"].add_command(label=option,command=tk._setit(frame.favClassBonus, option))
+
+        for frame in list(self.languageFrames):
+            self.removeLanguage(frame)
+
+        for language in data["languages"]:
+            self.languageFrames.append(self.view.addLanguageFrame(language, True))
+
+
+    def removeLanguage(self, frame):
+        self.languageFrames.remove(frame)
+        frame.pack_forget()
+
+        if not frame.racial:
+            self.addedLanguages.set(self.addedLanguages.get() - 1)
+
+
+    def checkBonusLanguages(self, intBonus):
+        self.bonusLanguages.set(intBonus)
+
+        if self.bonusLanguages.get() != self.addedLanguages.get() and self.languageRequirement is None:
+            self.languageRequirement = self.controller.addRequirement([self.bonusLanguages, self.addedLanguages],
+                                                                     lambda: self.checkAddedLanguages(),
+                                                                     "",
+                                                                     [self.view.addLanguageButton])
+
+
+    def checkAddedLanguages(self):
+        if self.bonusLanguages.get() < self.addedLanguages.get() and self.bonusLanguages.get() > 0:
+            self.view.addLanguageButton.config(fg="red")
+            return (False, "Too many bonus languages chosen")
+        elif self.bonusLanguages.get() > self.addedLanguages.get():
+            self.view.addLanguageButton.config(state="normal", fg="red")
+            return (False, "Bonus language remain to be chosen")
+        else:
+            self.view.addLanguageButton.config(state="disabled")
+            return (True, None)
+
+
+    def createLanguageWindow(self):
+        languages = []
+
+        if self.char.race.get() != "Choose race":
+            for language in self.race_data[self.char.race.get()]["bonusLanguages"]:
+                ok = True
+                for frame in self.languageFrames:
+                    if frame.language == language:
+                        ok = False
+                        break
+                if ok:
+                    languages.append(language)
+
+        remaining = self.bonusLanguages.get() - self.addedLanguages.get()
+
+        LanguageWindow(self, languages, remaining)
+
+
+    def addBonusLanguages(self, window, checkboxes):
+        window.destroy()
+
+        for checkbox in checkboxes:
+            if checkbox.var.get():
+                self.languageFrames.append(self.view.addLanguageFrame(checkbox.language, False))
+                self.addedLanguages.set(self.addedLanguages.get() + 1)
 
 
     def setBonusAbility(self):
@@ -370,8 +442,11 @@ class CreationPageController():
 
         for frame in self.levelFrames:
             if frame.favClassBonus.get() == "Choose Bonus" and frame.isFavClass.get():
+                frame.favClassBonusMenu.config(fg="red")
                 res = (False, None)
-        
+            else:
+                frame.favClassBonusMenu.config(fg="black")
+
         return res
 
 
@@ -380,7 +455,11 @@ class CreationPageController():
 
         for frame in self.advancementFrames:
             if frame.isActive.get() and frame.bonus.get() == "Choose Bonus":
+                frame.menu.config(fg="red")
                 res = (False, None)
+            else:
+                frame.menu.config(fg="black")
+
 
         return res
 

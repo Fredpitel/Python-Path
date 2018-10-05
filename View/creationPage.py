@@ -21,7 +21,7 @@ class CreationPage():
 		# Left Frame
 		#
 		self.summaryFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
-		self.summaryFrame.grid(row=0, column=0, padx=10, sticky="NEW")
+		self.summaryFrame.grid(row=0, column=0, padx=10, sticky="NSEW")
 		self.summaryFrame.grid_columnconfigure(1, weight=1)
 
 		# Name
@@ -74,15 +74,16 @@ class CreationPage():
 		self.advancementFrame.grid(row=1, column=0, padx=10, pady=10, sticky="NEW")
 		self.advancementFrame.grid_columnconfigure(1, weight=1)
 
-		tk.Label(self.advancementFrame, text="Level").grid(row=0, column=0, padx=10)
-		tk.Label(self.advancementFrame, text="Ability").grid(row=0, column=1, padx=10)
+		tk.Label(self.advancementFrame, text="Ability Advancement").grid(row=0, column=0, columnspan=2, sticky="EW")
+		tk.Label(self.advancementFrame, text="Level").grid(row=1, column=0, padx=10, pady=10)
+		tk.Label(self.advancementFrame, text="Ability").grid(row=1, column=1, padx=10, pady=10)
 
 
 		#
 		# Center Frame
 		#
 		self.statFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
-		self.statFrame.grid(row=0, column=1, rowspan=3, padx=10, sticky="NEW")
+		self.statFrame.grid(row=0, column=1, padx=10, sticky="NEW")
 		self.statFrame.grid_columnconfigure(0, weight=1)
 		self.statFrame.grid_columnconfigure(1, weight=1)
 
@@ -150,7 +151,20 @@ class CreationPage():
 		self.buyPointsLabel = tk.Label(self.statFrame, textvariable=self.controller.buyPoints)
 		self.buyPointsLabel.grid(row=3, column=1)
 
-		
+		# Languages
+		self.languageFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.languageFrame.grid(row=1, column=1, rowspan=2, padx=10, pady=10, sticky="NEW")
+		self.languageFrame.grid_columnconfigure(0, weight=1)
+
+		tk.Label(self.languageFrame, text="Languages").grid(row=0, column=0, sticky="EW")
+		self.addLanguageButton = tk.Button(self.languageFrame, text="Add", font=("helvetica", 10), command=self.controller.createLanguageWindow)
+		self.addLanguageButton.grid(row=0, column=1, padx=10)
+		self.addLanguageButton.config(state="disabled")
+
+		self.knownLanguagesFrame = ttk.Frame(self.languageFrame, padding=10)
+		self.knownLanguagesFrame.grid(row=1, column=0, columnspan=2, padx=5, sticky="EW")
+
+
 		#
 		# Right Frame
 		#
@@ -197,3 +211,23 @@ class CreationPage():
 
 		commandDown = lambda: self.controller.setAbilityScore(stat, -1)
 		tk.Button(parent, text="▼", font=("helvetica", 6), width=1, command=commandDown).grid(row=1, column=0)
+
+
+	def addLanguageFrame(self, language, racial):
+		frame = ttk.Frame(self.knownLanguagesFrame, relief=tk.SUNKEN)
+		frame.grid_columnconfigure(0, weight=1)
+		frame.language = language
+
+		label = tk.Label(frame, text=language)
+		label.config(font=('Helvetica', 10))
+		label.grid(row=0, column=0, sticky="W", padx=5, pady=5)
+		button = tk.Button(frame, text="×", command=lambda f=frame: self.controller.removeLanguage(f))
+		button.config(fg="red", font=('Helvetica', 12))
+		button.grid(row=0, column=1, sticky="E")
+		if racial:
+			button.config(state="disabled")
+
+		frame.pack(fill="x")
+		frame.racial = racial
+
+		return frame

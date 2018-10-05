@@ -48,7 +48,7 @@ class LevelFrame():
 
         self.button = tk.Button(self.frame, text="×", command=lambda: controller.removeLevel(self))
         self.button.grid(row=0, column=5, padx=5, pady=2, sticky="E")
-        self.button.config(fg="red", font=('Helvetica', 12), relief=tk.FLAT)
+        self.button.config(fg="red", font=('Helvetica', 12))
 
         self.levelNumber.trace(  "w", lambda i,o,x: self.checkFirstLevel())
         self.hp.trace(           "w", lambda i,o,x: self.validateEntry())
@@ -80,8 +80,6 @@ class LevelFrame():
             self.favClassBonusMenu.config(state="normal")
             if self.bonusChosen is not None:
                 self.addFavClassBonus()
-            else:
-                self.favClassBonusMenu.config(fg="red")
         else:
             self.favClassBonusMenu.config(state="disabled")
             if self.bonusChosen is not None:
@@ -99,8 +97,6 @@ class LevelFrame():
 
 
     def setFavClassBonus(self):
-        self.favClassBonusMenu.config(fg="black")
-
         if self.favClassBonus.get() == "+1 Hit Point":
             self.bonusChosen = "hp"
         elif self.favClassBonus.get() == "+1 Skill Point":

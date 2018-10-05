@@ -18,7 +18,7 @@ class CharacterController:
         self.char = Character(self)
 
         self.creationPageController = CreationPageController(self)
-        self.errorFrameController   = ErrorFrameController(self)
+        self.errorFrameController   = ErrorFrameController(self, self.creationPageController.getView())
         #self.sheetPageControlller   = SheetPageController(self)
         
         self.nb.add(self.creationPageController.getView(), text='Character Creation')

@@ -3,9 +3,9 @@ from View.errorFrame import ErrorFrame
 from Model.error import Error
 
 class ErrorFrameController():
-    def __init__(self, controller):
+    def __init__(self, controller, view):
         self.controller = controller
-        self.view = ErrorFrame(self, controller.creationPageController.getView())
+        self.view = ErrorFrame(self, view)
 
 
     def addError(self, message):

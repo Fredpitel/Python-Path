@@ -37,9 +37,10 @@ if __name__ == "__main__":
     root.attributes("-zoomed", True)
     root.title("Character Sheet")
     root.option_add("*Font", "helvetica 14")
-
-    Application(root).grid(row=0, column=0, sticky="NSEW")
     root.grid_rowconfigure(0, weight=1)
     root.grid_columnconfigure(0, weight=1)
+
+    mainApp = Application(root)
+    mainApp.grid(row=0, column=0, sticky="NSEW")
     
     root.mainloop()

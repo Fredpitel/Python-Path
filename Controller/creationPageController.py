@@ -360,7 +360,7 @@ class CreationPageController():
                 target.append(self.char.deity)
                 condition = lambda: (self.checkClericAlignments(), None)
             else:
-                condition = lambda t=target[0], v=values: (t.get() in v, None)
+                condition = lambda c=charClass, v=values: (self.checkAlignment(c,v), None)
 
             self.classRequirements[charClass].append(
                 self.controller.addRequirement(
@@ -472,15 +472,31 @@ class CreationPageController():
         self.char.hpFromLevels.set(total)
 
 
+    def checkAlignment(self, charClass, values):
+        if self.char.alignment.get() in values:
+            return True
+        else:
+            for req in self.classRequirements[charClass]:
+                for problem in req.problems:
+                    problem.config(fg="red")
+
+            return False
+
+
     def checkClericAlignments(self):
         res = False
 
         chosenDeity = self.char.deity.get()
+        deityAlignments = []
 
         if chosenDeity != "None":
             deityAlignments = self.deity_data[chosenDeity]["alignments"]
 
-            if self.char.alignment.get() in deityAlignments:
-                res = True
+        if self.char.alignment.get() in deityAlignments:
+            res = True
+        else:
+            for req in self.classRequirements["Cleric"]:
+                for problem in req.problems:
+                    problem.config(fg="red")
 
         return res

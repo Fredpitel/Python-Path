@@ -2,18 +2,18 @@ class Requirement:
     def __init__(self, controller, targets, condition, message, problems):
         self.controller = controller
         
-        self.targets    = targets
-        self.condition  = condition
-        self.message    = message
-        self.problems   = problems
-        self.error      = None
+        self.targets   = targets
+        self.condition = condition
+        self.message   = message
+        self.problems  = problems
+        self.error     = None
 
         for target in self.targets:
             target.traceID = target.trace("w", lambda i,o,x: self.checkFulfilled())
 
         for problem in self.problems:
             problem.config(fg="red")
-            problem.bind("<Unmap>", lambda e, p=problem: self.removeProblem(p))
+            problem.bind("<Unmap>", lambda e: self.checkFulfilled())
         
         self.checkFulfilled()
 
@@ -37,7 +37,7 @@ class Requirement:
     def addProblem(self, problem):
         problem.config(fg="red")
         self.problems.append(problem)
-        problem.bind("<Unmap>", lambda e, p=problem: self.removeProblem(p))
+        problem.bind("<Unmap>", lambda e: self.checkFulfilled())
         self.checkFulfilled()
 
 

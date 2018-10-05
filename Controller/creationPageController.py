@@ -420,6 +420,9 @@ class CreationPageController():
 
         self.levelFrames.remove(levelFrame)
         self.char.charLevel.set(self.char.charLevel.get() - 1)
+
+        self.favClassBonusRequirement.problems.remove(levelFrame.favClassBonusMenu)
+
         levelFrame.frame.pack_forget()
 
         if self.char.charLevel.get() == 0:

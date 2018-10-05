@@ -28,14 +28,17 @@ class CharacterController:
                             lambda: (self.char.race.get() != "Choose race", None),
                             "Choose a race",
                             [self.creationPageController.view.racesMenu])
+
         self.addRequirement([self.creationPageController.buyPoints, self.creationPageController.maxBuyPoints],
                             lambda: self.creationPageController.checkBuyPointsError(),
                             "Buy points remain to be spent",
                             [self.creationPageController.view.buyPointsLabel])
+
         self.addRequirement([self.creationPageController.charClass],
                             lambda: (self.creationPageController.charClass.get() != "Choose class", None),
                             "Choose a class",
                             [self.creationPageController.view.classMenu])
+
         self.addRequirement([self.char.alignment],
                             lambda: (self.char.alignment.get() != "Choose alignment", None),
                             "Choose an alignment",

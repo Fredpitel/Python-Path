@@ -43,7 +43,7 @@
     },
     "Cleric" : {
         "hitDie"      : 8,
-        "classSkills" : ["Appraise", "Craft", "Diplomacy", "Heal", "Knowledge (arcana)", "Knowledge (history)", "Knowledge (nobility)", "Knowledge (plane)", "Knowledge (religion)", "Linguistics", "Profession", "Sense Motive", "Spellcraft"],
+        "classSkills" : ["Appraise", "Craft", "Diplomacy", "Heal", "Knowledge (arcana)", "Knowledge (history)", "Knowledge (nobility)", "Knowledge (planes)", "Knowledge (religion)", "Linguistics", "Profession", "Sense Motive", "Spellcraft"],
         "skillLevel"  : 2,
         "attackProg"  : 2,
         "fortProg"    : 2,
@@ -133,7 +133,7 @@
     },
     "Ranger" : {
         "hitDie"      : 10,
-        "classSkills" : ["Climb", "Craft", "Handle Animal", "Heal", "Initmidate", "Knowledge (dungeoneering)", "Knowledge (geography)", "Knowledge (nature)", "Perception", "Profession", "Ride", "Spellcraft", "Stealth", "Survival", "Swim"],
+        "classSkills" : ["Climb", "Craft", "Handle Animal", "Heal", "Intimidate", "Knowledge (dungeoneering)", "Knowledge (geography)", "Knowledge (nature)", "Perception", "Profession", "Ride", "Spellcraft", "Stealth", "Survival", "Swim"],
         "skillLevel"  : 6,
         "attackProg"  : 3,
         "fortProg"    : 2,
@@ -145,7 +145,7 @@
     },
     "Rogue": {
         "hitDie"      : 8,
-        "classSkills" : ["Acrobatics", "Appraise", "Bluff", "Climb", "Craft", "Diplomacy", "Disable Device", "Disguise", "Escape Artist", "Initmidate", "Knowledge (dungeoneering)", "Knowledge (local)", "Linguistics", "Perception", "Perform", "Profession", "Sense Motive", "Sleight of Hand", "Stealth", "Swim", "Use Magic Device"],
+        "classSkills" : ["Acrobatics", "Appraise", "Bluff", "Climb", "Craft", "Diplomacy", "Disable Device", "Disguise", "Escape Artist", "Intimidate", "Knowledge (dungeoneering)", "Knowledge (local)", "Linguistics", "Perception", "Perform", "Profession", "Sense Motive", "Sleight of Hand", "Stealth", "Swim", "Use Magic Device"],
         "skillLevel"  : 8,
         "attackProg"  : 2,
         "fortProg"    : 1,
@@ -157,7 +157,7 @@
     },
     "Sorcerer" : {
         "hitDie"      : 6,
-        "classSkills" : ["Appraise", "Bluff", "Craft", "Fly", "Initmidate", "Knowledge (arcana)", "Profession", "Spellcraft", "Use Magic Device"],
+        "classSkills" : ["Appraise", "Bluff", "Craft", "Fly", "Intimidate", "Knowledge (arcana)", "Profession", "Spellcraft", "Use Magic Device"],
         "skillLevel"  : 2,
         "attackProg"  : 1,
         "fortProg"    : 1,

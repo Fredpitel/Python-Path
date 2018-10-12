@@ -1,13 +1,11 @@
 import ttk
-from tkinter import *
+import Tkinter as tk
 
-class StatsPage:
-    def __init__(self, nb, char):
-        statsPage = ttk.Frame(nb, relief=RIDGE, padding=10)
-        nb.add(statsPage, text='Character Sheet', padding=10)
-        
-        self.char = char
+class SheetPage:
+    def __init__(self, controller, parent):
+        self.sheetPage  = ttk.Frame(parent, relief=tk.RIDGE, padding=10)
+        self.controller = controller
 
         # Name
-        Label(statsPage, text="Character Name: ").grid(row=0, column=0)
-        Label(statsPage, textvariable=self.char.charName).grid(row=0, column=1)
+        tk.Label(self.sheetPage, text="Character Name: ").grid(row=0, column=0)
+        tk.Label(self.sheetPage, textvariable=self.controller.char.charName).grid(row=0, column=1)

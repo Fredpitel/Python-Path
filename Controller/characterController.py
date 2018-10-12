@@ -4,8 +4,8 @@ import Tkinter as tk
 from Controller          import *
 from Model.character     import Character
 from Model.requirement   import Requirement
+from Model.charClass     import CharClass
 from View.characterFrame import CharacterFrame
-#from sheetPage           import SheetPage
 
 class CharacterController:
     def __init__(self, parent):
@@ -19,9 +19,12 @@ class CharacterController:
 
         self.creationPageController = CreationPageController(self)
         self.errorFrameController   = ErrorFrameController(self, self.creationPageController.getView())
-        #self.sheetPageControlller   = SheetPageController(self)
+        self.skillPageController    = SkillPageController(self)
+        self.sheetPageControlller   = SheetPageController(self)
         
-        self.nb.add(self.creationPageController.getView(), text='Character Creation')
+        self.nb.add(self.creationPageController.getView(), text="Character Creation")
+        self.nb.add(self.skillPageController.getView(), text="Skills")
+        self.nb.add(self.sheetPageControlller.getView(), text="Character Sheet")
 
         # Initial requirements
         self.addRequirement([self.char.race],
@@ -47,6 +50,46 @@ class CharacterController:
 
     def closeTab(self):
         self.parent.forget(self.parent.select())
+
+
+    def addClass(self, className, classData, nbLevels):
+        if not className in self.char.charClass:
+            self.char.charClass[className] = CharClass(className, classData, nbLevels)
+            charClass = self.char.charClass[className]
+
+            for skill in charClass.classSkills:
+                charSkill = self.char.skill[skill]
+                
+                if not charSkill.classSkill.get():
+                    charSkill.classSkill.set(True)
+        else:
+            self.char.charClass[className].nbLevels += nbLevels
+
+        self.calculateSpFromLevels()
+
+
+    def removeClass(self, className):
+        charClass = self.char.charClass[className]
+        charClass.nbLevels -= 1
+        
+        if charClass.nbLevels == 0:
+            for skill in charClass.classSkills:
+                self.char.skill[skill].classSkill.set(False)
+
+            del charClass
+
+        self.calculateSpFromLevels()
+
+
+    def calculateSpFromLevels(self):
+        sp = 0
+        
+        charClasses = self.char.charClass
+
+        for className in charClasses.keys():
+            sp += charClasses[className].skillLevel * charClasses[className].nbLevels
+
+        self.char.spFromLevels.set(sp)
 
 
     def addMod(self, mod, source, toggler=None):
@@ -77,3 +120,5 @@ class CharacterController:
 
     def addRequirement(self, targets, condition, message, problems):
         return Requirement(self, targets, condition, message, problems)
+
+

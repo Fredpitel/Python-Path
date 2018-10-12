@@ -233,14 +233,17 @@ class CreationPageController():
         self.bonusLanguages.set(intBonus)
 
         if self.bonusLanguages.get() != self.addedLanguages.get() and self.languageRequirement is None:
-            self.languageRequirement = self.controller.addRequirement([self.bonusLanguages, self.addedLanguages],
+            self.languageRequirement = self.controller.addRequirement([self.bonusLanguages, self.addedLanguages, self.char.race],
                                                                      lambda: self.checkAddedLanguages(),
                                                                      "",
                                                                      [self.view.addLanguageButton])
 
 
     def checkAddedLanguages(self):
-        numPossibleLang = len(self.race_data[self.char.race.get()]["bonusLanguages"])
+        try:
+            numPossibleLang = len(self.race_data[self.char.race.get()]["bonusLanguages"])
+        except:
+            numPossibleLang = 0
 
         if self.bonusLanguages.get() < self.addedLanguages.get() and self.bonusLanguages.get() > 0:
             self.view.addLanguageButton.config(fg="red")
@@ -334,10 +337,10 @@ class CreationPageController():
             self.advancementFrames.append(frame)
             self.addAdvancementRequirement(frame)
 
-
-
         if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1 and self.char.charLevel.get() < 20:
             self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, len(self.advancementFrames)+1, False))
+
+        self.controller.addClass(charClass, self.class_data[charClass], lvlsToAdd.get())
 
         lvlsToAdd.set(1)
 
@@ -432,6 +435,8 @@ class CreationPageController():
 
         if self.char.charLevel.get() == 0:
             self.view.favClassMenu.grid_remove()
+
+        self.controller.removeClass(levelFrame.charClass.get())
 
 
     def checkBuyPointsError(self):

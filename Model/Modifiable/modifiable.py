@@ -17,16 +17,13 @@ class Modifiable():
         self.baseValue.trace("w", lambda i,o,x: self.update())
 
 
-    def addModifier(self, mod, source, toggler):
+    def addModifier(self, mod, source):
         if mod["type"] in self.modifiers:
             self.modifiers[mod["type"]].append((source, mod["value"]))
         else:
             self.modifiers[mod["type"]] = [(source, mod["value"])]
 
         source.trace("w", lambda i,o,x,s=source: self.removeModifier(s))
-        
-        if toggler is not None:
-            toggler.bind("<Unmap>", lambda e, source=source: self.removeModifier(source))
         
         self.update()
 

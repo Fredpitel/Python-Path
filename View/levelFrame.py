@@ -113,5 +113,14 @@ class LevelFrame():
                                            "type": "untyped",
                                            "value": 1
                                            },
-                                           self.favClassBonus,
-                                           self.favClassBonusMenu)
+                                           self.favClassBonus)
+
+
+    def updateAvailableFavClassBonus(self, optionData):
+        self.favClassBonusMenu['menu'].delete(0, 'end')
+        
+        options = ["+1 Hit Point", "+1 Skill Point"]
+        options.append(optionData[self.charClass.get()]["menuString"])
+
+        for option in options:
+            self.favClassBonusMenu["menu"].add_command(label=option,command=tk._setit(self.favClassBonus, option))

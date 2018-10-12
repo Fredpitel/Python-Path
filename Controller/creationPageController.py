@@ -186,8 +186,21 @@ class CreationPageController():
         data = self.race_data[race.get()]
 
         for mod in data["mods"]:
-            self.controller.addMod(mod, race, self.view.racesMenu)
+            self.controller.addMod(mod, race)
 
+        self.updateAbilityBonus(race)
+
+        for frame in self.levelFrames:
+            frame.updateAvailableFavClassBonus(data["favoredClassOptions"])
+
+        for frame in list(self.languageFrames):
+            self.removeLanguage(frame)
+
+        for language in data["languages"]:
+            self.languageFrames.append(self.view.addLanguageFrame(language, True))
+
+
+    def updateAbilityBonus(self, race):
         if race.get() in self.HUMANLIKE_RACES:
             self.view.abilityMenu.grid()
             if self.bonusAbility.get() == "Choose ability bonus":
@@ -202,23 +215,7 @@ class CreationPageController():
             else:
                 self.setBonusAbility()
         else:
-            self.view.abilityMenu.grid_remove()        
-
-        for frame in self.levelFrames:
-            frame.favClassBonusMenu['menu'].delete(0, 'end')
-            
-            options = ["+1 Hit Point", "+1 Skill Point"]
-            special = data["favoredClassOptions"][frame.charClass.get()]["menuString"]
-            options.append(special)
-
-            for option in options:
-                frame.favClassBonusMenu["menu"].add_command(label=option,command=tk._setit(frame.favClassBonus, option))
-
-        for frame in list(self.languageFrames):
-            self.removeLanguage(frame)
-
-        for language in data["languages"]:
-            self.languageFrames.append(self.view.addLanguageFrame(language, True))
+            self.view.abilityMenu.grid_remove()
 
 
     def removeLanguage(self, frame):
@@ -299,7 +296,7 @@ class CreationPageController():
         else:
             stat = "cha"
         
-        self.controller.addMod({"target": stat, "type": "racial", "value": 2}, self.bonusAbility, self.view.abilityMenu)
+        self.controller.addMod({"target": stat, "type": "racial", "value": 2}, self.bonusAbility)
             
     
     def setLevelNb(self, value):
@@ -337,7 +334,7 @@ class CreationPageController():
             self.advancementFrames.append(frame)
             self.addAdvancementRequirement(frame)
 
-        if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1 and self.char.charLevel.get() < 20:
+        if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1 and self.char.charLevel.get() < self.char.MAX_LEVEL:
             self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, len(self.advancementFrames)+1, False))
 
         self.controller.addClass(charClass, self.class_data[charClass], lvlsToAdd.get())

@@ -16,4 +16,4 @@ class Skill(Modifiable):
 
     def updateClassSkill(self):
         if self.classSkill.get():
-            self.addModifier({"target": self.stat, "type": "class", "value": 3}, self.classSkill, None)
+            self.addModifier({"target": self.stat, "type": "class", "value": 3}, self.classSkill)

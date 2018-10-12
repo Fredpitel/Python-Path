@@ -92,9 +92,9 @@ class CharacterController:
         self.char.spFromLevels.set(sp)
 
 
-    def addMod(self, mod, source, toggler=None):
+    def addMod(self, mod, source):
         target = self.getTarget(mod["target"])
-        target.addModifier(mod, source, toggler)
+        target.addModifier(mod, source)
 
 
     def removeMod(self, source, targetName):

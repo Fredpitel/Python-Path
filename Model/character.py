@@ -8,7 +8,6 @@ class Character():
     BASE_ABILITY_VALUE = 10
     BASE_AC_VALUE      = 10
     MAX_LEVEL          = 20
-    ABILITY_SHORT      = ["str","dex","con","int","wis","cha"]
 
     def __init__(self, controller):
         self.charName     = tk.StringVar()

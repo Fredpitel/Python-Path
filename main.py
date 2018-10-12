@@ -17,9 +17,9 @@ class Application(tk.Frame):
         root.config(menu=menubar)
 
         self.nb = ttk.Notebook(root)
+        self.nb.grid(row=0, column=0, sticky="NSEW")
 
         self.createNewCharacter()
-        self.nb.grid(row=0, column=0, sticky="NSEW")
 
 
     def createNewCharacter(self):

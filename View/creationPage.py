@@ -10,17 +10,17 @@ class CreationPage():
 	def __init__(self, controller, parent):
 		self.controller = controller
 
-		self.creationPage = ttk.Frame(parent, relief=tk.SUNKEN, padding=10)
+		self.creationPage = ttk.Frame(parent, relief=tk.SUNKEN, padding=5)
 		self.creationPage.grid_columnconfigure(0, weight=1)
 		self.creationPage.grid_columnconfigure(1, weight=1)
 		self.creationPage.grid_columnconfigure(2, weight=5)
 		self.creationPage.grid_rowconfigure(1, weight=1)
-		self.creationPage.grid(row=0, column=0, padx=10, sticky="NSEW")
+		self.creationPage.grid(row=0, column=0, padx=5, sticky="NSEW")
 
 		#
 		# Left Frame
 		#
-		self.summaryFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.summaryFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
 		self.summaryFrame.grid(row=0, column=0, padx=10, sticky="NSEW")
 		self.summaryFrame.grid_columnconfigure(1, weight=1)
 
@@ -70,7 +70,7 @@ class CreationPage():
 		#
 		# Ability Advancement
 		#
-		self.advancementFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.advancementFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
 		self.advancementFrame.grid(row=1, column=0, padx=10, pady=10, sticky="NEW")
 		self.advancementFrame.grid_columnconfigure(1, weight=1)
 
@@ -82,7 +82,7 @@ class CreationPage():
 		#
 		# Center Frame
 		#
-		self.statFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.statFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
 		self.statFrame.grid(row=0, column=1, padx=10, sticky="NEW")
 		self.statFrame.grid_columnconfigure(0, weight=1)
 		self.statFrame.grid_columnconfigure(1, weight=1)
@@ -152,7 +152,7 @@ class CreationPage():
 		self.buyPointsLabel.grid(row=3, column=1)
 
 		# Languages
-		self.languageFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.languageFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
 		self.languageFrame.grid(row=1, column=1, rowspan=2, padx=10, pady=10, sticky="NEW")
 		self.languageFrame.grid_columnconfigure(0, weight=1)
 
@@ -161,14 +161,14 @@ class CreationPage():
 		self.addLanguageButton.grid(row=0, column=1, padx=10)
 		self.addLanguageButton.config(state="disabled")
 
-		self.knownLanguagesFrame = ttk.Frame(self.languageFrame, padding=10)
+		self.knownLanguagesFrame = ttk.Frame(self.languageFrame, padding=5)
 		self.knownLanguagesFrame.grid(row=1, column=0, columnspan=2, padx=5, sticky="EW")
 
 
 		#
 		# Right Frame
 		#
-		self.classFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=10)
+		self.classFrame = ttk.Frame(self.creationPage, relief=tk.RAISED, padding=5)
 		self.classFrame.grid(row=0, column=2, rowspan=3, padx=10, sticky="NEW")
 		self.classFrame.grid_columnconfigure(1, weight=1)
 		

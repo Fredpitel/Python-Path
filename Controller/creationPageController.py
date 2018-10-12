@@ -193,8 +193,9 @@ class CreationPageController():
             if self.bonusAbility.get() == "Choose ability bonus":
                 if self.abilityBonusRequirement is None:
                     self.abilityBonusRequirement = self.controller.addRequirement(
-                                                                        [self.bonusAbility],
-                                                                        lambda: (self.bonusAbility.get() != "Choose ability bonus", None),
+                                                                        [self.bonusAbility, self.char.race],
+                                                                        lambda: (self.bonusAbility.get() != "Choose ability bonus" or
+                                                                            self.char.race.get() not in self.HUMANLIKE_RACES, None),
                                                                         "Choose racial ability bonus",
                                                                         [self.view.abilityMenu]
                                                                     )
@@ -239,10 +240,12 @@ class CreationPageController():
 
 
     def checkAddedLanguages(self):
+        numPossibleLang = len(self.race_data[self.char.race.get()]["bonusLanguages"])
+
         if self.bonusLanguages.get() < self.addedLanguages.get() and self.bonusLanguages.get() > 0:
             self.view.addLanguageButton.config(fg="red")
             return (False, "Too many bonus languages chosen")
-        elif self.bonusLanguages.get() > self.addedLanguages.get():
+        elif self.bonusLanguages.get() > self.addedLanguages.get() and numPossibleLang > self.addedLanguages.get():
             self.view.addLanguageButton.config(state="normal", fg="red")
             return (False, "Bonus language remain to be chosen")
         else:
@@ -331,7 +334,9 @@ class CreationPageController():
             self.advancementFrames.append(frame)
             self.addAdvancementRequirement(frame)
 
-        if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1:
+
+
+        if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1 and self.char.charLevel.get() < 20:
             self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, len(self.advancementFrames)+1, False))
 
         lvlsToAdd.set(1)

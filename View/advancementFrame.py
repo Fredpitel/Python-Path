@@ -14,7 +14,7 @@ class AdvancementFrame():
         self.frame.grid(row=row + 1, column=0, columnspan=2, padx=10, sticky="NEW")
         self.frame.grid_columnconfigure(1, weight=1)
 
-        tk.Label(self.frame, text=str(self.level)).grid(row=0, column=0, pady=8, padx=10)
+        tk.Label(self.frame, text=str(self.level), width=2).grid(row=0, column=0, padx=10)
         self.menu = tk.OptionMenu(self.frame, self.bonus, *self.controller.ADVANCEMENT)
         self.menu.config(width=25)
         self.menu.grid(row=0, column=1)

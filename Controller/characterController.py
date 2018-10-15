@@ -16,6 +16,7 @@ class CharacterController:
         self.nb.grid(row=0, column=0, sticky="NSWE")
 
         self.char = Character(self)
+        self.char.createSkillTree(self)
 
         self.creationPageController = CreationPageController(self)
         self.errorFrameController   = ErrorFrameController(self, self.creationPageController.getView())
@@ -53,17 +54,18 @@ class CharacterController:
 
 
     def addClass(self, className, classData, nbLevels):
-        if not className in self.char.charClass:
+
+        if not className in self.char.charClass or self.char.charClass[className] is None:
             self.char.charClass[className] = CharClass(className, classData, nbLevels)
             charClass = self.char.charClass[className]
-
-            for skill in charClass.classSkills:
-                charSkill = self.char.skill[skill]
-                
-                if not charSkill.classSkill.get():
-                    charSkill.classSkill.set(True)
         else:
             self.char.charClass[className].nbLevels += nbLevels
+
+        for skill in charClass.classSkills:
+            charSkill = self.char.skill[skill]
+            
+            if not charSkill.classSkill.get():
+                charSkill.classSkill.set(True)
 
         self.calculateSpFromLevels()
 
@@ -76,7 +78,7 @@ class CharacterController:
             for skill in charClass.classSkills:
                 self.char.skill[skill].classSkill.set(False)
 
-            del charClass
+            del self.char.charClass[className]
 
         self.calculateSpFromLevels()
 
@@ -113,7 +115,7 @@ class CharacterController:
     def getTarget(self, targetName):
         try:
             return getattr(self.char, targetName)
-        except AttributeError:
+        except AttributeError as e:
             skill = targetName.split('"')[1]
             return self.char.skill[skill]
 

@@ -10,6 +10,8 @@ class Character():
     MAX_LEVEL          = 20
 
     def __init__(self, controller):
+        self.controller   = controller
+
         self.charName     = tk.StringVar()
         self.charLevel    = tk.IntVar(value=0)
         self.levels       = []
@@ -29,7 +31,6 @@ class Character():
         self.wis = AbilityScore(self.BASE_ABILITY_VALUE,"WISDOM","wis") 
         self.cha = AbilityScore(self.BASE_ABILITY_VALUE,"CHARISMA","cha") 
 
-        self.skill        = SkillTree()
         self.ac           = AC(self.BASE_AC_VALUE)
         self.attack       = Attack(0)
         self.cmb          = CMB(0)
@@ -37,3 +38,7 @@ class Character():
         self.savingThrows = SavingThrows(0)
         self.skillPoints  = SkillPoints(self,0)
         self.hp           = HP(self,0)
+
+
+    def createSkillTree(self, controller):
+        self.skill        = SkillTree(self.controller)

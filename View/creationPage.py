@@ -204,6 +204,8 @@ class CreationPage():
 		tk.Label(self.hpFrame, text="Hit Point(s):").grid(row=1, column=0)
 		tk.Label(self.hpFrame, textvariable=self.controller.getModifiableValue("hp")).grid(row=1, column=1)
 
+		self.creationPage.update_idletasks()
+
 
 	def createStatsButtons(self, parent, stat):
 		commandUp = lambda: self.controller.setAbilityScore(stat, 1)

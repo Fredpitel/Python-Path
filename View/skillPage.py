@@ -69,6 +69,8 @@ class SkillPage:
         tk.Label(self.bottomFrame, text="Skill Points: ", font=("helvetica", 16)).grid(row=0, column=0, sticky="NSE")
         tk.Label(self.bottomFrame, textvariable=self.controller.char.skillPoints.value, font=("helvetica", 16)).grid(row=0, column=1,sticky="NSW")
 
+        self.skillPage.update_idletasks()
+
 
     def populateFrame(self, frame, dict, list):
         tk.Label(frame, text="Skill", font=("helvetica", 10)).grid(row=1, column=0, sticky="EW")
@@ -87,7 +89,7 @@ class SkillPage:
             # Rank Buttons
             self.rankButtons = ttk.Frame(frame)
             self.rankButtons.grid(row=i, column=2, sticky="W")
-            
+
             commandUp = lambda rv=rankValue: self.controller.setSkillRank(rv, 1)
             tk.Button(self.rankButtons, text="▲", font=("helvetica", 6), command=commandUp).grid(row=0, column=0)
             commandDown = lambda rv=rankValue: self.controller.setSkillRank(rv, -1)

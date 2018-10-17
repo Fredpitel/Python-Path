@@ -2,6 +2,7 @@ import ttk
 import Tkinter as tk
 
 from Controller.characterController import CharacterController
+from splash import Splash
 
 class Application(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -16,10 +17,14 @@ class Application(tk.Frame):
         menubar.add_cascade(label="File", menu=filemenu)
         root.config(menu=menubar)
 
+        self.splash = Splash()
+
         self.nb = ttk.Notebook(root)
         self.nb.grid(row=0, column=0, sticky="NSEW")
 
         self.createNewCharacter()
+
+        self.splash.destroy()
 
 
     def createNewCharacter(self):
@@ -43,7 +48,5 @@ if __name__ == "__main__":
 
     mainApp = Application(root)
     mainApp.grid(row=0, column=0, sticky="NSEW")
-    
-    root.update()
 
     root.mainloop()

@@ -9,3 +9,5 @@ class SheetPage:
         # Name
         tk.Label(self.sheetPage, text="Character Name: ").grid(row=0, column=0)
         tk.Label(self.sheetPage, textvariable=self.controller.char.charName).grid(row=0, column=1)
+
+        self.sheetPage.update_idletasks()

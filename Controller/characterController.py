@@ -48,26 +48,47 @@ class CharacterController:
                             "Choose an alignment",
                             [self.creationPageController.view.alignmentMenu])
 
+        self.skillPointRequirement = None
+
 
     def closeTab(self):
-        self.parent.forget(self.parent.select())
+        self.parent.destroy(self.parent.select())
 
 
     def addClass(self, className, classData, nbLevels):
-
         if not className in self.char.charClass or self.char.charClass[className] is None:
             self.char.charClass[className] = CharClass(className, classData, nbLevels)
-            charClass = self.char.charClass[className]
         else:
             self.char.charClass[className].nbLevels += nbLevels
 
+        charClass = self.char.charClass[className]
+
         for skill in charClass.classSkills:
-            charSkill = self.char.skill[skill]
-            
-            if not charSkill.classSkill.get():
-                charSkill.classSkill.set(True)
+            if skill == "Perform":
+                for perform in self.char.skill.performs:
+                    if not self.char.skill.performs[perform].classSkill.get():
+                        self.char.skill.performs[perform].classSkill.set(True)
+            elif skill == "Craft":
+                for craft in self.char.skill.crafts:
+                    if not self.char.skill.crafts[craft].classSkill.get():
+                        self.char.skill.crafts[craft].classSkill.set(True)
+            elif skill == "Profession":
+                for profession in self.char.skill.professions:
+                    if not self.char.skill.professions[profession].classSkill.get():
+                        self.char.skill.professions[profession].classSkill.set(True)
+            else:
+                charSkill = self.char.skill[skill]
+                
+                if not charSkill.classSkill.get():
+                    charSkill.classSkill.set(True)
 
         self.calculateSpFromLevels()
+
+        if self.skillPointRequirement is None:
+            self.skillPointRequirement = self.addRequirement([self.char.skillPoints.value],
+                                                             lambda: self.checkSkillPoints(),
+                                                             "Skill Points remain to be spent",
+                                                             [])
 
 
     def removeClass(self, className):
@@ -76,7 +97,17 @@ class CharacterController:
         
         if charClass.nbLevels == 0:
             for skill in charClass.classSkills:
-                self.char.skill[skill].classSkill.set(False)
+                if skill == "Perform":
+                    for perform in self.char.skill.performs:
+                        self.char.skill.performs[perform].classSkill.set(False)
+                elif skill == "Craft":
+                    for craft in self.char.skill.crafts:
+                        self.char.skill.crafts[craft].classSkill.set(False)
+                elif skill == "Profession":
+                    for profession in self.char.skill.professions:
+                        self.char.skill.professions[profession].classSkill.set(False)
+                else:
+                    self.char.skill[skill].classSkill.set(False)
 
             del self.char.charClass[className]
 
@@ -90,6 +121,8 @@ class CharacterController:
 
         for className in charClasses.keys():
             sp += charClasses[className].skillLevel * charClasses[className].nbLevels
+
+        sp -= self.char.spentSP
 
         self.char.spFromLevels.set(sp)
 
@@ -122,5 +155,14 @@ class CharacterController:
 
     def addRequirement(self, targets, condition, message, problems):
         return Requirement(self, targets, condition, message, problems)
+
+
+    def checkSkillPoints(self):
+        if self.char.skillPoints.value.get() > 0:
+            return (False, "Skill Points remain to be spent")
+        elif self.char.skillPoints.value.get() < 0:
+            return (False, "Too many skill points spent")
+        else:
+            return (True, None)
 
 

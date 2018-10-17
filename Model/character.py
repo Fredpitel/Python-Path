@@ -37,6 +37,7 @@ class Character():
         self.cmd          = CMD(0)
         self.savingThrows = SavingThrows(0)
         self.skillPoints  = SkillPoints(self,0)
+        self.spentSP      = 0
         self.hp           = HP(self,0)
 
 

@@ -1,0 +1,472 @@
+{
+    "skills": {
+        "Acrobatics" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Appraise" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Bluff" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Climb" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "str"
+        },
+        "Diplomacy" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Disable Device" : {
+            "untrained" : false,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Disguise" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Escape Artist" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Fly" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Handle Animal" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Heal" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Intimidate" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Linguistics" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Perception" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Ride" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Sense Motive" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Sleight of Hand" : {
+            "untrained" : false,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Spellcraft" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Stealth" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "dex"
+        },
+        "Survival" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Swim" : {
+            "untrained" : true,
+            "penalty"   : true,
+            "stat"      : "str"
+        },
+        "Use Magic Device" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "cha"
+        }
+    },
+    "knowledges" : {
+        "Knowledge (arcana)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (dungeoneering)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (engineering)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (geography)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (history)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (local)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (nature)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (nobility)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (planes)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Knowledge (religion)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "int"
+        }
+    },
+    "performs" : {
+        "Perform (act)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (comedy)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (dance)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (keyboard)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (oratory)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (percussion)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (string)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (wind)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        },
+        "Perform (sing)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "cha"
+        }
+    },
+    "crafts" : {
+        "Craft (alchemy)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (armor)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (baskets)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (books)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (bows)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (calligraphy)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (carpentry)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (cloth)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (clothing)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (glass)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (jewelry)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (leather)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (locks)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (paintings)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (pottery)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (sculptures)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (ships)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (shoes)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (stonemasonry)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (traps)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        },
+        "Craft (weapons)" : {
+            "untrained" : true,
+            "penalty"   : false,
+            "stat"      : "int"
+        }
+    },
+    "professions" : {
+        "Profession (architect)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (baker)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (barrister)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (brewer)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (butcher)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (clerk)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (cook)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (courtesan)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (driver)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (engineer)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (farmer)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (fisherman)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (gambler)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (gardener)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (herbalist)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (innkeeper)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (librarian)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (merchant)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (midwife)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (miller)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (miner)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (porter)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (sailor)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (scribe)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (shepherd)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (stable master)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (soldier)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (tanner)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (trapper)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        },
+        "Profession (woodcutter)" : {
+            "untrained" : false,
+            "penalty"   : false,
+            "stat"      : "wis"
+        }
+    }
+}

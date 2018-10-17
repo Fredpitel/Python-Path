@@ -62,4 +62,4 @@ class AdvancementFrame():
         else:
             self.bonusStat = "cha"
 
-        self.controller.controller.addMod({"target": self.bonusStat, "type": "untyped", "value": 1}, self.bonus, self.menu)
+        self.controller.controller.addMod({"target": self.bonusStat, "type": "untyped", "value": 1}, self.bonus)

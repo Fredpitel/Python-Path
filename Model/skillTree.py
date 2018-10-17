@@ -1,66 +1,39 @@
+import json
+import os
+
 from Modifiable import Skill
 
 class SkillTree:
     def __init__(self, controller):
         self.controller = controller
+        
+        self.skills      = {}
+        self.knowledges  = {}
+        self.performs    = {}
+        self.crafts      = {}
+        self.professions = {}
+        
+        self.skills_data = json.load(open(os.path.abspath("Data/skills.json")))
+        
+        for skill in self.skills_data["skills"]:
+            data = self.skills_data["skills"][skill]
+            self.skills[skill] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
 
-        self.skills = {
-            "Acrobatics"                : Skill(0, True,  True,  "dex", self.controller),
-            "Appraise"                  : Skill(0, True,  False, "int", self.controller),
-            "Bluff"                     : Skill(0, True,  False, "cha", self.controller),
-            "Climb"                     : Skill(0, True,  True,  "str", self.controller),
-            "Diplomacy"                 : Skill(0, True,  False, "cha", self.controller),
-            "Disable Device"            : Skill(0, False, True,  "dex", self.controller),
-            "Disguise"                  : Skill(0, True,  False, "cha", self.controller),
-            "Escape Artist"             : Skill(0, True,  True,  "dex", self.controller),
-            "Fly"                       : Skill(0, True,  True,  "dex", self.controller),
-            "Handle Animal"             : Skill(0, False, False, "cha", self.controller),
-            "Heal"                      : Skill(0, True,  False, "wis", self.controller),
-            "Intimidate"                : Skill(0, True,  False, "cha", self.controller),
-            "Linguistics"               : Skill(0, False, False, "int", self.controller),
-            "Perception"                : Skill(0, True,  False, "wis", self.controller),
-            "Ride"                      : Skill(0, True,  True,  "dex", self.controller),
-            "Sense Motive"              : Skill(0, True,  False, "wis", self.controller),
-            "Sleight of Hand"           : Skill(0, False, True,  "dex", self.controller),
-            "Spellcraft"                : Skill(0, False, False, "int", self.controller),
-            "Stealth"                   : Skill(0, True,  True,  "dex", self.controller),
-            "Survival"                  : Skill(0, True,  False, "wis", self.controller),
-            "Swim"                      : Skill(0, True,  True,  "str", self.controller),
-            "Use Magic Device"          : Skill(0, False, False, "cha", self.controller)
-        }
+        for knowledge in self.skills_data["knowledges"]:
+            data = self.skills_data["knowledges"][knowledge]
+            self.knowledges[knowledge] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
 
-        self.knowledges = {
-            "Knowledge (arcana)"        : Skill(0, False, False, "int", self.controller),
-            "Knowledge (dungeoneering)" : Skill(0, False, False, "int", self.controller),
-            "Knowledge (engineering)"   : Skill(0, False, False, "int", self.controller),
-            "Knowledge (geography)"     : Skill(0, False, False, "int", self.controller),
-            "Knowledge (history)"       : Skill(0, False, False, "int", self.controller),
-            "Knowledge (local)"         : Skill(0, False, False, "int", self.controller),
-            "Knowledge (nature)"        : Skill(0, False, False, "int", self.controller),
-            "Knowledge (nobility)"      : Skill(0, False, False, "int", self.controller),
-            "Knowledge (planes)"        : Skill(0, False, False, "int", self.controller),
-            "Knowledge (religion)"      : Skill(0, False, False, "int", self.controller),
-        }
+        for perform in self.skills_data["performs"]:
+            data = self.skills_data["performs"][perform]
+            self.performs[perform] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
 
-        self.performs = {
-            "Perform (act)"             : Skill(0, True,  False, "cha", self.controller),
-            "Perform (comedy)"          : Skill(0, True,  False, "cha", self.controller),
-            "Perform (dance)"           : Skill(0, True,  False, "cha", self.controller),
-            "Perform (keyboard)"        : Skill(0, True,  False, "cha", self.controller),
-            "Perform (oratory)"         : Skill(0, True,  False, "cha", self.controller),
-            "Perform (percussion)"      : Skill(0, True,  False, "cha", self.controller),
-            "Perform (string)"          : Skill(0, True,  False, "cha", self.controller),
-            "Perform (wind)"            : Skill(0, True,  False, "cha", self.controller),
-            "Perform (sing)"            : Skill(0, True,  False, "cha", self.controller),
-        }
+        for craft in self.skills_data["crafts"]:
+            data = self.skills_data["crafts"][craft]
+            self.crafts[craft] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
 
-        self.crafts = {
-            "Craft"                     : Skill(0, True,  False, "int", self.controller), #TODO
-        }
-
-        self.professions = {
-            "Profession"                : Skill(0, False, False, "wis", self.controller), #TODO
-        }
+        for profession in self.skills_data["professions"]:
+            data = self.skills_data["professions"][profession]
+            self.professions[profession] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
 
 
     def __getitem__(self, skill):

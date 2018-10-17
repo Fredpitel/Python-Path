@@ -12,7 +12,7 @@ class Application(tk.Frame):
         filemenu.add_command(label="New Character", command=self.createNewCharacter)
         filemenu.add_command(label="Open File")
         filemenu.add_separator()
-        filemenu.add_command(label="Exit", command=root.quit)
+        filemenu.add_command(label="Exit", command=root.destroy)
         menubar.add_cascade(label="File", menu=filemenu)
         root.config(menu=menubar)
 
@@ -34,7 +34,8 @@ class Application(tk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.attributes("-fullscreen", True)
+
+    root.attributes("-zoomed", True)
     root.title("Character Sheet")
     root.option_add("*Font", "helvetica 14")
     root.grid_rowconfigure(0, weight=1)
@@ -43,4 +44,6 @@ if __name__ == "__main__":
     mainApp = Application(root)
     mainApp.grid(row=0, column=0, sticky="NSEW")
     
+    root.update()
+
     root.mainloop()

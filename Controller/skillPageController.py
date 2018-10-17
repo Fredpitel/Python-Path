@@ -10,3 +10,13 @@ class SkillPageController:
 
     def getView(self):
         return self.view.skillPage
+
+
+    def setSkillRank(self, rankValue, value):
+        newValue = rankValue.get() + value
+        skillPoints = self.controller.char.skillPoints
+
+        if newValue >= 0 and newValue <= self.controller.char.charLevel.get() and skillPoints.value.get() - value >= 0:
+            rankValue.set(newValue)
+            skillPoints.baseValue.set(skillPoints.baseValue.get() - value)
+            self.controller.char.spentSP += value

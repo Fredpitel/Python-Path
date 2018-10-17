@@ -52,7 +52,7 @@ class CharacterController:
 
 
     def closeTab(self):
-        self.parent.destroy(self.parent.select())
+        self.parent.forget(self.parent.select())
 
 
     def addClass(self, className, classData, nbLevels):

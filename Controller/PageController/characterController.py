@@ -1,11 +1,13 @@
 import ttk
 import Tkinter as tk
 
-from Controller          import *
-from Model.character     import Character
-from Model.requirement   import Requirement
-from Model.charClass     import CharClass
-from View.characterFrame import CharacterFrame
+from Controller.PageController                               import *
+from Controller.ClassTabController.classTabControllerFactory import ClassTabControllerFactory
+
+from Model.character               import Character
+from Model.requirement             import Requirement
+from Model.charClass               import CharClass
+from View.characterFrame           import CharacterFrame
 
 class CharacterController:
     def __init__(self, parent):
@@ -23,6 +25,8 @@ class CharacterController:
         self.skillPageController    = SkillPageController(self)
         self.sheetPageControlller   = SheetPageController(self)
         
+        self.classTabControllers = {}
+
         self.nb.add(self.creationPageController.getView(), text="Character Creation")
         self.nb.add(self.skillPageController.getView(), text="Skills")
         self.nb.add(self.sheetPageControlller.getView(), text="Character Sheet")
@@ -48,14 +52,20 @@ class CharacterController:
                             "Choose an alignment",
                             [self.creationPageController.view.alignmentMenu])
 
-        self.skillPointRequirement = None
-
+        self.addRequirement([self.char.skillPoints.value],
+                             lambda: self.checkSkillPoints(),
+                             "Skill Points remain to be spent",
+                             [])
 
     def closeTab(self):
         self.parent.forget(self.parent.select())
 
 
     def addClass(self, className, classData, nbLevels):
+        if not className in self.classTabControllers:
+            self.classTabControllers[className] = ClassTabControllerFactory().getController(self.nb, className)
+            self.nb.insert(1, self.classTabControllers[className].getView(), text=className)
+
         if not className in self.char.charClass or self.char.charClass[className] is None:
             self.char.charClass[className] = CharClass(className, classData, nbLevels)
         else:
@@ -64,7 +74,11 @@ class CharacterController:
         charClass = self.char.charClass[className]
 
         for skill in charClass.classSkills:
-            if skill == "Perform":
+            if skill == "Knowledge":
+                for knowledge in self.char.skill.knowledges:
+                    if not self.char.skill.knowledges[knowledge].classSkill.get():
+                        self.char.skill.knowledges[knowledge].classSkill.set(True)
+            elif skill == "Perform":
                 for perform in self.char.skill.performs:
                     if not self.char.skill.performs[perform].classSkill.get():
                         self.char.skill.performs[perform].classSkill.set(True)
@@ -84,20 +98,20 @@ class CharacterController:
 
         self.calculateSpFromLevels()
 
-        if self.skillPointRequirement is None:
-            self.skillPointRequirement = self.addRequirement([self.char.skillPoints.value],
-                                                             lambda: self.checkSkillPoints(),
-                                                             "Skill Points remain to be spent",
-                                                             [])
-
 
     def removeClass(self, className):
         charClass = self.char.charClass[className]
         charClass.nbLevels -= 1
         
         if charClass.nbLevels == 0:
+            self.nb.forget(self.classTabControllers[className].getView())
+            del self.classTabControllers[className]
+
             for skill in charClass.classSkills:
-                if skill == "Perform":
+                if skill == "Knowledge":
+                    for knowledge in self.char.skill.knowledges:
+                        self.char.skill.knowledges[knowledge].classSkill.set(False)
+                elif skill == "Perform":
                     for perform in self.char.skill.performs:
                         self.char.skill.performs[perform].classSkill.set(False)
                 elif skill == "Craft":

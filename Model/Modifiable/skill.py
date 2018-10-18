@@ -18,11 +18,11 @@ class Skill(Modifiable):
 
         self.classSkill.trace("w", lambda i,o,x: self.updateClassSkill())
         self.rank.trace(      "w", lambda i,o,x: self.update())
-        self.bonus.trace("w", lambda i,o,x: self.update())
+        self.bonus.trace(     "w", lambda i,o,x: self.update())
 
 
     def updateClassSkill(self):
-        if self.classSkill.get() and (self.untrained or self.rank.get() > 0) and not self.modAdded:
+        if self.classSkill.get() and self.rank.get() > 0 and not self.modAdded:
             self.modAdded = True
             self.addModifier({"target": self, "type": "class", "value": 3}, self.classSkill)
         else:
@@ -33,13 +33,11 @@ class Skill(Modifiable):
         total = 0
 
         total += self.rank.get()
-
-        if self.untrained or self.rank.get() > 0:
-            total += self.bonus.get()
+        total += self.bonus.get()
 
         if self.classSkill.get() and not self.modAdded:
             self.updateClassSkill()
-        elif self.modAdded and self.rank.get() == 0 and not self.untrained:
+        elif self.modAdded and self.rank.get() == 0:
             self.modAdded = False
             self.removeModifier(self.classSkill)
 

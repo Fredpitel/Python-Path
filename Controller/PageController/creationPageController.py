@@ -67,10 +67,6 @@ class CreationPageController():
         self.races                   = []
         self.classes                 = []
         self.deities                 = ["None"]
-        self.classRequirements       = {}
-        self.advancementRequirement  = None
-        self.abilityBonusRequirement = None
-        self.languageRequirement     = None
 
         # Global character variables
         self.charName  = self.char.charName
@@ -119,7 +115,7 @@ class CreationPageController():
         self.char.dex.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.dex))
         self.char.con.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.con))
         self.char.int.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.int))
-        self.char.int.bonus.trace("w", lambda i,o,x: self.checkBonusLanguages(self.char.int.bonus.get()))
+        self.char.int.bonus.trace("w", lambda i,o,x: self.bonusLanguages.set(self.char.int.bonus.get()))
         self.char.wis.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.wis))
         self.char.cha.bonus.trace("w", lambda i,o,x: self.setAbilityBonusString(self.char.cha))
         self.char.charLevel.trace("w", lambda i,o,x: self.calculateHpGainedFromLevels())
@@ -133,6 +129,34 @@ class CreationPageController():
 
         # View
         self.view = CreationPage(self, controller.nb)
+
+        # Requirements
+        self.classRequirements       = {}
+        self.advancementRequirement = self.controller.addRequirement([],
+                                                                     lambda: self.checkAdvancementRequirement(),
+                                                                     "Ability bonus remain to be chosen",
+                                                                     [])
+
+        self.favClassBonusRequirement = self.controller.addRequirement([],
+                                                                       lambda: self.checkFavClassBonusError(),
+                                                                       "Favorite class bonus remain to be chosen",
+                                                                       [])
+        
+        self.controller.addRequirement([self.bonusAbility, self.char.race],
+                                       lambda: (self.bonusAbility.get() != "Choose ability bonus" or
+                                           self.char.race.get() not in self.HUMANLIKE_RACES, None),
+                                       "Choose racial ability bonus",
+                                       [self.view.abilityMenu])
+
+        self.controller.addRequirement([self.bonusLanguages, self.addedLanguages, self.char.race],
+                                       lambda: self.checkAddedLanguages(),
+                                       "",
+                                       [self.view.addLanguageButton])
+
+        self.controller.addRequirement([self.favClass, self.char.charLevel],
+                                       lambda: (self.favClass.get() != "Choose favorite class" or self.char.charLevel.get() == 0, None),
+                                       "Choose a favorite class",
+                                       [self.view.favClassMenu])
 
 
     def getView(self):
@@ -204,14 +228,7 @@ class CreationPageController():
         if race.get() in self.HUMANLIKE_RACES:
             self.view.abilityMenu.grid()
             if self.bonusAbility.get() == "Choose ability bonus":
-                if self.abilityBonusRequirement is None:
-                    self.abilityBonusRequirement = self.controller.addRequirement(
-                                                                        [self.bonusAbility, self.char.race],
-                                                                        lambda: (self.bonusAbility.get() != "Choose ability bonus" or
-                                                                            self.char.race.get() not in self.HUMANLIKE_RACES, None),
-                                                                        "Choose racial ability bonus",
-                                                                        [self.view.abilityMenu]
-                                                                    )
+                self.view.abilityMenu.config(fg="red")
             else:
                 self.setBonusAbility()
         else:
@@ -224,16 +241,6 @@ class CreationPageController():
 
         if not frame.racial:
             self.addedLanguages.set(self.addedLanguages.get() - 1)
-
-
-    def checkBonusLanguages(self, intBonus):
-        self.bonusLanguages.set(intBonus)
-
-        if self.bonusLanguages.get() != self.addedLanguages.get() and self.languageRequirement is None:
-            self.languageRequirement = self.controller.addRequirement([self.bonusLanguages, self.addedLanguages, self.char.race],
-                                                                     lambda: self.checkAddedLanguages(),
-                                                                     "",
-                                                                     [self.view.addLanguageButton])
 
 
     def checkAddedLanguages(self):
@@ -321,13 +328,15 @@ class CreationPageController():
         lvlsToAdd  = self.levelNb
         charClass  = self.charClass.get()
 
+        self.char.charLevel.set(currentLvl + lvlsToAdd.get())
+        self.controller.addClass(charClass, self.class_data[charClass], lvlsToAdd.get())
+
         if charClass not in self.classRequirements:
             self.addCharClassRequirements(charClass)
 
         for i in range(currentLvl, currentLvl + lvlsToAdd.get()):
             self.addLevelFrame(charClass, i)
 
-        self.char.charLevel.set(currentLvl + lvlsToAdd.get())
 
         for i in range(len(self.advancementFrames), self.char.charLevel.get() / 4):
             frame = AdvancementFrame(self.view.advancementFrame, self, i+1, True)
@@ -337,28 +346,20 @@ class CreationPageController():
         if len(self.advancementFrames) < self.char.charLevel.get() / 4 + 1 and self.char.charLevel.get() < self.char.MAX_LEVEL:
             self.advancementFrames.append(AdvancementFrame(self.view.advancementFrame, self, len(self.advancementFrames)+1, False))
 
-        self.controller.addClass(charClass, self.class_data[charClass], lvlsToAdd.get())
-
         lvlsToAdd.set(1)
 
 
     def addAdvancementRequirement(self, frame):
-        if self.advancementRequirement is None:
-            self.advancementRequirement = self.controller.addRequirement([frame.bonus, frame.isActive],
-                                                                         lambda: self.checkAdvancementRequirement(),
-                                                                         "Ability bonus remain to be chosen",
-                                                                         [frame.menu])
-        else:
-            self.advancementRequirement.addTarget(frame.bonus)
-            self.advancementRequirement.addTarget(frame.isActive)
-            self.advancementRequirement.addProblem(frame.menu)
+        self.advancementRequirement.addTarget(frame.bonus)
+        self.advancementRequirement.addTarget(frame.isActive)
+        self.advancementRequirement.addProblem(frame.menu)
 
 
     def addCharClassRequirements(self, charClass):
         self.classRequirements[charClass] = []
 
         for req in self.class_data[charClass]["requirements"]:
-            target = [self.controller.getTarget(req["type"])]
+            target = [self.controller.getTarget(req["type"]), self.char.charLevel]
             values = req["value"]
 
             if charClass == "Cleric":
@@ -399,32 +400,24 @@ class CreationPageController():
 
 
     def updateFavClassBonusRequirement(self, frame, index):
-        if index == 0:
-            self.view.favClassMenu.grid()
-            self.controller.addRequirement(
-                [self.favClass],
-                lambda: (self.favClass.get() != "Choose favorite class", None),
-                "Choose a favorite class",
-                [self.view.favClassMenu]
-            )
-            self.favClassBonusRequirement = self.controller.addRequirement(
-                                                [frame.favClassBonus, frame.isFavClass],
-                                                lambda: self.checkFavClassBonusError(),
-                                                "Favorite class bonus remain to be chosen",
-                                                [frame.favClassBonusMenu]
-                                            )
-        else:
-            self.favClassBonusRequirement.addTarget(frame.favClassBonus)
-            self.favClassBonusRequirement.addTarget(frame.isFavClass)
-            self.favClassBonusRequirement.addProblem(frame.favClassBonusMenu)
+        self.view.favClassMenu.grid()
+        
+        if self.favClass.get() == "Choose favorite class":
+            self.view.favClassMenu.config(fg="red")
+
+        self.favClassBonusRequirement.addTarget(frame.favClassBonus)
+        self.favClassBonusRequirement.addTarget(frame.isFavClass)
+        self.favClassBonusRequirement.addProblem(frame.favClassBonusMenu)
 
 
     def removeLevel(self, levelFrame):
+        self.char.charLevel.set(self.char.charLevel.get() - 1)
+        self.controller.removeClass(levelFrame.charClass.get())
+        
         for i in range(levelFrame.levelNumber.get(), len(self.levelFrames)):
             self.levelFrames[i].levelNumber.set(self.levelFrames[i].levelNumber.get() - 1)
 
         self.levelFrames.remove(levelFrame)
-        self.char.charLevel.set(self.char.charLevel.get() - 1)
 
         self.favClassBonusRequirement.problems.remove(levelFrame.favClassBonusMenu)
 
@@ -433,7 +426,6 @@ class CreationPageController():
         if self.char.charLevel.get() == 0:
             self.view.favClassMenu.grid_remove()
 
-        self.controller.removeClass(levelFrame.charClass.get())
 
 
     def checkBuyPointsError(self):
@@ -483,7 +475,7 @@ class CreationPageController():
 
 
     def checkAlignment(self, charClass, values):
-        if self.char.alignment.get() in values:
+        if self.char.alignment.get() in values or charClass not in self.char.charClass:
             return True
         else:
             for req in self.classRequirements[charClass]:
@@ -502,7 +494,7 @@ class CreationPageController():
         if chosenDeity != "None":
             deityAlignments = self.deity_data[chosenDeity]["alignments"]
 
-        if self.char.alignment.get() in deityAlignments:
+        if self.char.alignment.get() in deityAlignments or "Cleric" not in self.char.charClass:
             res = True
         else:
             for req in self.classRequirements["Cleric"]:

@@ -6,5 +6,7 @@ from ac           import AC
 from attack       import Attack
 from cmb          import CMB
 from cmd          import CMD
-from savingThrows import SavingThrows
+from fortitude    import Fortitude
+from reflex       import Reflex
+from will         import Will
 from skillPoints  import SkillPoints

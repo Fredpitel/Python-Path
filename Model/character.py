@@ -3,6 +3,7 @@ import Tkinter as  tk
 
 from Modifiable       import *
 from Model.skillTree  import SkillTree
+from math             import floor
 
 class Character():
     BASE_ABILITY_VALUE = 10
@@ -32,14 +33,29 @@ class Character():
         self.cha = AbilityScore(self.BASE_ABILITY_VALUE,"CHARISMA","cha") 
 
         self.ac           = AC(self.BASE_AC_VALUE)
-        self.attack       = Attack(0)
+        self.attack       = Attack(0, self)
         self.cmb          = CMB(0)
         self.cmd          = CMD(0)
-        self.savingThrows = SavingThrows(0)
-        self.skillPoints  = SkillPoints(self,0)
+        self.fortitude    = Fortitude(0, self)
+        self.reflex       = Reflex(0, self)
+        self.will         = Will(0, self)
+        self.skillPoints  = SkillPoints(0, self)
         self.spentSP      = 0
-        self.hp           = HP(self,0)
+        self.hp           = HP(0, self)
+
+        self.babString    = tk.StringVar()
+        self.meleeString  = tk.StringVar()
 
 
     def createSkillTree(self, controller):
         self.skill        = SkillTree(self.controller)
+
+
+    def getBab(self):
+        bab = 0
+        for className in self.charClass:
+            charClass = self.charClass[className]
+
+            bab += charClass.attackProg * charClass.nbLevels
+
+        return int(floor(bab))

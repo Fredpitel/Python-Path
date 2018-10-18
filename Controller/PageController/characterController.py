@@ -8,6 +8,7 @@ from Model.character               import Character
 from Model.requirement             import Requirement
 from Model.charClass               import CharClass
 from View.characterFrame           import CharacterFrame
+from math                          import floor
 
 class CharacterController:
     def __init__(self, parent):
@@ -57,6 +58,7 @@ class CharacterController:
                              "Skill Points remain to be spent",
                              [])
 
+
     def closeTab(self):
         self.parent.forget(self.parent.select())
 
@@ -71,32 +73,9 @@ class CharacterController:
         else:
             self.char.charClass[className].nbLevels += nbLevels
 
-        charClass = self.char.charClass[className]
-
-        for skill in charClass.classSkills:
-            if skill == "Knowledge":
-                for knowledge in self.char.skill.knowledges:
-                    if not self.char.skill.knowledges[knowledge].classSkill.get():
-                        self.char.skill.knowledges[knowledge].classSkill.set(True)
-            elif skill == "Perform":
-                for perform in self.char.skill.performs:
-                    if not self.char.skill.performs[perform].classSkill.get():
-                        self.char.skill.performs[perform].classSkill.set(True)
-            elif skill == "Craft":
-                for craft in self.char.skill.crafts:
-                    if not self.char.skill.crafts[craft].classSkill.get():
-                        self.char.skill.crafts[craft].classSkill.set(True)
-            elif skill == "Profession":
-                for profession in self.char.skill.professions:
-                    if not self.char.skill.professions[profession].classSkill.get():
-                        self.char.skill.professions[profession].classSkill.set(True)
-            else:
-                charSkill = self.char.skill[skill]
-                
-                if not charSkill.classSkill.get():
-                    charSkill.classSkill.set(True)
-
+        self.char.skill.setClassSkill(self.char.charClass[className].classSkills, True)
         self.calculateSpFromLevels()
+        self.updateStats()
 
 
     def removeClass(self, className):
@@ -105,27 +84,13 @@ class CharacterController:
         
         if charClass.nbLevels == 0:
             self.nb.forget(self.classTabControllers[className].getView())
+            self.char.skill.setClassSkill(charClass.classSkills, False)
+
             del self.classTabControllers[className]
-
-            for skill in charClass.classSkills:
-                if skill == "Knowledge":
-                    for knowledge in self.char.skill.knowledges:
-                        self.char.skill.knowledges[knowledge].classSkill.set(False)
-                elif skill == "Perform":
-                    for perform in self.char.skill.performs:
-                        self.char.skill.performs[perform].classSkill.set(False)
-                elif skill == "Craft":
-                    for craft in self.char.skill.crafts:
-                        self.char.skill.crafts[craft].classSkill.set(False)
-                elif skill == "Profession":
-                    for profession in self.char.skill.professions:
-                        self.char.skill.professions[profession].classSkill.set(False)
-                else:
-                    self.char.skill[skill].classSkill.set(False)
-
             del self.char.charClass[className]
 
         self.calculateSpFromLevels()
+        self.updateStats()
 
 
     def calculateSpFromLevels(self):
@@ -179,4 +144,21 @@ class CharacterController:
         else:
             return (True, None)
 
+
+    def updateStats(self):
+        self.char.attack.updateBaseValue()
+        self.char.fortitude.updateBaseValue()
+        self.char.reflex.updateBaseValue()
+        self.char.will.updateBaseValue()
+
+        bab = self.char.getBab()
+        nbAttack = int(floor(bab / 6)) + 1
+        attackString = ""
+
+        for i in range(0, int(nbAttack)):
+            babValue = "+" + str(bab) if bab > 0 else str(bab)
+            attackString = attackString + str(babValue) + "/"
+            bab -= 5
+
+        self.char.babString.set(attackString[:-1])
 

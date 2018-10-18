@@ -1,10 +1,10 @@
 from modifiable import Modifiable
 
 class SkillPoints(Modifiable):
-    def __init__(self, char, baseValue):
+    def __init__(self, baseValue, char):
         Modifiable.__init__(self, baseValue)
-        
         self.char = char
+        
         self.char.int.bonus.trace(   "w", lambda i,o,x: self.updateBaseValue())
         self.char.spFromLevels.trace("w", lambda i,o,x: self.updateBaseValue())
         self.char.race.trace        ("w", lambda i,o,x: self.updateBaseValue())

@@ -1,7 +1,7 @@
 from modifiable import Modifiable
 
 class HP(Modifiable):
-	def __init__(self, char, baseValue):
+	def __init__(self, baseValue, char):
 		Modifiable.__init__(self, baseValue)
 
 		self.char = char

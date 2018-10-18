@@ -6,7 +6,8 @@ from Modifiable import Skill
 class SkillTree:
     def __init__(self, controller):
         self.controller = controller
-        
+        self.char       = controller.char
+
         self.skills      = {}
         self.knowledges  = {}
         self.performs    = {}
@@ -34,6 +35,29 @@ class SkillTree:
         for profession in self.skills_data["professions"]:
             data = self.skills_data["professions"][profession]
             self.professions[profession] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
+
+
+    def setClassSkill(self, classSkills, value):
+        for skill in classSkills:
+            if skill == "Knowledge":
+                for knowledge in self.knowledges:
+                    if not self.knowledges[knowledge].classSkill.get():
+                        self.knowledges[knowledge].classSkill.set(value)
+            elif skill == "Perform":
+                for perform in self.performs:
+                    if not self.performs[perform].classSkill.get():
+                        self.performs[perform].classSkill.set(value)
+            elif skill == "Craft":
+                for craft in self.crafts:
+                    if not self.crafts[craft].classSkill.get():
+                        self.crafts[craft].classSkill.set(value)
+            elif skill == "Profession":
+                for profession in self.professions:
+                    if not self.professions[profession].classSkill.get():
+                        self.professions[profession].classSkill.set(value)
+            else:
+                if not self.__getitem__(skill).classSkill.get():
+                    self.__getitem__(skill).classSkill.set(value)
 
 
     def __getitem__(self, skill):

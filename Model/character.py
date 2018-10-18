@@ -44,7 +44,6 @@ class Character():
         self.hp           = HP(0, self)
 
         self.babString    = tk.StringVar()
-        self.meleeString  = tk.StringVar()
 
 
     def createSkillTree(self, controller):

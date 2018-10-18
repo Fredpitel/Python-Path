@@ -17,24 +17,19 @@ class SkillTree:
         self.skills_data = json.load(open(os.path.abspath("Data/skills.json")))
         
         for skill in self.skills_data["skills"]:
-            data = self.skills_data["skills"][skill]
-            self.skills[skill] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
+            self.skills[skill] = Skill(self.skills_data["skills"][skill], self.controller)
 
         for knowledge in self.skills_data["knowledges"]:
-            data = self.skills_data["knowledges"][knowledge]
-            self.knowledges[knowledge] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
+            self.knowledges[knowledge] = Skill(self.skills_data["knowledges"][knowledge], self.controller)
 
         for perform in self.skills_data["performs"]:
-            data = self.skills_data["performs"][perform]
-            self.performs[perform] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
+            self.performs[perform] = Skill(self.skills_data["performs"][perform], self.controller)
 
         for craft in self.skills_data["crafts"]:
-            data = self.skills_data["crafts"][craft]
-            self.crafts[craft] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
+            self.crafts[craft] = Skill(self.skills_data["crafts"][craft], self.controller)
 
         for profession in self.skills_data["professions"]:
-            data = self.skills_data["professions"][profession]
-            self.professions[profession] = Skill(0, data["untrained"], data["penalty"], data["stat"], self.controller)
+            self.professions[profession] = Skill(self.skills_data["professions"][profession], self.controller)
 
 
     def setClassSkill(self, classSkills, value):

@@ -3,13 +3,13 @@ import Tkinter as tk
 from modifiable import Modifiable
 
 class Skill(Modifiable):
-    def __init__(self, baseValue, untrained, penalty, stat, controller):
-        Modifiable.__init__(self, baseValue)
+    def __init__(self, data, controller):
+        Modifiable.__init__(self, 0)
         self.controller = controller
 
-        self.untrained  = untrained
-        self.penalty    = penalty
-        self.statName   = stat
+        self.untrained  = data["untrained"]
+        self.penalty    = data["penalty"]
+        self.statName   = data["stat"]
         self.bonus      = self.controller.getTarget(self.statName).bonus
         self.classSkill = tk.BooleanVar(value=False)
         self.rank       = tk.IntVar(value=0)

@@ -19,35 +19,35 @@ class LevelFrame():
         self.hpGained      = tk.IntVar(value=1)
         self.bonusChosen   = None
 
-        self.frame = ttk.Frame(parent, relief=tk.SUNKEN)
+        self.frame = ttk.Frame(parent, relief=tk.SUNKEN, padding=2)
         self.frame.pack(fill="x")
-        self.frame.grid_columnconfigure(0, weight=1)
-        self.frame.grid_columnconfigure(1, weight=1)
-        self.frame.grid_columnconfigure(2, weight=1)
-        self.frame.grid_columnconfigure(3, weight=1)
-        self.frame.grid_columnconfigure(4, weight=1)
-        self.frame.grid_columnconfigure(5, weight=1)
+        self.frame.grid_columnconfigure(0, weight=1, uniform="x")
+        self.frame.grid_columnconfigure(1, weight=1, uniform="x")
+        self.frame.grid_columnconfigure(2, weight=1, uniform="x")
+        self.frame.grid_columnconfigure(3, weight=1, uniform="x")
+        self.frame.grid_columnconfigure(4, weight=5, uniform="x")
+        self.frame.grid_columnconfigure(5, weight=1, uniform="x")
 
         self.hpLabel = tk.Label(self.frame, textvariable=self.hitDie, width=2, font=('Helvetica', 12))
         self.hpEntry = tk.Entry(self.frame, width=2, textvariable=self.hp, validate="key", font=('Helvetica', 12))
 
         self.checkFirstLevel()
 
-        tk.Label(self.frame, textvariable=self.levelNumber, width=2, font=('Helvetica', 12)).grid(row=0, column=0, padx=5, sticky="W")
-        self.classLabel = tk.Label(self.frame, textvariable=self.charClass, width=15, font=('Helvetica', 12))
-        self.classLabel.grid(row=0, column=1, sticky="W")
+        tk.Label(self.frame, textvariable=self.levelNumber, width=2, font=('Helvetica', 12)).grid(row=0, column=0, sticky="W")
+        self.classLabel = tk.Label(self.frame, textvariable=self.charClass, font=('Helvetica', 12), anchor="w")
+        self.classLabel.grid(row=0, column=1)
 
-        tk.Label(self.frame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, sticky="W")
+        tk.Label(self.frame, text="HP: ", font=('Helvetica', 12)).grid(row=0, column=2, sticky="E")
 
         self.favClassBonusMenu = tk.OptionMenu(self.frame, self.favClassBonus, *self.FAVORED_OPTIONS)
-        self.favClassBonusMenu.config(width=35, font=('Helvetica', 12), highlightthickness=0)
+        self.favClassBonusMenu.config(font=('Helvetica', 12), highlightthickness=0)
         self.favClassBonusMenu.grid(row=0, column=4, sticky="EW")
 
         if not self.isFavClass.get():
             self.favClassBonusMenu.config(state="disabled")
 
         self.button = tk.Button(self.frame, text="×", command=lambda: controller.removeLevel(self))
-        self.button.grid(row=0, column=5, padx=5, pady=2, sticky="E")
+        self.button.grid(row=0, column=5, pady=2, sticky="E")
         self.button.config(fg="red", font=('Helvetica', 12))
 
         self.levelNumber.trace(  "w", lambda i,o,x: self.checkFirstLevel())

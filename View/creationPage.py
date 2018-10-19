@@ -11,9 +11,9 @@ class CreationPage():
 		self.controller = controller
 
 		self.creationPage = ttk.Frame(parent, relief=tk.SUNKEN, padding=5)
-		self.creationPage.grid_columnconfigure(0, weight=1)
-		self.creationPage.grid_columnconfigure(1, weight=1)
-		self.creationPage.grid_columnconfigure(2, weight=5)
+		self.creationPage.grid_columnconfigure(0, weight=2, uniform="x")
+		self.creationPage.grid_columnconfigure(1, weight=2, uniform="x")
+		self.creationPage.grid_columnconfigure(2, weight=3, uniform="x")
 		self.creationPage.grid_rowconfigure(1, weight=1)
 		self.creationPage.grid(row=0, column=0, padx=5, sticky="NSEW")
 

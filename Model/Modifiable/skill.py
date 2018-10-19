@@ -10,6 +10,7 @@ class Skill(Modifiable):
         self.untrained  = data["untrained"]
         self.penalty    = data["penalty"]
         self.statName   = data["stat"]
+        self.show       = data["show"]
         self.bonus      = self.controller.getTarget(self.statName).bonus
         self.classSkill = tk.BooleanVar(value=False)
         self.rank       = tk.IntVar(value=0)

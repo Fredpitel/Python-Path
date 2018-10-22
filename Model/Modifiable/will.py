@@ -16,9 +16,9 @@ class Will(Modifiable):
             charClass = self.char.charClass[className]
 
             if charClass.willProg == 2:
-                will += charClass.willProg + (charClass.nbLevels/2)
+                will += charClass.willProg + (charClass.nbLevels.get()/2)
             else:
-                will += charClass.willProg + (charClass.nbLevels/3)
+                will += charClass.willProg + (charClass.nbLevels.get()/3)
 
         will = int(floor(will)) + self.char.wis.bonus.get()
 

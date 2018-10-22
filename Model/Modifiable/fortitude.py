@@ -16,9 +16,9 @@ class Fortitude(Modifiable):
             charClass = self.char.charClass[className]
 
             if charClass.fortProg == 2:
-                fort += charClass.fortProg + (charClass.nbLevels/2)
+                fort += charClass.fortProg + (charClass.nbLevels.get()/2)
             else:
-                fort += charClass.fortProg + (charClass.nbLevels/3)
+                fort += charClass.fortProg + (charClass.nbLevels.get()/3)
 
         fort = int(floor(fort)) + self.char.con.bonus.get()
 

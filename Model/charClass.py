@@ -3,7 +3,7 @@ import Tkinter as tk
 class CharClass:
     def __init__(self, className, classData, nbLevels):
         self.className   = className
-        self.nbLevels    = nbLevels
+        self.nbLevels    = tk.IntVar(value=nbLevels)
         
         self.skillLevel  = classData["skillLevel"]
         self.classSkills = classData["classSkills"]

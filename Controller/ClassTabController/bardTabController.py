@@ -8,19 +8,13 @@ class BardTabController:
         self.controller = controller
         
         self.view = BardTab(self.parent)
-        self.knowledgeBonus = tk.IntVar(value=max(1, int(self.controller.char.charClass["Bard"].nbLevels / 2)))
+        self.knowledgeBonus = tk.IntVar()
+        self.classLevel = self.controller.char.charClass["Bard"].nbLevels
 
-        skillDict = self.controller.char.skill.skills
-        for skill in skillDict:
-            if skillDict[skill].list == "Knowledge":
-                skillDict[skill].untrained = True
-                skillDict[skill].show.set(True)
-                skillDict[skill].addModifier({"target" : skillDict[skill],
-                                              "type"   : "untyped",
-                                              "value"  : self.knowledgeBonus.get()},
-                                              self.knowledgeBonus)
+        self.updateKnowledgeBonus()
+        self.setKnowledgesUntrained(True)
 
-        self.controller.char.charLevel.trace("w", lambda i,o,x: self.updateKnowledgeBonus())
+        self.classLevel.trace("w", lambda i,o,x: self.updateKnowledgeBonus())
 
 
     def getView(self):
@@ -28,11 +22,23 @@ class BardTabController:
 
 
     def updateKnowledgeBonus(self):
-        self.knowledgeBonus.set(min(1, int(self.controller.char.charClass["Bard"].nbLevels / 2)))
+        if self.classLevel.get() > 0:
+            self.knowledgeBonus.set(max(1, int(self.classLevel.get() / 2)))
+            skillDict = self.controller.char.skill.skills
+            for skill in skillDict:
+                if skillDict[skill].list == "Knowledge":
+                    skillDict[skill].addModifier({"target" : skillDict[skill],
+                                                  "type"   : "untyped",
+                                                  "value"  : self.knowledgeBonus.get()},
+                                                  self.knowledgeBonus)
+        else:
+            self.knowledgeBonus.set(0)
+            self.setKnowledgesUntrained(False)
+
+
+    def setKnowledgesUntrained(self, value):
         skillDict = self.controller.char.skill.skills
         for skill in skillDict:
             if skillDict[skill].list == "Knowledge":
-                skillDict[skill].addModifier({"target" : skillDict[skill],
-                                              "type"   : "untyped",
-                                              "value"  : self.knowledgeBonus.get()},
-                                              self.knowledgeBonus)
+                skillDict[skill].untrained = value
+                skillDict[skill].show.set(value)

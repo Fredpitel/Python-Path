@@ -16,9 +16,9 @@ class Reflex(Modifiable):
             charClass = self.char.charClass[className]
 
             if charClass.refProg == 2:
-                ref += charClass.refProg + (charClass.nbLevels/2)
+                ref += charClass.refProg + (charClass.nbLevels.get()/2)
             else:
-                ref += charClass.refProg + (charClass.nbLevels/3)
+                ref += charClass.refProg + (charClass.nbLevels.get()/3)
 
         ref = int(floor(ref)) + self.char.dex.bonus.get()
 

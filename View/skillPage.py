@@ -118,7 +118,7 @@ class SkillPage:
             frame.grid(row=i, column=0, sticky="EW")
             self.skillFramesDict[skill] = frame
 
-            skill.rank.trace("w", lambda i,o,x: self.updateSkillSummary())
+            skill.value.trace("w", lambda i,o,x: self.updateSkillSummary())
             skill.show.trace("w", lambda i,o,x: self.updateSkillSummary())
             i += 1
 

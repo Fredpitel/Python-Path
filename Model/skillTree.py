@@ -19,13 +19,11 @@ class SkillTree:
     def setClassSkill(self, classSkills, value):
         for classSkill in classSkills:
             if classSkill in ["Knowledge", "Perform", "Craft", "Profession"]:
-                for skill in self.skills.keys():
+                for skill in self.skills:
                     if self.skills[skill].list == classSkill:
-                        if not self.__getitem__(skill).classSkill.get():
-                            self.__getitem__(skill).classSkill.set(value)
+                        self.__getitem__(skill).classSkill.set(value)
             else:
-                if not self.__getitem__(classSkill).classSkill.get():
-                    self.__getitem__(classSkill).classSkill.set(value)
+                self.__getitem__(classSkill).classSkill.set(value)
 
 
     def __getitem__(self, skill):

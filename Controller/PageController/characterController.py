@@ -67,7 +67,7 @@ class CharacterController:
         if not className in self.char.charClass or self.char.charClass[className] is None:
             self.char.charClass[className] = CharClass(className, classData, nbLevels)
         else:
-            self.char.charClass[className].nbLevels += nbLevels
+            self.char.charClass[className].nbLevels.set(self.char.charClass[className].nbLevels.get() + nbLevels)
 
         if not className in self.classTabControllers:
             self.classTabControllers[className] = ClassTabControllerFactory().getController(self, self.nb, className)
@@ -80,9 +80,9 @@ class CharacterController:
 
     def removeClass(self, className):
         charClass = self.char.charClass[className]
-        charClass.nbLevels -= 1
+        charClass.nbLevels.set(self.char.charClass[className].nbLevels.get() - 1)
         
-        if charClass.nbLevels == 0:
+        if charClass.nbLevels.get() == 0:
             self.nb.forget(self.classTabControllers[className].getView())
             self.char.skill.setClassSkill(charClass.classSkills, False)
 
@@ -99,7 +99,7 @@ class CharacterController:
         charClasses = self.char.charClass
 
         for className in charClasses.keys():
-            sp += charClasses[className].skillLevel * charClasses[className].nbLevels
+            sp += charClasses[className].skillLevel * charClasses[className].nbLevels.get()
 
         sp -= self.char.spentSP
 

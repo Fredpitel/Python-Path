@@ -55,6 +55,6 @@ class Character():
         for className in self.charClass:
             charClass = self.charClass[className]
 
-            bab += charClass.attackProg * charClass.nbLevels
+            bab += charClass.attackProg * charClass.nbLevels.get()
 
         return int(floor(bab))

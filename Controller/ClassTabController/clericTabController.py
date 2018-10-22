@@ -1,7 +1,7 @@
 from View.ClassTab.clericTab import ClericTab 
 
 class ClericTabController:
-    def __init__(self, parent):
+    def __init__(self, controller, parent):
         self.view = ClericTab(parent)
 
 

@@ -8,13 +8,7 @@
         "refProg"     : 0,
         "willProg"    : 0,
         "proficiency" : ["Simple", "Martial", "Light Armor", "Medium Armor", "Shield"],
-        "mods": [
-            {
-                "target": "speed",
-                "type"  : "untyped",
-                "value" : 10
-            }
-        ],
+        "mods": [],
         "requirements" : [
             {
                 "type"    : "alignment",

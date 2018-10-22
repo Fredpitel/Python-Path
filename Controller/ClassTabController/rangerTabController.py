@@ -1,7 +1,7 @@
 from View.ClassTab.rangerTab import RangerTab 
 
 class RangerTabController:
-    def __init__(self, parent):
+    def __init__(self, controller, parent):
         self.view = RangerTab(parent)
 
 

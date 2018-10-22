@@ -1,7 +1,7 @@
 from View.ClassTab.barbarianTab import BarbarianTab 
 
 class BarbarianTabController:
-    def __init__(self, parent):
+    def __init__(self, controller, parent):
         self.view = BarbarianTab(parent)
 
 

@@ -1,7 +1,7 @@
 from View.ClassTab.fighterTab import FighterTab 
 
 class FighterTabController:
-    def __init__(self, parent):
+    def __init__(self, controller, parent):
         self.view = FighterTab(parent)
 
 

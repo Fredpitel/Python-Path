@@ -64,14 +64,14 @@ class CharacterController:
 
 
     def addClass(self, className, classData, nbLevels):
-        if not className in self.classTabControllers:
-            self.classTabControllers[className] = ClassTabControllerFactory().getController(self.nb, className)
-            self.nb.insert(1, self.classTabControllers[className].getView(), text=className)
-
         if not className in self.char.charClass or self.char.charClass[className] is None:
             self.char.charClass[className] = CharClass(className, classData, nbLevels)
         else:
             self.char.charClass[className].nbLevels += nbLevels
+
+        if not className in self.classTabControllers:
+            self.classTabControllers[className] = ClassTabControllerFactory().getController(self, self.nb, className)
+            self.nb.insert(1, self.classTabControllers[className].getView(), text=className)
 
         self.char.skill.setClassSkill(self.char.charClass[className].classSkills, True)
         self.calculateSpFromLevels()

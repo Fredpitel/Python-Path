@@ -1,5 +1,5 @@
 {
-    "skills": {
+    "Skill": {
         "Acrobatics" : {
             "untrained" : true,
             "penalty"   : true,
@@ -133,7 +133,7 @@
             "show"      : true
         }
     },
-    "knowledges" : {
+    "Knowledge" : {
         "Knowledge (arcana)" : {
             "untrained" : false,
             "penalty"   : false,
@@ -195,7 +195,7 @@
             "show"      : false
         }
     },
-    "performs" : {
+    "Perform" : {
         "Perform (act)" : {
             "untrained" : true,
             "penalty"   : false,
@@ -251,7 +251,7 @@
             "show"      : false
         }
     },
-    "crafts" : {
+    "Craft" : {
         "Craft (alchemy)" : {
             "untrained" : true,
             "penalty"   : false,
@@ -379,7 +379,7 @@
             "show"      : false
         }
     },
-    "professions" : {
+    "Profession" : {
         "Profession (architect)" : {
             "untrained" : false,
             "penalty"   : false,

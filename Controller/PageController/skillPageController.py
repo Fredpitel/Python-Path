@@ -1,4 +1,5 @@
-from View.skillPage import SkillPage
+from View.skillPage   import SkillPage
+from View.skillWindow import SkillWindow
 
 class SkillPageController:
     def __init__(self, controller):
@@ -22,3 +23,22 @@ class SkillPageController:
                 rankValue.set(newValue)
                 skillPoints.baseValue.set(skillPoints.baseValue.get() - value)
                 self.controller.char.spentSP += value
+
+
+    def createSkillWindow(self, list, frame):
+        skillDict = self.controller.char.skill.skills
+        skills = []
+
+        for skill in skillDict:
+            if skillDict[skill].list == list:
+                skills.append(skill)
+
+        SkillWindow(self, skills, frame)
+
+
+    def addSkill(self, window, checkboxes, frame):
+        window.destroy()
+
+        for checkbox in checkboxes:
+            if checkbox.var.get():
+                self.view.createSkillFrame(frame, checkbox.skill)
